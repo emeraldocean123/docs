@@ -1,0 +1,111 @@
+===== BITWARDEN SSH KEY VAULT ENTRY =====
+
+Name: Unified SSH Key - All Systems
+Username: joseph@unified-key
+Type: SSH Key
+
+--- PUBLIC KEY ---
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEBdb5WWyH4atlYewmthJGTVAkJysN3UHp5ZhUDtfbp2 joseph@unified-key
+
+--- PRIVATE KEY ---
+[Run this command to get private key]:
+cat ~/.ssh/id_ed25519_unified
+
+--- KEY FINGERPRINT ---
+SHA256:2Oa0aH7dI5P+5H7wHTn5gsKWfHUw2oM5POWsBgP7AH8
+
+--- DEPLOYMENT INSTRUCTIONS ---
+
+1. In Bitwarden:
+   - Create new item type "SSH Key"
+   - Name: "Unified SSH Key - All Systems"
+   - Copy private and public keys to respective fields
+   - Add fingerprint to notes
+
+2. Deployment Status: ✅ COMPLETED
+   All systems have been configured with the unified SSH key.
+
+3. Systems using this key (14 total):
+   ✅ GitHub repositories (emeraldocean123) - SSH key auth
+   ✅ NixOS MSI GE75 Raider laptop (192.168.1.106) - user: joseph
+   ✅ NixOS HP dv9500 Pavilion laptop (192.168.1.104) - user: joseph
+   ✅ CachyOS HP dv9500 Pavilion (192.168.1.104) - user: joseph
+   ✅ Proxmox VE host (192.168.1.40) - user: root
+   ✅ OPNsense router VM (192.168.1.1) - user: root
+   ✅ WireGuard LXC container (192.168.1.50) - user: root
+   ✅ Tailscale LXC container (192.168.1.51) - user: root
+   ✅ Omada LXC container (192.168.1.52) - user: root
+   ✅ NetBox LXC container (192.168.1.53) - user: root
+   ✅ iVentoy LXC container (192.168.1.54) - user: root
+   ✅ Docker LXC container (192.168.1.55) - user: root
+   ✅ Syncthing LXC container (192.168.1.56) - user: root
+   ✅ Synology NAS (192.168.1.10) - user: joseph
+
+--- USER STRATEGY ---
+
+Personal Devices (user: joseph):
+- NixOS laptops: Standard user account for daily use
+- Synology NAS: Personal account with admin privileges
+
+Infrastructure/Servers (user: root):
+- Proxmox host: Root access for hypervisor management
+- All LXC containers: Root access for service administration
+- OPNsense router: Root access for network configuration (FreeBSD standard)
+
+This approach follows security best practices:
+- Non-root access on personal devices
+- Root access on infrastructure for administration
+- Consistent with each platform's conventions
+
+--- SYSTEMS WITH SSH DISABLED ---
+
+❌ TP-Link SG3428-2 switch (192.168.1.2):
+- SSH disabled (connection auto-closes, not usable)
+- Managed via Omada controller web interface
+- Ed25519 keys not supported (would require RSA + TFTP setup)
+- Web management via Omada at https://192.168.1.52:8043
+
+--- SYSTEMS WITHOUT SSH ACCESS ---
+
+❌ Linksys MX4200 router (192.168.1.5):
+- Consumer-grade mesh WiFi system
+- No native SSH support (port 22 closed)
+- Web management only via https://192.168.1.5
+- Would require custom firmware (OpenWrt) for SSH access
+- Not recommended due to warranty void and complexity
+
+❌ Reolink NVR (192.168.1.20):
+- No official SSH/telnet support (port 22 closed)
+- Web management via http://192.168.1.20
+- Community has requested SSH/SFTP but not implemented by vendor
+- Hardware modification possible but unsupported
+
+❌ Epson ET-3830 printer (192.168.1.21):
+- Consumer printer with no CLI access
+- No SSH/telnet support (port 22 closed)
+- Management via control panel, Epson Smart Panel app, or UPnP
+- Limited web interface (404 on root path)
+
+❌ Consumer/IoT devices (no SSH capability):
+- Google Nest Thermostat (192.168.1.107) - App management only
+- Roomba vacuum (192.168.1.139) - App management only
+
+--- DOCUMENTED COMPUTERS ---
+
+✅ HP dv9500 Pavilion laptop (192.168.1.104):
+- NixOS with unified SSH key (user: joseph)
+- CachyOS dual boot with unified SSH key (user: joseph)
+
+✅ MSI GE75 Raider laptop (192.168.1.106):
+- NixOS with unified SSH key (user: joseph)
+- CachyOS dual boot with unified SSH key (user: joseph)
+
+➖ Alienware 18 Area 51 (192.168.1.197):
+- Primary workstation (direct use, no SSH needed)
+
+Notes: Unified SSH key for all systems. Created: 2025-01-12
+Deployment completed: 2025-08-12. All 14 systems successfully configured.
+OPNsense router added: 2025-08-12.
+TP-Link SG3428-2 switch assessed: SSH disabled (auto-disconnect issue, managed via Omada).
+Linksys MX4200 assessed: No SSH capability available.
+Reolink NVR and Epson printer assessed: No SSH support (consumer devices).
