@@ -6,6 +6,11 @@
 
 ## Systems
 
+### OPNsense Router
+| Host | IP | User | Shortcut | Security |
+|------|-----|------|----------|----------|
+| OPNsense VM | 192.168.1.1 | joseph/root | `ssh opnsense` | FreeBSD 14.3, VM on Proxmox |
+
 ### Synology NAS
 | Host | IP | User | Shortcut | Security |
 |------|-----|------|----------|----------|
