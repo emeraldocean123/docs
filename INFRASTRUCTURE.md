@@ -78,8 +78,8 @@ ssh proxmox "pct enter 1000"
 
 ### Check system status
 ```bash
-# Check all systems connectivity
-for host in nas hp msi proxmox wireguard tailscale omada netbox iventoy docker syncthing; do
+# Check all systems connectivity (ordered by IP)
+for host in nas proxmox wireguard tailscale omada netbox iventoy docker syncthing hp msi; do
     echo -n "$host: "
     ssh -o ConnectTimeout=2 $host "hostname" 2>/dev/null || echo "offline"
 done
@@ -95,9 +95,42 @@ powershell C:\Users\josep\Documents\nixos-config\scripts\test-all-ssh.ps1
 
 ## System Versions
 - **NixOS Laptops**: NixOS 25.05 with latest updates
-- **All LXC Containers**: Debian 13 (Trixie) with Python 3.13
-- **Synology NAS**: DSM 7.x with Auto Block security
-- **Proxmox Host**: Latest Proxmox VE
+- **All LXC Containers**: Debian 13 (Trixie) with Python 3.13, fastfetch + MOTD configured
+- **Synology NAS**: DSM 7.x with Auto Block security, neofetch configured
+- **Proxmox Host**: Latest Proxmox VE with fastfetch configured
+- **OPNsense Router**: FreeBSD 14.3 with custom system info script
+
+## Services & Applications
+
+### VPN Services (192.168.1.50)
+- **WireGuard**: VPN server on port 51820
+  - Network: 10.246.235.0/24
+  - Active peers: 2 configured
+- **WGDashboard**: Web management interface - http://192.168.1.50:10086
+  - Version: v4.2.5
+  - Location: `/etc/wgdashboard/src/`
+
+### Network Management (192.168.1.52)
+- **Omada Controller**: TP-Link network device management
+  - Manages TP-Link SG3428-2 switch and other network devices
+
+### Documentation & IPAM (192.168.1.53)
+- **NetBox**: IP Address Management and Data Center Infrastructure Management
+  - Network documentation and IP tracking
+
+### Docker Container Services (192.168.1.55)
+- **Immich**: Photo management and AI features - http://192.168.1.55:2283
+  - Location: `/root/immich-app/docker-compose.yml`
+  - Version: Latest release builds (auto-updated)
+- **Portainer**: Docker management interface - https://192.168.1.55:9443
+  - Container management and monitoring
+
+### System Information Display
+All SSH-accessible systems configured with:
+- **LXC Containers**: MOTD banners + fastfetch, `info` command available
+- **Proxmox Host**: fastfetch on login, `info` command available  
+- **Synology NAS**: neofetch on login
+- **OPNsense**: Custom system info script for joseph user
 
 ## Documentation Location
 All infrastructure documentation moved to: `C:\Users\josep\Documents\docs\`
