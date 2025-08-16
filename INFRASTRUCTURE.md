@@ -94,7 +94,10 @@ powershell C:\Users\josep\Documents\nixos-config\scripts\test-all-ssh.ps1
 - **Synology Exception**: Auto Block protection instead of disabled password auth
 
 ## System Versions
-- **NixOS Laptops**: NixOS 25.05 with latest updates
+- **NixOS Laptops**: NixOS 25.05 with Home Manager and flakes
+  - Configuration: Modular architecture with shared/profiles/roles structure
+  - Location: `~/nixos-config/` (using flakes for declarative package management)
+  - Home Manager: Manages user environment and dotfiles declaratively
 - **All LXC Containers**: Debian 13 (Trixie) with Python 3.13, fastfetch + MOTD configured
 - **Synology NAS**: DSM 7.x with Auto Block security, neofetch configured
 - **Proxmox Host**: Latest Proxmox VE with fastfetch configured
