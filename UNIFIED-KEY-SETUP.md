@@ -34,7 +34,7 @@ ssh wireguard   # WireGuard LXC
 ssh docker      # Docker LXC
 
 # Test Git operations
-cd ~/Documents/nixos-config
+cd ~/Documents/dev/nixos-config
 git fetch origin
 ```
 

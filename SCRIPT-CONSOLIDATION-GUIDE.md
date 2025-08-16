@@ -34,7 +34,7 @@ Look for:
 **Common Redundancies:**
 - `Documents/PowerShell/Microsoft.PowerShell_profile.ps1`
 - `Documents/PowerShell/Microsoft.VSCode_profile.ps1` 
-- `Documents/dotfiles/powershell/Microsoft.PowerShell_profile.ps1`
+- `Documents/dev/dotfiles/powershell/Microsoft.PowerShell_profile.ps1`
 - Multiple `profile.bootstrap.ps1` files
 
 **Consolidation Approach:**
@@ -121,13 +121,13 @@ rm Documents/PowerShell/profile.bootstrap.ps1
 rm Documents/PowerShell/Microsoft.PowerShell_profile.ps1
 
 # Remove old verification scripts
-rm Documents/dotfiles/powershell/Verify-Profile.ps1
-rm Documents/dotfiles/scripts/verify-dotfiles.ps1
-rm Documents/dotfiles/scripts/verify-dotfiles.sh
+rm Documents/dev/dotfiles/powershell/Verify-Profile.ps1
+rm Documents/dev/dotfiles/scripts/verify-dotfiles.ps1
+rm Documents/dev/dotfiles/scripts/verify-dotfiles.sh
 
 # Remove individual SSH scripts
-rm Documents/nixos-config/scripts/connect-nixos.ps1
-rm Documents/nixos-config/scripts/test-all-ssh.ps1
+rm Documents/dev/nixos-config/scripts/connect-nixos.ps1
+rm Documents/dev/nixos-config/scripts/test-all-ssh.ps1
 # ... etc
 ```
 
@@ -149,8 +149,8 @@ rm Documents/nixos-config/scripts/test-all-ssh.ps1
 ## Cross-Platform Utilities
 
 SSH and connectivity utilities have been moved to the [dotfiles repository](https://github.com/emeraldocean123/dotfiles):
-- **Test SSH connectivity**: `~/Documents/dotfiles/scripts/ssh/test-ssh-connectivity.ps1 -All`
-- **Connect to hosts**: `~/Documents/dotfiles/scripts/ssh/connect-host.ps1 hp`
+- **Test SSH connectivity**: `~/Documents/dev/dotfiles/scripts/ssh/test-ssh-connectivity.ps1 -All`
+- **Connect to hosts**: `~/Documents/dev/dotfiles/scripts/ssh/connect-host.ps1 hp`
 ```
 
 ### Phase 4: Documentation

@@ -64,7 +64,7 @@ modules/
 
 **MANDATORY WORKFLOW - NO EXCEPTIONS:**
 
-1. **Always edit locally ONLY** in Windows `~/Documents/nixos-config`
+1. **Always edit locally ONLY** in Windows `~/Documents/dev/nixos-config`
 2. **Test syntax** with `nix flake check` if possible
 3. **Commit and push** to GitHub
 4. **Pull to target machine** before rebuilding
@@ -109,7 +109,7 @@ nix flake check
 
 ### If Build Fails
 1. Check error message for specific syntax issues
-2. Fix locally in Windows Documents/nixos-config
+2. Fix locally in Windows Documents/dev/nixos-config
 3. Push to GitHub and pull to target machine
 4. Retry rebuild
 
@@ -130,7 +130,7 @@ nix flake check
 ⚠️ **CRITICAL WORKFLOW REQUIREMENT** ⚠️
 
 **ALWAYS follow this exact sequence - NO SHORTCUTS:**
-1. Edit locally in Windows `~/Documents/nixos-config` 
+1. Edit locally in Windows `~/Documents/dev/nixos-config` 
 2. Commit and push to GitHub
 3. Pull to target NixOS machine
 4. Rebuild on target machine
