@@ -47,7 +47,7 @@ Located at: `~/.ssh/id_ed25519_unified`
 
 **Public Key**:
 ```
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEBdb5WWyH4atlYewmthJGTVAkJysN3UHp5ZhUDtfbp2 joseph@unified-key
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEBdb5WWyH4atlYewmthJGTVAkJysN3UHp5ZhUDtfbp2 user@unified-key
 ```
 
 ## Benefits Achieved
