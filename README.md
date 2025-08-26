@@ -42,3 +42,10 @@ Documentation updates also follow Conventional Commits for consistency.
 - Shared Hooks: `core.hooksPath` → `Documents/dev/dotfiles/githooks`.
   - `pre-commit`: blocks obvious secrets and large files; use `.githooks-allow.txt` to allow known safe paths.
   - `commit-msg`: validates Conventional Commit format; bypass with `GITHOOKS_BYPASS=1` if necessary.
+
+## Contributing
+
+- Use Conventional Commits for all messages: `type(scope)?: subject`.
+- Commit Template: this repo is configured with a commit message template to guide messages.
+- Hooks: shared `pre-commit` and `commit-msg` hooks run automatically (configured via global `core.hooksPath`).
+- Bypass (rare): set `GITHOOKS_BYPASS=1` to skip checks once.
