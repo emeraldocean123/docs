@@ -34,3 +34,11 @@ This repository serves as a centralized location for technical documentation, co
 ## License
 
 Private repository - for personal use only
+## Conventional Commits & Hooks
+
+Documentation updates also follow Conventional Commits for consistency.
+
+- Global Commit Template: configured to `Documents/dev/dotfiles/git-templates/commit_template.txt`.
+- Shared Hooks: `core.hooksPath` → `Documents/dev/dotfiles/githooks`.
+  - `pre-commit`: blocks obvious secrets and large files; use `.githooks-allow.txt` to allow known safe paths.
+  - `commit-msg`: validates Conventional Commit format; bypass with `GITHOOKS_BYPASS=1` if necessary.
