@@ -52,6 +52,10 @@ Documentation updates also follow Conventional Commits for consistency.
 
 - See `Documents/dev/CODEX.md` and `Documents/dev/CLAUDE.md` for the shared workspace context and conventions.
 
+## Review Routing
+
+- CODEOWNERS is set to `@emeraldocean123`; PRs route reviews automatically.
+
 ## Contributing
 
 - Use Conventional Commits for all messages: `type(scope)?: subject`.
