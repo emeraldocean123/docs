@@ -43,6 +43,15 @@ Documentation updates also follow Conventional Commits for consistency.
   - `pre-commit`: blocks obvious secrets and large files; use `.githooks-allow.txt` to allow known safe paths.
   - `commit-msg`: validates Conventional Commit format; bypass with `GITHOOKS_BYPASS=1` if necessary.
 
+## CI Checks
+
+- Link Check (lychee) and Secret Scan (gitleaks) run on pushes and PRs; scheduled weekly.
+- Markdownlint runs for all Markdown files; see `.markdownlint.jsonc` for exceptions.
+
+## Assistant Guides
+
+- See `Documents/dev/CODEX.md` and `Documents/dev/CLAUDE.md` for the shared workspace context and conventions.
+
 ## Contributing
 
 - Use Conventional Commits for all messages: `type(scope)?: subject`.
