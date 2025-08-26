@@ -1,0 +1,17 @@
+name: Markdownlint
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 2 * * 1'
+jobs:
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run markdownlint-cli2
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: |
+            **/*.md
+

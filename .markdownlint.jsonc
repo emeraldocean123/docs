@@ -1,0 +1,7 @@
+{
+  // Allow long lines in docs
+  "MD013": false,
+  // Allow inline HTML in docs where needed
+  "MD033": false
+}
+
