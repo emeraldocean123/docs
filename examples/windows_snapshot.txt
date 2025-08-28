@@ -1,0 +1,4042 @@
+################################################################################
+### SECTION 1: SYSTEM INFORMATION
+################################################################################
+Generated on:      Sat, Aug  9, 2025  9:36:42 AM
+Hostname:          alienware-18-area51-aa18250-windows
+OS Type:           MINGW64_NT-10.0-26100
+Kernel Version:    3.6.3-7674c51e.x86_64
+################################################################################
+
+################################################################################
+### SECTION 2: NixOS SYSTEM CONFIGURATION (/etc/nixos)
+################################################################################
+Directory /etc/nixos not found (this is normal on non-NixOS systems).
+
+################################################################################
+### SECTION 3: USER DOTFILES REPOSITORY
+################################################################################
+Searching for dotfiles in: /c/Users/josep/Documents/dotfiles
+--- FILE: /c/Users/josep/Documents/dotfiles/.github/copilot-instructions.md ---
+# Dotfiles - Cross-Platform Development Environment
+
+This repository contains cross-platform development environment configurations for consistent shell, git, and development tool settings.
+
+## Repository Structure
+
+- **Shell configurations**: bash, PowerShell profiles and aliases
+- **Git configuration**: Global git settings and aliases
+- **Development tools**: VS Code settings, terminal themes
+- **Setup scripts**: Bootstrap scripts for new environment setup
+
+## Platform Support
+
+- **Windows**: PowerShell profiles, Windows-specific configurations
+- **Linux/NixOS**: Bash configurations, Unix-style dotfiles
+- **Cross-platform**: Git configuration, shared aliases and functions
+
+## Configuration Guidelines
+
+### File Organization:
+- Separate platform-specific and shared configurations
+- Use clear, descriptive names for configuration files
+- Group related configurations logically
+- Maintain backward compatibility when possible
+
+### Code Quality:
+- Include comments explaining configuration choices
+- Use consistent formatting and conventions
+- Follow platform-specific best practices
+- Test configurations on target platforms
+
+### Deployment:
+- Provide automated setup scripts for new environments
+- Support both manual and automated deployment
+- Preserve existing configurations when possible
+- Document platform-specific requirements
+
+## Integration
+
+- Works alongside NixOS configurations for Linux environments
+- Complements nixos-tools for development workflow
+- Provides consistent experience across development platforms
+- Supports both local and remote development scenarios
+
+Reference the nixos-tools repository for additional development and deployment automation.
+
+--- FILE: /c/Users/josep/Documents/dotfiles/.github/instructions/powershell-cleanup.instructions.md ---
+---
+description: "Guidelines for AI assistants working with PowerShell environments in VS Code"
+applyTo: "**/*.ps1"
+---
+
+# PowerShell Environment AI Instructions
+
+## File Management Guidelines
+
+When working with PowerShell environments, always follow these cleanup guidelines:
+
+### Temporary Files to Clean Up
+- Remove `*.FIXED.ps1`, `*.MINIMAL.ps1`, `*.TEST.ps1` files after troubleshooting
+- Delete `troubleshoot-*.ps1` and `debug-*.ps1` debugging scripts  
+- Clean up files with `.tmp`, `.bak`, `.old` extensions
+- Remove duplicate profile files with timestamps or backup names
+
+### Important Files to Preserve
+- Keep `Microsoft.PowerShell_profile.ps1` (main profile)
+- Preserve `powershell.config.json` (configuration)
+- Maintain `Scripts/` and `Modules/` directories
+- Keep documentation files (`*.md`)
+- Preserve verification scripts unless explicitly requested to remove
+
+### Cleanup Process
+1. **Scan and identify** temporary files using pattern matching
+2. **Report findings** with file names and sizes before removal
+3. **Ask permission** before deleting non-temporary files
+4. **Remove files safely** with proper error handling
+5. **Calculate and report** space savings (KB/MB)
+6. **Document changes** in cleanup plans or README files
+7. **Verify functionality** after cleanup operations
+
+### Profile Optimization
+- Consolidate duplicate functions and imports
+- Add robust error handling with graceful fallbacks
+- Ensure both main and dotfiles profiles are synchronized
+- Test profile syntax before finalizing changes
+- Verify all key functions load successfully
+
+### PowerShell-Specific Considerations
+- Remember that Unix-style flags like `ls -la` don't work in PowerShell
+- Use PowerShell-native functions: `ll`, `la`, `lsla` for directory listing
+- Handle module import failures gracefully
+- Check for VS Code PowerShell extension compatibility issues
+
+--- FILE: /c/Users/josep/Documents/dotfiles/.github/prompts/cleanup-powershell.prompt.md ---
+---
+mode: "agent"
+tools: ["terminal", "file_search", "read_file", "replace_string_in_file"]
+description: "Clean up PowerShell environment following best practices"
+---
+
+# PowerShell Environment Cleanup
+
+You are tasked with cleaning up a PowerShell environment in VS Code. Follow these steps systematically:
+
+## Phase 1: Assessment
+1. Scan the PowerShell directory: `${workspaceFolder}/Documents/PowerShell` or `$env:USERPROFILE\OneDrive\Documents\PowerShell`
+2. Identify temporary files, duplicate profiles, and cleanup opportunities
+3. Calculate potential space savings
+4. Report findings before making any changes
+
+## Phase 2: Temporary File Cleanup
+Clean up these file patterns:
+- `*.FIXED.ps1`, `*.MINIMAL.ps1`, `*.TEST.ps1`
+- `troubleshoot-*.ps1`, `debug-*.ps1`
+- `*.tmp`, `*.bak`, `*.old`
+- Duplicate profiles with timestamps or backup names
+
+## Phase 3: Profile Optimization
+1. Verify the main profile: `Microsoft.PowerShell_profile.ps1`
+2. Check for and remove duplicate functions or imports
+3. Ensure robust error handling
+4. Synchronize with dotfiles version if applicable
+5. Test profile syntax and functionality
+
+## Phase 4: Verification
+1. Run profile verification script if available
+2. Test key functions: `ll`, `la`, `gs`, `which`, etc.
+3. Ensure no syntax errors
+4. Verify module imports work correctly
+
+## Phase 5: Documentation
+1. Update cleanup documentation
+2. Record space savings and changes made
+3. Note any issues or recommendations
+
+## Important Guidelines
+- **Always ask permission** before deleting non-temporary files
+- **Preserve** Scripts/, Modules/, and documentation files
+- **Test thoroughly** after making changes
+- **Document everything** for transparency
+
+[Reference the PowerShell cleanup instructions](./powershell-cleanup.instructions.md) for detailed guidelines.
+
+Begin with Phase 1 assessment and proceed systematically through each phase.
+
+--- FILE: /c/Users/josep/Documents/dotfiles/.gitignore ---
+# Dotfiles .gitignore
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/settings.json
+.idea/
+
+# Backup files
+*.bak
+*~
+
+# Temporary files
+*.tmp
+*.temp
+
+# PowerShell specific
+LastExecutionTime.txt
+
+# Shell history files
+.bash_history
+.zsh_history
+
+# SSH keys (never commit these!)
+id_rsa
+id_ed25519
+*.pem
+
+# Personal/local config overrides
+local.conf
+personal.conf
+powershell/Modules/
+powershell/Scripts/
+powershell/Modules/
+powershell/Scripts/
+
+--- FILE: /c/Users/josep/Documents/dotfiles/bashrc ---
+# === Unified Bash RC for non-NixOS environments (e.g., Git Bash, WSL) ===
+
+# History settings
+HISTCONTROL=ignoreboth
+HISTSIZE=1000
+HISTFILESIZE=2000
+shopt -s histappend
+
+# Aliases
+alias ll='ls -lah --color=auto'
+alias la='ls -A --color=auto'
+alias l='ls -CF --color=auto'
+alias gs='git status'
+alias ga='git add'
+alias gcom='git commit'
+alias gp='git push'
+alias gl='git log --oneline -10'
+alias gd='git diff'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias grep='grep --color=auto'
+alias which='command -v'
+alias reload='source ~/.bashrc'
+
+# --- Git Bash on Windows PATH Fixes ---
+if [[ "$OSTYPE" == "msys"* ]]; then
+  # Add Oh My Posh path
+  OMP_WINDOWS_PATH="/c/Users/$USER/AppData/Local/Programs/oh-my-posh/bin"
+  if [ -d "$OMP_WINDOWS_PATH" ] && [[ ":$PATH:" != *":$OMP_WINDOWS_PATH:"* ]]; then
+    export PATH="$PATH:$OMP_WINDOWS_PATH"
+  fi
+  # Add general WinGet binaries path (for fastfetch, etc.)
+  WINGET_BIN_PATH="/c/Users/$USER/AppData/Local/Microsoft/WinGet/bin"
+  if [ -d "$WINGET_BIN_PATH" ] && [[ ":$PATH:" != *":$WINGET_BIN_PATH:"* ]]; then
+    export PATH="$PATH:$WINGET_BIN_PATH"
+  fi
+fi
+
+# --- Run fastfetch on startup (once per session) ---
+if [ -z "$__FASTFETCH_SHOWN" ] && [ -n "$PS1" ]; then
+  if command -v fastfetch &>/dev/null; then
+    fastfetch --logo-width 30
+    export __FASTFETCH_SHOWN=1
+  fi
+fi
+
+# --- Oh My Posh Initialization (using absolute path) ---
+if command -v oh-my-posh &> /dev/null; then
+  THEME_PATH="$HOME/Documents/dotfiles/posh-themes/jandedobbeleer.omp.json"
+  if [ -f "$THEME_PATH" ]; then
+    eval "$(oh-my-posh init bash --config "$THEME_PATH")"
+  fi
+fi
+
+--- FILE: /c/Users/josep/Documents/dotfiles/bootstrap.ps1 ---
+param(
+    [switch]$Force,
+    [switch]$AutoPush,
+    [string]$CustomDotfilesDir
+)
+
+$ErrorActionPreference = 'Stop'
+
+function Write-Info($msg){ Write-Host $msg -ForegroundColor Cyan }
+function Write-Ok($msg){ Write-Host $msg -ForegroundColor Green }
+function Write-Warn($msg){ Write-Warning $msg }
+function Write-Err($msg){ Write-Host $msg -ForegroundColor Red }
+
+# -------------------------------
+# Pinned versions / constants
+# -------------------------------
+$PinnedPSReadLineVersion = '2.4.1'   # change here if/when you bump
+$RequiredModules = @('Terminal-Icons','z')  # PSReadLine handled specially
+
+Write-Info "Starting PowerShell dotfiles setup..."
+
+# -------------------------------
+# Detect platform / paths
+# -------------------------------
+$OnWindows = $PSVersionTable.Platform -eq 'Win32NT' -or $env:OS -eq 'Windows_NT'
+$OnLinux   = $PSVersionTable.Platform -eq 'Unix' -and $PSVersionTable.OS -like '*Linux*'
+$OnMac     = $PSVersionTable.Platform -eq 'Unix' -and $PSVersionTable.OS -like '*Darwin*'
+
+Write-Info ("Platform: " + ($(if($OnWindows){'Windows'}elseif($OnLinux){'Linux'}elseif($OnMac){'macOS'}else{'Unknown'})))
+Write-Ok   ("PowerShell Version: " + $PSVersionTable.PSVersion)
+
+if ($CustomDotfilesDir) {
+    $DotfilesDir = $CustomDotfilesDir
+} elseif ($OnWindows) {
+    $ProfileDir  = if ($PSVersionTable.PSVersion.Major -le 5) { "$env:USERPROFILE\Documents\WindowsPowerShell" } else { "$env:USERPROFILE\Documents\PowerShell" }
+    $DotfilesDir = "$env:USERPROFILE\Documents\dotfiles"
+} else {
+    $ProfileDir  = "$env:HOME/.config/powershell"
+    $DotfilesDir = "$env:HOME/Documents/dotfiles"
+}
+$ProfilePath = Join-Path $ProfileDir 'Microsoft.PowerShell_profile.ps1'
+$BackupDir   = Join-Path $env:USERPROFILE ("dotfiles-backup-{0}" -f (Get-Date -Format 'yyyyMMdd-HHmmss'))
+
+# Vendored module path inside repo
+$VendoredPSRL = Join-Path $DotfilesDir ("modules\PSReadLine\{0}" -f $PinnedPSReadLineVersion)
+
+Write-Info "Expected directory structure (synced with cloud):"
+Write-Host "  $DotfilesDir/"
+Write-Host "  ├── bootstrap.ps1"
+Write-Host "  ├── powershell/Microsoft.PowerShell_profile.ps1"
+Write-Host "  └── posh-themes/jandedobbeleer.omp.json"
+Write-Info "Profile will be copied to: $ProfilePath"
+
+# Verify required files
+$SourceProfile = Join-Path $DotfilesDir 'powershell\Microsoft.PowerShell_profile.ps1'
+$ThemePath     = Join-Path $DotfilesDir 'posh-themes\jandedobbeleer.omp.json'
+$BootstrapPath = Join-Path $DotfilesDir 'bootstrap.ps1'
+$missing = @()
+if (!(Test-Path $DotfilesDir))   { $missing += $DotfilesDir }
+if (!(Test-Path $SourceProfile)) { $missing += $SourceProfile }
+if (!(Test-Path $ThemePath))     { $missing += $ThemePath }
+if (!(Test-Path $BootstrapPath)) { $missing += $BootstrapPath }
+
+if ($missing.Count -gt 0) {
+    Write-Err "Missing required path(s):"
+    $missing | ForEach-Object { Write-Host "  - $_" -ForegroundColor Red }
+    exit 1
+} else {
+    Write-Ok "Directory structure verified successfully"
+}
+
+# Ensure profile dir
+if (!(Test-Path $ProfileDir)) {
+    New-Item -ItemType Directory -Path $ProfileDir -Force | Out-Null
+    Write-Ok "Created profile directory: $ProfileDir"
+}
+
+# Refresh PATH
+$env:Path = [Environment]::GetEnvironmentVariable('Path','User') + ';' + [Environment]::GetEnvironmentVariable('Path','Machine')
+
+# -------------------------------
+# Install core tools (Windows)
+# -------------------------------
+function Invoke-WingetInstall($id) {
+    if ($OnWindows -and (Get-Command winget -ErrorAction SilentlyContinue)) {
+        try {
+            winget install --id=$id --accept-source-agreements --accept-package-agreements --silent | Out-Null
+            Write-Ok "Installed/verified: $id"
+            $env:Path = [Environment]::GetEnvironmentVariable('Path','User') + ';' + [Environment]::GetEnvironmentVariable('Path','Machine')
+        } catch {
+            Write-Warn "winget install failed for $id -> $($_.Exception.Message)"
+        }
+    }
+}
+
+if ($OnWindows) {
+    if (-not (Get-Command git -ErrorAction SilentlyContinue))       { Invoke-WingetInstall 'Git.Git' }
+    if (-not (Get-Command oh-my-posh -ErrorAction SilentlyContinue)){ Invoke-WingetInstall 'JanDeDobbeleer.OhMyPosh' }
+    if (-not (Get-Command fastfetch -ErrorAction SilentlyContinue)) { Invoke-WingetInstall 'Fastfetch-cli.Fastfetch' }
+}
+
+# -------------------------------
+# Install non-pinned modules
+# -------------------------------
+foreach ($m in $RequiredModules) {
+    if (-not (Get-Module -ListAvailable -Name $m)) {
+        try {
+            Install-Module -Name $m -Scope CurrentUser -Force -ErrorAction Stop
+            Write-Ok "Installed module: $m"
+        } catch {
+            Write-Warn ("Could not install module {0}: {1}" -f $m, $_.Exception.Message)
+        }
+    } else {
+        Write-Ok "Module $m already installed"
+    }
+}
+
+# -------------------------------
+# PSReadLine: pinned & vendored
+# -------------------------------
+$UserModulesRoot = Join-Path $env:USERPROFILE 'Documents\PowerShell\Modules'
+$UserPSRLTarget  = Join-Path $UserModulesRoot ("PSReadLine\{0}" -f $PinnedPSReadLineVersion)
+
+function Import-PinnedPSReadLine {
+    param([string]$TargetPath)
+    try {
+        Import-Module $TargetPath -Force -ErrorAction Stop
+        Write-Ok "Imported PSReadLine $PinnedPSReadLineVersion from $TargetPath"
+        return $true
+    } catch {
+        Write-Warn ("Failed to import vendored PSReadLine {0}: {1}" -f $PinnedPSReadLineVersion, $_.Exception.Message)
+        return $false
+    }
+}
+
+# Try vendored -> copy to user modules if present
+if (Test-Path $VendoredPSRL) {
+    if (!(Test-Path $UserPSRLTarget)) {
+        New-Item -ItemType Directory -Path $UserPSRLTarget -Force | Out-Null
+        Copy-Item -Path (Join-Path $VendoredPSRL '*') -Destination $UserPSRLTarget -Recurse -Force
+        Write-Ok "Copied vendored PSReadLine $PinnedPSReadLineVersion into $UserPSRLTarget"
+    }
+    $null = Import-PinnedPSReadLine -TargetPath $UserPSRLTarget
+} else {
+    # No vendored copy; fall back to any installed version, but warn if not the pinned one
+    $psrl = Get-Module -ListAvailable PSReadLine | Sort-Object Version -Descending | Select-Object -First 1
+    if ($psrl) {
+        if ($psrl.Version.ToString() -ne $PinnedPSReadLineVersion) {
+            Write-Warn ("PSReadLine {0} found, not pinned {1}. Consider vendoring under {2}" -f $psrl.Version, $PinnedPSReadLineVersion, $VendoredPSRL)
+        }
+        try {
+            Import-Module PSReadLine -Force
+            Write-Ok "Imported PSReadLine $($psrl.Version)"
+        } catch {
+            Write-Warn ("Import-Module PSReadLine failed: {0}" -f $_.Exception.Message)
+        }
+    } else {
+        Write-Warn "PSReadLine not found and no vendored copy at $VendoredPSRL. You can vendor it with the helper script (see below)."
+    }
+}
+
+# -------------------------------
+# Copy profile (with backup)
+# -------------------------------
+try {
+    if (Test-Path $SourceProfile) {
+        if ((Test-Path $ProfilePath) -and -not $Force) {
+            Write-Warn "Profile exists at $ProfilePath. Use -Force to overwrite."
+        } else {
+            if (Test-Path $ProfilePath) {
+                New-Item -ItemType Directory -Path $BackupDir -Force | Out-Null
+                Copy-Item -Path $ProfilePath -Destination $BackupDir -Force
+                Write-Ok "Backed up existing profile to $BackupDir"
+            }
+            Copy-Item -Path $SourceProfile -Destination $ProfilePath -Force
+            Write-Ok "Copied profile to $ProfilePath"
+        }
+    } else {
+        Write-Err "Source profile not found at $SourceProfile"
+        exit 1
+    }
+} catch {
+    Write-Err ("Error copying profile: {0}" -f $_.Exception.Message)
+    exit 1
+}
+
+# -------------------------------
+# Source profile
+# -------------------------------
+if (Test-Path $ProfilePath) {
+    . $ProfilePath
+    Write-Ok "Profile sourced successfully"
+} else {
+    Write-Err "Profile not found at $ProfilePath after copy"
+    exit 1
+}
+
+# -------------------------------
+# GitHub SSH (Windows)
+# -------------------------------
+if ($OnWindows) {
+    $SshDir        = Join-Path $env:USERPROFILE '.ssh'
+    $SshConfigPath = Join-Path $SshDir 'config'
+    $KeyPath       = Join-Path $SshDir 'id_ed25519_github'
+    $OpenSshExe    = 'C:\Windows\System32\OpenSSH\ssh.exe'
+
+    if (!(Test-Path $SshDir)) { New-Item -ItemType Directory -Path $SshDir -Force | Out-Null; Write-Ok "Created: $SshDir" }
+
+    try {
+        $svc = Get-Service ssh-agent -ErrorAction Stop
+        if ($svc.StartType -ne 'Automatic') { Set-Service ssh-agent -StartupType Automatic }
+        if ($svc.Status -ne 'Running') { Start-Service ssh-agent }
+        Write-Ok "ssh-agent is running (StartupType=Automatic)"
+    } catch {
+        Write-Warn ("Could not configure ssh-agent service: {0}" -f $_.Exception.Message)
+    }
+
+    $configBlock = @"
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile $KeyPath
+  IdentitiesOnly yes
+  AddKeysToAgent yes
+  IdentityAgent \\\\.\\pipe\\openssh-ssh-agent
+"@
+
+    if (Test-Path $SshConfigPath) {
+        $cfg = Get-Content $SshConfigPath -Raw
+        if ($cfg -match "(?ms)^Host\s+github\.com\b.*?(?=^Host\s|\Z)") {
+            $newCfg = [Regex]::Replace($cfg,"(?ms)^Host\s+github\.com\b.*?(?=^Host\s|\Z)",$configBlock)
+            $newCfg | Out-File -FilePath $SshConfigPath -Encoding ascii -Force
+            Write-Ok "Updated github.com block in ~/.ssh/config"
+        } else {
+            Add-Content -Path $SshConfigPath -Value "`r`n$configBlock"
+            Write-Ok "Appended github.com block to ~/.ssh/config"
+        }
+    } else {
+        $configBlock | Out-File -FilePath $SshConfigPath -Encoding ascii -Force
+        Write-Ok "Created ~/.ssh/config"
+    }
+
+    try {
+        git config --global core.sshCommand $OpenSshExe | Out-Null
+        Write-Ok "Set git core.sshCommand -> $OpenSshExe"
+    } catch {
+        Write-Warn ("Could not set git core.sshCommand: {0}" -f $_.Exception.Message)
+    }
+
+    if (Test-Path $KeyPath) {
+        try {
+            $list = ssh-add -l 2>$null
+            $pub = Get-Content "$KeyPath.pub" -ErrorAction SilentlyContinue
+            if (-not $pub -or -not ($list -match [Regex]::Escape($pub))) {
+                ssh-add $KeyPath | Out-Null
+                Write-Ok "Added key to agent: $KeyPath"
+            } else {
+                Write-Ok "Key already loaded in agent: $KeyPath"
+            }
+        } catch {
+            Write-Warn ("Could not add key to agent: {0}" -f $_.Exception.Message)
+        }
+    } else {
+        Write-Warn "Note: $KeyPath not found. Generate with: ssh-keygen -t ed25519 -C '<email>' -f '$KeyPath'"
+    }
+}
+
+# -------------------------------
+# Auto Git push (optional)
+# -------------------------------
+if ($AutoPush) {
+    Write-Info "`n--- Auto Git Sync Starting ---"
+    try {
+        Push-Location $DotfilesDir
+        git add -A
+        $status = git status --porcelain
+        if ($status) {
+            $msg = "Auto update {0}" -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+            git commit -m $msg
+            git push
+        } else {
+            Write-Info "Nothing to commit"
+        }
+    } catch {
+        Write-Warn ("Auto-push failed: {0}" -f $_.Exception.Message)
+    } finally {
+        Pop-Location
+        Write-Info "--- Auto Git Sync Complete ---`n"
+    }
+}
+
+Write-Ok "Bootstrap complete."
+
+--- FILE: /c/Users/josep/Documents/dotfiles/bootstrap.sh ---
+#!/usr/bin/env bash
+# Final, robust bootstrap script using COPY instead of symlinks.
+
+set -e
+DOTFILES_DIR_PATH="$HOME/Documents/dotfiles"
+BASHRC_SOURCE_PATH="$DOTFILES_DIR_PATH/bashrc"
+BASHRC_TARGET_PATH="$HOME/.bashrc"
+BACKUP_DIR="$HOME/dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
+
+echo "Setting up Bash environment from $DOTFILES_DIR_PATH..."
+mkdir -p "$BACKUP_DIR"
+
+# Backup the old file if it exists
+if [ -f "$BASHRC_TARGET_PATH" ]; then
+    echo "Backing up existing $BASHRC_TARGET_PATH..."
+    mv "$BASHRC_TARGET_PATH" "$BACKUP_DIR/"
+fi
+
+# Copy the new bashrc file. This is more reliable than symlinks in Git Bash.
+echo "Copying $BASHRC_SOURCE_PATH -> $BASHRC_TARGET_PATH..."
+cp "$BASHRC_SOURCE_PATH" "$BASHRC_TARGET_PATH"
+
+echo "✅ Done. Please restart your shell."
+
+--- FILE: /c/Users/josep/Documents/dotfiles/cleanup-dotfiles.ps1 ---
+﻿# PowerShell script to clean up temporary/test files in dotfiles repository
+# Follows guidelines from .github/instructions/powershell-cleanup.instructions.md
+
+$DotfilesDir = "$env:USERPROFILE\Documents\dotfiles"
+$FilesToRemove = @(
+    "debug-nixos-wsl.sh",
+    "NIXOS-DEBUG-WSL.sh",
+    "archive/Microsoft.PowerShell_profile.complex.backup.ps1",
+    "test.txt"
+)
+
+Write-Host "🔍 Starting dotfiles repository cleanup..." -ForegroundColor Cyan
+Write-Host "📁 Directory: $DotfilesDir" -ForegroundColor Cyan
+
+# Calculate initial size
+$InitialSize = Get-ChildItem -Path $DotfilesDir -Recurse -File | Measure-Object -Property Length -Sum
+$InitialSizeMB = [math]::Round($InitialSize.Sum / 1MB, 2)
+
+Write-Host "📏 Initial repository size: $InitialSizeMB MB" -ForegroundColor Yellow
+
+# Track removed files and sizes
+$RemovedFiles = @()
+$TotalRemovedSize = 0
+
+# Remove files
+foreach ($File in $FilesToRemove) {
+    $FullPath = Join-Path $DotfilesDir $File
+    if (Test-Path $FullPath) {
+        try {
+            $FileSize = (Get-Item $FullPath).Length
+            Remove-Item -Path $FullPath -Force -ErrorAction Stop
+            $RemovedFiles += $File
+            $TotalRemovedSize += $FileSize
+            Write-Host "🗑️ Removed: $File" -ForegroundColor Green
+        } catch {
+            Write-Host "⚠️ Failed to remove $File`: $($_.Exception.Message)" -ForegroundColor Red
+        }
+    } else {
+        Write-Host "ℹ️ File not found: $File (skipping)" -ForegroundColor Yellow
+    }
+}
+
+# Calculate final size
+$FinalSize = Get-ChildItem -Path $DotfilesDir -Recurse -File | Measure-Object -Property Length -Sum
+$FinalSizeMB = [math]::Round($FinalSize.Sum / 1MB, 2)
+$SavedSizeMB = [math]::Round($TotalRemovedSize / 1MB, 2)
+
+# Report results
+Write-Host ""
+Write-Host "📋 Cleanup Summary:" -ForegroundColor Cyan
+if ($RemovedFiles.Count -gt 0) {
+    Write-Host "✅ Removed files:" -ForegroundColor Green
+    foreach ($File in $RemovedFiles) {
+        Write-Host "  - $File" -ForegroundColor Green
+    }
+    Write-Host "📏 Space saved: $SavedSizeMB MB" -ForegroundColor Green
+} else {
+    Write-Host "ℹ️ No files were removed" -ForegroundColor Yellow
+}
+Write-Host "📏 Final repository size: $FinalSizeMB MB" -ForegroundColor Yellow
+Write-Host "✨ Cleanup complete!" -ForegroundColor Green
+
+# Update README.md or SYNC-GUIDE.md with cleanup note
+$ReadmePath = Join-Path $DotfilesDir "README.md"
+if (Test-Path $ReadmePath) {
+    try {
+        $CleanupNote = "`n## Cleanup Log`n- $(Get-Date -Format 'yyyy-MM-dd'): Removed temporary/test files ($($RemovedFiles -join ', ')). Saved $SavedSizeMB MB."
+        Add-Content -Path $ReadmePath -Value $CleanupNote -ErrorAction Stop
+        Write-Host "📝 Updated README.md with cleanup log" -ForegroundColor Green
+    } catch {
+        Write-Host "⚠️ Failed to update README.md: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+--- FILE: /c/Users/josep/Documents/dotfiles/COPILOT-INTEGRATION-SUMMARY.md ---
+# VS Code Copilot Integration Summary
+
+## Overview
+
+This repository is fully integrated with VS Code Copilot's experimental prompt files feature, providing automated PowerShell environment cleanup and maintenance guidelines.
+
+## Implementation Details
+
+### 1. Custom Instructions (`.github/copilot-instructions.md`)
+
+- **Purpose**: General guidelines for the entire dotfiles repository
+- **Scope**: Applies to all Copilot chat requests in the workspace
+- **Content**: PowerShell best practices, file management, error handling, VS Code integration
+- **Auto-applies**: Yes, when `github.copilot.chat.codeGeneration.useInstructionFiles` is enabled
+
+### 2. Specific Instructions (`.github/instructions/powershell-cleanup.instructions.md`)
+
+- **Purpose**: Detailed PowerShell cleanup guidelines for AI assistants
+- **Scope**: Applies to PowerShell files (`**/*.ps1`)
+- **Content**: File patterns to clean, preservation rules, cleanup process
+- **Auto-applies**: When working with PowerShell files
+
+### 3. Prompt Files (`.github/prompts/cleanup-powershell.prompt.md`)
+
+- **Purpose**: Reusable cleanup automation prompt
+- **Scope**: Workspace-specific cleanup tasks
+- **Content**: Systematic 5-phase cleanup process
+- **Usage**: Run with `/cleanup-powershell` in VS Code Copilot chat
+
+## How to Use
+
+### Automatic Application
+
+Instructions are automatically included when:
+
+- Working with PowerShell files (`.ps1`)
+- Using Copilot chat in this workspace
+- The instruction files setting is enabled
+
+### Manual Execution
+
+Run the cleanup prompt:
+
+```bash
+/cleanup-powershell
+```
+
+### Required Settings
+
+Ensure these VS Code settings are enabled:
+
+```json
+{
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "chat.promptFiles": true
+}
+```
+
+## Files Created
+
+1. **`.github/copilot-instructions.md`** - General repository guidelines
+2. **`.github/instructions/powershell-cleanup.instructions.md`** - PowerShell-specific instructions
+3. **`.github/prompts/cleanup-powershell.prompt.md`** - Automated cleanup prompt
+
+## Benefits
+
+- **Consistent AI behavior** across different Copilot sessions
+- **Automated cleanup** following established best practices
+- **Safe file management** with appropriate preservation rules
+- **Documentation** of all AI-driven changes
+- **Repeatable processes** for PowerShell environment maintenance
+
+## Verification
+
+The integration has been tested and verified to:
+
+- ✅ Follow VS Code Copilot experimental prompt file specifications
+- ✅ Provide consistent cleanup behavior
+- ✅ Preserve important files while removing temporary ones
+- ✅ Calculate and report space savings
+- ✅ Document all changes made
+
+## Future Maintenance
+
+This Copilot integration will ensure consistent PowerShell environment cleanup and maintenance across all future AI-assisted sessions in this workspace.
+
+--- FILE: /c/Users/josep/Documents/dotfiles/flake.lock ---
+{
+  "nodes": {
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1754613544,
+        "narHash": "sha256-ueR1mGX4I4DWfDRRxxMphbKDNisDeMPMusN72VV1+cc=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "cc2fa2331aebf9661d22bb507d362b39852ac73f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1735563628,
+        "narHash": "sha256-OnSAY7XDSx7CtDoqNh8jwVwh4xNL/2HaJxGjryLWzX8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b134951a4c9f3c995fd7be05f3243f8ecd65d798",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-24.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "home-manager": "home-manager",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
+
+--- FILE: /c/Users/josep/Documents/dotfiles/flake.nix ---
+{
+  description = "Joseph's cross-platform dotfiles, managed by Nix Home Manager";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable"; # Use unstable for latest packages
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs = { self, nixpkgs, home-manager }: {
+    # This output can be imported by other flakes (like your nixos-config)
+    homeManagerModules.default = {
+      imports = [ ./home.nix ];
+    };
+
+    # This allows you to run `home-manager switch --flake .#joseph@hostname` on non-NixOS machines
+    homeConfigurations.joseph = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      extraSpecialArgs = { };
+      modules = [ ./home.nix ];
+    };
+  };
+}
+
+--- FILE: /c/Users/josep/Documents/dotfiles/home.nix ---
+# This is the single source of truth for Joseph's cross-platform shell environment.
+{ pkgs, ... }:
+{
+  # Set home-manager state version
+  home.stateVersion = "25.05";
+
+  # Install user-specific packages, cross-referenced with search.nixos.org
+  home.packages = with pkgs; [
+    oh-my-posh
+    fzf
+    zoxide
+  ];
+
+  # Configure Bash shell
+  programs.bash = {
+    enable = true;
+    profileExtra = ''
+      if [ -f "$HOME/.bashrc" ]; then
+          . "$HOME/.bashrc"
+      fi
+    '';
+    initExtra = ''
+      # Add user's local bin to PATH for locally installed tools.
+      if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+        export PATH="$HOME/.local/bin:$PATH"
+      fi
+
+      # Initialize zoxide (for `z` command).
+      eval "$(zoxide init bash)"
+
+      # Initialize Oh My Posh prompt.
+      eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/jandedobbeleer.omp.json)"
+    '';
+    shellAliases = {
+      ll = "ls -lah --color=auto";
+      la = "ls -A --color=auto";
+      gs = "git status";
+      gp = "git push";
+      gl = "git log --oneline -10";
+      gd = "git diff";
+      ".." = "cd ..";
+      reload = "exec bash";
+    };
+  };
+
+  # Configure Git
+  programs.git = {
+    enable = true;
+    userName = "Joseph";
+    userEmail = "emeraldocean123@users.noreply.github.com";
+    extraConfig.pull.rebase = true;
+  };
+
+  # Configure fzf
+  programs.fzf.enable = true;
+
+  # Link the Oh My Posh theme file
+  home.file.".config/oh-my-posh/jandedobbeleer.omp.json".source = ./posh-themes/jandedobbeleer.omp.json;
+}
+
+--- FILE: /c/Users/josep/Documents/dotfiles/modules/PSReadLine/2.4.1/.signature.p7s ---
+(Binary file, contents omitted)
+
+--- FILE: /c/Users/josep/Documents/dotfiles/modules/PSReadLine/2.4.1/Changes.txt ---
+### [2.4.1-beta1] - 2025-02-28
+
+#### Code Changes
+
+- Avoid querying for cursor position when it's not necessary (#4448)
+- Handle buffer changes made by an event handler (#4442)
+- Update `SelectCommandArgument` to properly handle POSIX style options for CLI commands (#4016)
+
+#### Build Changes
+
+- Update PSReadLine build to target `netstandard2.0` (#4584)
+- Update documentation about the building of PSReadLine (#4286) (Thanks @sangafabrice!)
+- Update `HelpInfoUri` for 7.5 (#4284)
+- Update the release pipeline to remove `AzFeed` from display name (#4204)
+- Update the OneBranch pipeline to keep it compliant and remove SBOM files from module (#4201)
+- Make sure the `CodeQL` result from release pipeline gets uploaded (#4082)
+- Add 'ob_restore_phase' for every task before the signing task to work around the signing issue (#4046)
+- Change the NuGet feed to use the governed PowerShell feed (#4044)
+- Update "Code of Conduct" and "Security Policy" (#4037)
+- Disable SBOM, signing, and codeQL for the publish job (#3986)
+- Update triage messages to use the latest stable version (#3985)
+- Fix the release stage and update the changelog for v2.3.5 servicing release (#3984)
+- Add the release stage to the pipeline and exclude test folders from Component Governance (#3982)
+- Change back to 'external_distribution' for nupkg signing (#3977)
+- Migrate PSReadLine release build pipeline to OneBranch (#3975)
+
+[2.4.1-beta1]: https://github.com/PowerShell/PSReadLine/compare/v2.4.0-beta0...v2.4.1-beta1
+
+### [2.4.0-beta0] - 2024-03-01
+
+- Fix the null-reference exception when running `Debug-Job` on a thread job (#3957)
+- Add needed permission to the workflow (#3944, #3945, #3946)
+- Fix copying text to system clipboard on Linux using xclip (#3937)
+- Use the correct directory separator for tab completion based on the platform we are working with (#3935)
+- Update the minimal PS version required to be 5.1 (#3936)
+- Little code style cleanup for the `GetCompletions()` method (#3898)
+- Stop trying to de-duplicate completion results (#3897)
+- Windows keyboard layout handling: get the current layout from the parent terminal process (#3786) (Thanks @ForNeVeR!)
+- Add "resolution no activity" label to the bot-close list (#3852)
+- Fix a few VI key handlers to close edit group properly (#3845)
+- Update the documentation issue template to point to the PowerShell-Doc repo (#3839, #3840, #3841)
+- Handle large history file properly by reading lines in the streaming way (#3810)
+- Update build script to always include the `ProjectUri` info (#3821)
+
+[2.4.0-beta0]: https://github.com/PowerShell/PSReadLine/compare/v2.3.4...v2.4.0-beta0
+
+### [2.3.6] - 2024-10-02
+
+This is a servicing release that excludes SBOM files from the module.
+
+- Update the OneBranch pipeline to keep it compliant and remove SBOM files from module (#4201)
+- Make sure the `CodeQL` result from release pipeline gets uploaded (#4082)
+- Add 'ob_restore_phase' for every task before the signing task to work around the signing issue (#4046)
+- Change the NuGet feed to use the governed PowerShell feed (#4044)
+- Disable SBOM, signing, and codeQL for the publish job (#3986)
+
+[2.3.6]: https://github.com/PowerShell/PSReadLine/compare/v2.3.5...v2.3.6
+
+### [2.3.5] - 2024-04-02
+
+This is a servicing release that excludes test components from SBOM generation.
+
+- Add the release stage to the pipeline and exclude test folders from Component Governance (#3982)
+- Change back to 'external_distribution' for nupkg signing (#3977)
+- Migrate PSReadLine release build pipeline to OneBranch (#3975)
+- Fix the null-reference exception when running `Debug-Job` on a thread job (#3957)
+- Update build script to always include the `ProjectUri` info (#3821)
+
+[2.3.5]: https://github.com/PowerShell/PSReadLine/compare/v2.3.4...v2.3.5
+
+### [2.3.4] - 2023-10-02
+
+- Choose the inline prediction color based on the environment (#3808)
+- Update the stable version of PSReadLine used in the auto triage messages (#3804)
+- Update `Compliance_Job` to add a new variable group for APIScan (#3803)
+
+[2.3.4]: https://github.com/PowerShell/PSReadLine/compare/v2.3.3...v2.3.4
+
+### [2.3.3] - 2023-09-18
+
+- Re-package the `2.3.2-beta2` version to `2.3.3` as an official stable release.
+
+[2.3.3]: https://github.com/PowerShell/PSReadLine/compare/v2.3.2-beta2...v2.3.3
+
+### [2.3.2-beta2] - 2023-08-17
+
+- Work around `InvalidOperationException` from Console API (#3755) (Thanks @jazzdelightsme!)
+- Add the `TerminateOrphanedConsoleApps` option on Windows to kill orphaned console-attached process that may mess up reading from Console input (#3764) (Thanks @jazzdelightsme!)
+- Fix bot to add `needs-triage` label to newly opened issue (#3772)
+- Update `actions/checkout` used in GitHub action to v3 (#3773)
+- Supports the text-object command `diw` in the VI edit mode (#2059) (Thanks @springcomp!)
+- Fix `NullReferenceException` when processing event subscribers (#3781)
+- Point to `F7History` in the comment of the `F7` key-binding sample (#3782)
+
+[2.3.2-beta2]: https://github.com/PowerShell/PSReadLine/compare/v2.3.1-beta1...v2.3.2-beta2
+
+### [2.3.1-beta1] - 2023-05-03
+
+- Append reset VT sequence before rendering the ineline prediction (#3669)
+- Support tooltip rendering in the prediction list view (#3667, #3671)
+- Fix the broken doc link about `PowerShellGet` (#3657) (Thanks @vimode!)
+- Add a sample for transforming Unicode code point to Unicode char by `Alt+x` (#3652)
+- Avoid running `AddToHistoryHandler` on command lines loaded from history file (#3643)
+- Force refreshing suggestion in the inline view when plugin is in use (#3644)
+- Improve the sensitive history scrubbing to allow retrieving token from `az`, `gcloud`, and `kubectl` (#3641)
+- Set the current location in `PredictionClient` when it's supported (#3639)
+- Improve the default sensitive history scrubbing to allow safe property access (#3630)
+- Make PSReadLine script hidden from debugger (#3629)
+
+[2.3.1-beta1]: https://github.com/PowerShell/PSReadLine/compare/v2.3.0-beta0...v2.3.1-beta1
+
+### [2.3.0-beta0] - 2023-03-07
+
+- Fix the menu completion to better handle the backspace key (#3574)
+- Improve the list view to be scrollable and auto-adjust the list view height (#3583)
+- Use 'Visual Studio 2022' as the image for `appveyor` CI (#3594)
+- Fix some typos in this repository (#3547) (Thanks @spaette!)
+- De-duplicate prediction results with the history results (#3543)
+- Updating Fabric bot (#3540, #3576)
+- Change default color for inline prediction to `dim` (#3493)
+- Make tab completion show results whose `ListItemText` are different by case only (#3456) (Thanks @dkaszews!)
+- Fix to use the default member color for members (#3450)
+- Update the samples in README.md (#3440, #3424)
+- Place 'ViDGChord' in the right group (#3422)
+- Fix the description of `CapitalizeWord` (#3384)
+- Add support for upcasing, downcasing, and capitalizing word (#3365) (Thanks @3N4N!)
+- No list view prediction when the first line was scrolled up off the buffer (#3372)
+- Fix wrong cursor position in menu completion (#3373)
+- Fix `ViModeIndicator = Cursor` for Windows Terminal (#3374)
+- Fix parameter dynamic help when the help content is specified in ParameterAttribute (#3370)
+- Handle multi-line description for parameter help content (#3358)
+- Update module version in bot messages (#3361)
+
+[2.3.0-beta0]: https://github.com/PowerShell/PSReadLine/compare/v2.2.6...v2.3.0-beta0
+
+### [2.2.6] - 2022-06-27
+
+- Enable Predictive Intellisense by default (#3351)
+
+[2.2.6]: https://github.com/PowerShell/PSReadLine/compare/v2.2.5...v2.2.6
+
+### [2.2.5] - 2022-05-03
+
+- Re-package the `2.2.4-beta1` version to `2.2.5` as an official servicing release.
+
+[2.2.5]: https://github.com/PowerShell/PSReadLine/compare/v2.2.4-beta1...v2.2.5
+
+### [2.2.4-beta1] - 2022-04-27
+
+- Sync ReadKeyProc thread with pipeline thread (#3294)
+- Update build to use net462 (#3285)
+
+[2.2.4-beta1]: https://github.com/PowerShell/PSReadLine/compare/v2.2.3...v2.2.4-beta1
+
+### [2.2.3] - 2022-04-20
+
+- Respect cancellation in `ReadOneOrMoreKeys()` (#3274, #3280)
+
+[2.2.3]: https://github.com/PowerShell/PSReadLine/compare/v2.2.2...v2.2.3
+
+### [2.2.2] - 2022-02-22
+
+- Update to use the 1.0.0 version of `Microsoft.PowerShell.Pager` (#3206)
+- No need to clear lines when it's not a menu completion rendering (#3199)
+
+[2.2.2]: https://github.com/PowerShell/PSReadLine/compare/v2.2.1-rc1...v2.2.2
+
+### [2.2.1-rc1] - 2022-01-28
+
+- Update build agent to use `PSMMS2019-Secure` per requirement (#3174, #3187)
+- Update the `HelpInfoURI` to point to the latest help content (#3171)
+- Update the version of PowerShell nuget packages to 7.2.0 (#3170)
+- Update `README.md` with updated links to content helping get set up (#3149, #3152) (Thanks @cgorshing!)
+- Make `Ctrl+r` and `Ctrl+s` in `Vi` edit mode work the same way as in `Emacs` edit mode (#3148) (Thanks @davetapley!)
+- Make `HistorySearchBackward` and `HistorySearchForward` able to navigate the list view (#3144)
+
+[2.2.1-rc1]: https://github.com/PowerShell/PSReadLine/compare/v2.2.0-beta5...v2.2.1-rc1
+
+### [2.2.0-beta5] - 2022-01-05
+
+- Improve `RecomputeInitialCoords` to be more robust and handle a couple special cases (#3074)
+- Add `BasicScrollingConsole` to support test cases for scrolling up scenarios (#3081)
+- Fix the regex matching in the issue-triage script (#3082, #3110, #3113)
+- Skip the AST analysis when command-line input has any parsing errors (#3075)
+- Trigger the GitHub action by issue-open event (#3041)
+- Fix the double quotes in the comment text for duplicate-issue handling (#3029, #3030)
+- Update GitHub action to handle the `TypeLoadException` issue (#3025)
+- Handle screen buffer scrolling correctly for inline dynamic help (#2951)
+- Fix 2 menu completion issues that happen when we need to scroll screen buffer (#2949)
+
+[2.2.0-beta5]: https://github.com/PowerShell/PSReadLine/compare/v2.2.0-beta4...v2.2.0-beta5
+
+### [2.2.0-beta4] - 2021-10-27
+
+- Generate `OnIdle` event only if the editing buffer is empty (#2934)
+- Add private contract delegate for PSES to handle idle (#1679)
+- Disable warning for the private contract field used by PSES (#2935)
+- Reset all ANSI attributes before changing color in rendering to avoid color leaking (#2925)
+- Make the default sensitive history scrubbing function a little smarter (#2921)
+- Generate ADO SBOM for PSReadLine (#2918)
+- Update the issue templates to use form templates (#2898, #2900, #2917)
+- Update the inline suggestion rendering to not exceed the max window buffer (#2892)
+- VI Mode: "Undo" now leaves the cursor under the position at the start of the deletion (#2045) (Thanks @springcomp!)
+- Update `CreateCharInfoBuffer` to support continuous 'NextLineToken' (#2880)
+- Fix `GotoBrace` to handle the case when the text buffer is empty (#2879)
+- Fix rendering when continuation prompt is an empty string (#2875)
+- Release mutex when facing `AbandonedMutexException` (#2867)
+- Migrate the release build to use the 1ES agent pool and also fix the API scan (#2859)
+- Pass the cancellation token along instead of using the default one (#2636)
+- Don't ignore `ConsoleKey.Packet` type as that is simply Unicode (#2632)
+
+[2.2.0-beta4]: https://github.com/PowerShell/PSReadLine/compare/v2.2.0-beta3...v2.2.0-beta4
+
+### [2.2.0-beta3] - 2021-06-01
+
+- Update the use of the prediction interface to adapt to the breaking changes introduced in PowerShell 7.2.0-preview.6 (#2524)
+- Fix a null-ref exception in `DynamicHelpImpl` (#2292)
+
+[2.2.0-beta3]: https://github.com/PowerShell/PSReadLine/compare/v2.2.0-beta2...v2.2.0-beta3
+
+### [2.2.0-beta2] - 2021-02-23
+
+- Update PSReadLine corresponding to the prediction interface updates (#2225)
+- Add white spaces to the emacs dispatch table (#2223)
+- Add the `SelectCommandArgument` bind-able function (#2222) (Thanks @ThePSAdmin for the idea!)
+- Move prediction functions to a new group (#2211)
+- Remove `LineIsMultiline` in favor of multi-line agnostic algorithms (#1125) (#2047) (Thanks @springcomp!)
+- Add the "Dynamic Help" feature to PSReadLine (#1777)
+- Prevent crash in `GotoFirstNonBlankOfLine` (#2050) (#2051) (Thanks @springcomp!)
+- Refactor the usage of `_clipboard` (#2022) (Thanks @springcomp!)
+- Make `d0` to delete to the start of the current logical line in a multiline buffer in VI mode (#2002) (Thanks @springcomp!)
+- Add github action to pre-triage new issues (#2117, #2118)
+- Highlight the install command in README.md (#2088) (Thanks @jiriurban21!)
+- Deleting backward to or until a character should preserve the character under the cursor (#2007) (Thanks @springcomp!)
+- Use `d^` to delete from the first non-blank character of a logical line (#2001) (Thanks @springcomp!)
+- Update nuget.config based on guidance (#2003)
+- Update the release build to use ESRP signing and unify the compliance job (#1983)
+- Add readonly modifier to some private fields (#1984)
+- Add argument selection handler to the sample profile (#1947) (Thanks @ThePSAdmin!)
+- Fix three issues with the menu completion (#1946)
+
+[2.2.0-beta2]: https://github.com/PowerShell/PSReadLine/compare/v2.2.0-beta1...v2.2.0-beta2
+
+### Version 2.2.0-beta1
+
+Changes:
+
+* Add the prediction `ListView` and also hook up with the `CommandPrediction` APIs introduced in PS 7.1 (#1909)
+* Update the release build to work with new module artifacts (#1930)
+
+### Version 2.1.0
+
+Changes:
+
+* Update ChangeLog and version for 2.1.0 GA release
+
+### Version 2.1.0-rc1
+
+Pre-release notes:
+
+Bug fixes:
+
+* Add a key binding example: `ForwardCharAndAcceptNextSuggestionWord` (#1601)
+* Update `HelpInfoURI` for the PSReadLine module (#1589)
+* Fix incremental history saving when the history queue is full (#1602)
+* Make PSReadline to not force the background color during render (#1626) (Thanks @DHowett)
+* Update broken link in `README.md` (#1631) (Thanks @escape0707)
+* Fix `UpHat` (^) in vi-mode to move the cursor while yanking (#1656) (Thanks @springcomp)
+* vi-mode: Make `dd` deletes the logical line instead of the entire buffer (#1658) (Thanks @springcomp)
+* Improve the bug reporting message (#1698)
+* vi-mode: Add `dG` to delete to the end of multiline buffer (#1692) (Thanks @springcomp)
+* Remove duplicated code (#1700) (Thanks @springcomp)
+* vi-mode: `dd` now handles single line or multiline buffers consistently (#1694) (Thanks @springcomp)
+* vi-mode: Make `D` and `d$` delete to the end of the current logical line (#1695) (Thanks @springcomp)
+* vi-mode - Make `dj` delete the current and next `n` logical lines (#1697) (Thanks @springcomp)
+* Add comment in `SamplePSReadLineProfile.ps1` (#1712) (Thanks @sethvs)
+* Update the release build to satisfy the compliance requirement (#1702, #1714, #1726, #1731)
+* vi-mode: Use `dk` to delete the previous `n` logical lines and the current logical line in a multi-line buffer (#1737) (Thanks @springcomp)
+* vi-mode: Add `dgg` to delete from the beginning of the buffer to the current logical line (#1752) (Thanks @springcomp)
+* Use const strings for some often used `ANSI` control sequences (#1809)
+* Correct the descriptions of `SelectBackwardsLine` and `SelectLine` (#1857)
+* Fix the inline prediction to not leak color (#1861)
+* Rename `PredictionColor` to `InlinePredictionColor` (#1860)
+* Fix a rendering issue regarding cleanup of previous logical lines (#1865)
+* Allow `MaximumHistoryCount` to be set from user's profile (#1869)
+
+### Version 2.1.0-beta2
+
+Pre-release notes:
+
+Bug fixes:
+
+* Fix the environment data script and print buffer info in case of exception (#1482)
+* Add the parameter `-PredictionSource` to `Set-PSReadLineOption`, with the options `None` and `History` (#1496)
+* Make the predictive suggestion feature disabled by default (`PredictionSource` set to `None`). It can be enabled by `Set-PSReadLineOption -PredictionSource History` (#1496)
+* Make the functions `AcceptSuggestion` and `AcceptNextSuggestionWord` bindable (#1496)
+* Fix the `ArgumentOutOfRangeException` caused by trimming the command line before saving to history (#1496)
+* Refactor `SelfInsert` to avoid duplicate logic (#1510)
+* Relax the sensitive words we filter by changing `key` to `apikey` to reduce false positives (#1517)
+* Make edit group more stable in VI mode (#1526)
+* Make `ViForwardChar` able to accept suggestions (#1528)
+* Update build as we move help content to the `PowerShell-Docs` repository (#1537)
+* Reset all VT attributes for `PromptText` if it contains VT sequences (#1544)
+* Expose `ViBackwardChar` and `ViForwardChar` as bindable functions (#1547)
+
+### Version 2.1.0-beta1
+
+Pre-release notes:
+
+* Experimental support for fish-like suggestions in PSReadLine.
+
+### Version 2.0.4
+
+Bug fixes:
+
+* Revert the update to the module `HelpInfoURI`
+* Fix the env-data script and write buffer info in case of exception (#1482)
+* Improve the bug reporting message (#1698)
+* Update build to use .NET 3.1 for compliance (#1702)
+
+### Version 2.0.3
+
+Bug fixes:
+
+* Update `HelpInfoURI` for the PSReadLine module (#1589)
+* Make PSReadline to not force the background color during render (#1626) (Thanks @DHowett)
+
+### Version 2.0.2
+
+Bug fixes:
+
+* Add the template parameter to the bug report link (#1441) (Thanks @anthonyvdotbe)
+* Update the release build to create the NuGet package for publish (#1480)
+* Run script in local scope to make PSReadLine works in PSES in `ConstrainedLanguageMode` (#1527)
+
+### Version 2.0.1
+
+Bug fixes:
+
+* Correct the default foreground and background colors so the appropriate default value is set for `SelectionColor` (#1435)
+* Add the `-Chord` parameter to `Get-PSReadLineKeyHandler` to allow searching for specific key bindings (#1298) (Thanks @theaquamarine)
+* Update docs to reflect the new `-Chord` parameter to `Get-PSReadLineKeyHandler` (#1438)
+
+### Version 2.0.0
+
+Bug fixes:
+
+* Name the `ReadKey` thread for debug purpose (#1313)
+* Compliance: Update the .NET Core version and PowerShell SDK package (#1320)
+* Build: Enable F5 debugging of PSReadLine in Visual Studio (#1319) (Thanks @theaquamarine)
+* Build: Simply the way to get semantic version information in build (#1324)
+
+### Version 2.0.0-rc2
+
+Pre-release notes:
+
+Bug fixes:
+
+* Add `ProjectUri` in module manifest (#1245)
+* Fix docs to note the `-PromptText` parameter of `Set-PSReadLineOption` is now of the `String[]` type (#1244) (Thanks @heaths)
+* Update key bindings in sample and docs now that the `Shift` key is inferred (#1248)
+* Update `HelpInfoURI` of the `PSReadLine` module to point to latest help content (#1251)
+* Fix `RepeatLastCharSearch` and `RepeatLastCharSearchBackwards` to not flip their functionalities (#1253) (Thanks @mikebattista)
+* Fix the exception when searching history with `ctrl+r` or `ctrl+s` (#1256)
+* Preserve and clear the saved current line properly to make the history operations work as expected (#1259)
+* Update release build with compliance tasks (#1260)
+* Update README.md to put `PSReadLine` and `PowerShellGet` in backtick quotes (#1280)
+* Fix a few VI edit mode issues (#1262)
+* Fix and enhance `SmartInsertQuote` to work better with closing braces, keywords and variables (#1288, #1289) (Thanks @theaquamarine)
+* Allow `InsertPairedBraces` to wrap selected text (#1293) (Thanks @theaquamarine)
+
+### Version 2.0.0-rc1
+
+Pre-release notes:
+
+Bug fixes:
+
+* Fix an assertion in debug build that crashes PSReadLine (#1199) (Thanks @springcomp)
+* Fix an `IndexOutOfRangeException` in VI mode (#1200) (Thanks @springcomp)
+* Improve handling of color in prompts (#1180) (Thanks @lzybkr)
+* Fix an 'ArgumentOutOfRangeException' when error prompt contains CJK (#1206)
+* Add instructions for updating `PowerShellGet` for Windows PowerShell users (#1222) (Thanks @espoelstra)
+* Correct cursor positioning (#1221) (Thanks @msftrncs)
+* Utilize LengthInBufferCells when creating Completions Menu (#1214) (Thanks @msftrncs)
+* Ensure the desired column number is used while moving up or down in VI mode (#1122) (Thanks @springcomp)
+* Make the continuation prompt's color sequence always explicitly specified (#1238)
+
+### Version 2.0.0-beta6
+
+Pre-release notes:
+
+Bug fixes:
+
+* Fix `GenerateRender` to not throw `IndexOutOfRangeException` and `NullReferenceException` (#1049)
+* Filter sensitive history items and avoid writing them to the history file (#1058, #1061, #1068)
+* Clear the previous menu rendering correctly (#1073)
+* Fix correct way to get substring based on buffercells when encountering `CJK` chars (#1100)
+* Correct cursor jumping from line 2 to line 1 due to line 1 being empty (#1108) (Thanks @msftrncs)
+* In VI mode, moving left or right should stick cursor on logical line (#1120) (Thanks @springcomp)
+* Fix for a `NullReferenceException` thrown when `PSES` calls `ForcePSEventHandling` (#1097)
+* Return error if color property or value is invalid with `Set-PSReadLineOption -Colors` (#1124)
+* Handle cursor being moved off the end of buffer in `MoveCursor` (#1146) (Thanks @msftrncs)
+* Supporting line-wise yanks, including paste and undo (#811) (Thanks @springcomp)
+* `MoveCursor` should not call `SetCursorPosition` when there is a pending rendering (#1141) (Thanks @msftrncs)
+* Fix `y$` to yank to the end of the logical line instead of to the end of the whole buffer (#1168) (Thanks @springcomp)
+* Make `y0` yank up to the start of the logical line in `VI` mode (#1167) (Thanks @springcomp)
+* Fix `NullReferenceException` in `OnBreak` (#1179) (Thanks @lzybkr)
+* Set cursor via the public API `SetCursorPosition` in `AcceptLineImpl` for better buffer check (#1182) (Thanks @msftrncs)
+
+### Version 2.0.0-beta5
+
+Pre-release notes:
+
+Bug fixes:
+
+* Handle the dead key on Windows properly (#933, #945)
+* Fix duplicate menu at end of buffer (#937) (Thanks @parkovski)
+* Get Buffer Info as part of the Environment data in bug reporting (#942)
+* Add API to detect if the screen reader is active (#947)
+* Fix `ArgumentOutOfRangeException` thrown when changing color of the error prompt (#967)
+* Fix the 'ArgumentOutOfRangeException' caused by top of the text being scrolled up-off the buffer (#979)
+* Add the missing single curly quote and double curly quote to `IsSingleQuote` and `IsDoubleQuote` checks (#985) (Thanks @msftrncs)
+* Fix the color of operator token in the `ArgumentMode` in syntax highlighting (#1003) (Thanks @msftrncs)
+* Prioritize highlight of command names, prevent bleed from aligned nested tokens in syntax highlighting (#989) (Thanks @msftrncs)
+* Prevent 'ArgumentOutOfRangeException' when showing the tab completion menu (#984) (Thanks @msftrncs)
+* Make `PageUp/PageDown` and `CtrlPageUp/CtrlPageDown` windows only (#1032)
+* Fix `UpArrow` when the cursor is at the end of a wrapped line in a multiple-line text (#1028)
+
+### Version 2.0.0-beta4
+
+Pre-release notes:
+
+Bug fixes:
+
+* Add Shift-Tab Windows ANSI escape (#695) (Thanks @parkovski)
+* Add script block vi mode indicator option (#695) (Thanks @parkovski)
+* Fix initialization for non-US keyboards (#768)
+* Fix unintentional font change in Windows console (#771)
+* Fix tooltips and menu at bottom of buffer (#783)
+* Respect the change to `[console]::BackgroundColor` by saving/restoring the initial foreground/background colors (#785)
+* Remove uses of CSI # S / ScrollConsoleScreenBuffer (#790)
+* Support vi mode `G` and `gg` movements in multi-line buffers (#793) (Thanks @springcomp!)
+* Fix rendering issue when menu complete shifts due to length of completion (#802)
+* Make Get-PSReadLineOption show AnsiEscapeTimeout (#800) (Thanks @jazzdelightsme!)
+* Fix the crash in `ViAppendLine` when cursor is at the end of the input (#797) (Thanks @springcomp!)
+* Fix cursor position during menu complete (#809)
+* Supports `_` and `$` to move to the beginning and end of the logical line in vi mode (#812) (Thanks @springcomp!)
+* Add `xtermjs` keybindings (#878)
+* Fix the regression to make long lines work properly at the end of screen buffer (#895)
+* Fix 'Shift+Backspace/Escape' to work the same as 'Backspace/Escape' on Windows (#898)
+* Make sure to generate the 'OnIdle' event when there are other subscribers (#899)
+
+### Version 2.0.0-beta3
+
+Pre-release notes:
+
+Bug fixes:
+
+* Fix exception after tab completion with a small buffer (#704) (Thanks @jianyunt)
+* Fix cursor placement after tab completion with progress (#708) (Thanks @jianyunt)
+* Ensure space is always inserted (#719) (Thanks @powercode)
+* Add support for VSCode/Atom (#626) (Thanks @SeeminglyScience)
+
+### Version 2.0.0-beta2
+
+Pre-release notes:
+
+Bug fixes:
+
+* Fix issue with keyboard layout changes (#667) (Thanks @powercode)
+* Fix cursor placement after window resize (#682) (Thanks @jianyunt)
+* Fix rendering of long lines on non-Windows (#686) (Thanks @jianyunt)
+* Fix Ctrl+h/Backspace on non-Windows (#619) (Thanks @daxian-dbw)
+* Fix some custom key bindings on Windows (#580) (Thanks @daxian-dbw)
+* Fixed CompleteMenu in vi insert mode (#651) (Thanks @srdubya)
+* Fix ExtraPromptLineCount for ClearScreen (#634) (Thanks @daxian-dbw)
+* Support color escape sequences in PromptText (#653) (Thanks @powercode)
+* Support Ctrl+u in vi insert mode (#628) (Thanks @srdubya)
+* Fix keys needing AltGr (#617)
+* Fix vi-mode cursor placement issues (#623) (Thanks @srdubya)
+* Ignore exceptions when setting OutputEncoding
+* Fix hang on closing on pre-Win10 (#609)
+* Enable Ctrl+c on non-Windows (#610)
+* Improve VT emulation for pre-Win10 (#605)
+
+### Version 2.0.0-beta1
+
+Pre-release notes:
+
+There are known issues:
+
+* Some custom key bindings are broken (#580)
+
+Breaking changes:
+* Requires PowerShell V5 or later and .Net 4.6.1
+* Set-PSReadLineOption options have changed
+  - To specify colors, use the new `-Color` parameter and pass a Hashtable
+  - All other color options have been removed include `-ResetTokenColors`
+  - To specify background colors, you must now use a VT escape sequence.
+* Changing the end of the prompt to red may not work automatically anymore if
+  your prompt is non-trivial. To fix, use `Set-PSReadLineOption -PromptText "> "`.
+* Consistently use `PSReadLine` instead of `PSReadline` everywhere, APIs, cmdlets, files, etc.
+* Building requires VS2017
+
+New features:
+* Interactive filtering during menu complete (#515) (Thanks @MVKozlov!)
+* Redirected input now works (#564) (Thanks @parkovski!)
+* Tooltips always on in MenuComplete (only displayed
+  if they give more information than the completion.)
+* Get-PSReadLineKeyHandler output is grouped by category. (#114)
+* Support for VT escape sequences to specify colors.
+* Shift+Insert bound to Paste in Windows mode (#484)
+* Ctrl+t bound to SwapCharacters in Emacs mode (#538) (Thanks andrewcromwell!)
+* Ctrl+x,Ctrl+e bound to ViEditVisually in Emacs mode (#478)
+* HistoryNoDuplicates is now on by default (#208)
+
+Bug fixes:
+* DeleteChar no longer deletes any text left of the cursor in Windows/Emacs
+  and matches vim behavior of working like <x> in command mode.
+* Fix InvokePrompt when the prompt is > 1 line.
+* Fix YankToPercent off by 1 error.
+* Fix error reported when running in container.
+* Catch and ignore exceptions in InvokePrompt (#583)
+* Get new completions on 2nd tab if 1st had 1 result (#238)
+* Tab replaced with 4 spaces during paste (#144)
+* Fix rendering after buffer resize (#418)
+* Invoke external editor w/o AcceptLine (#339)
+* Fix exception with UpArrow after a command line edit in vi-mode (#573) (Thanks @srdubya!)
+* Treat DingDuration=0 as BellStyle.None (#364)
+* Color long name parameters like --force as a parameter (#398)
+* Allow CaptureScreen to be used w/o a key binding (#419)
+* Ignore duplicates during tab completion (#413)
+* Fix exception with negative count in Delete (#502)
+* Use correct help file name (#507)
+* Fix exception in ShowKeyBinding w/ custom handler (#505)
+* Normalize filename for saving history (#512)
+* Treat end of buffer as whitespace for vi words (#536)
+* Fix exception with invalid CompletionResult (#534)
+* Fix exception with negative count in Kill* (#540) (Thanks andrewcromwell!)
+* Fixes to SwapCharacters (#538) (Thanks andrewcromwell!)
+* Fix cursor placement with CJK characters (#542)
+* Fix key bindings with certain Windows keyboard layouts (#168 #556)
+* Remove Ding from Backspace on an empty line (#422)
+* Fix occasional hang reading history file (#524)
+* HistorySearchCursorMovesToEnd previously only worked in incremental search.
+  It is now honored in the non-incremental search (HistorySearch)
+  and also in Vi Command mode for non-search history recall. (#438 #530) (Thanks @srdubya!)
+
+
+### Version 1.2
+
+New features:
+* Vi editing mode
+
+New functions:
+* InsertLineAbove
+    - A new empty line is created above the current line regardless of where the cursor
+      is on the current line.  The cursor moves to the beginning of the new line.
+* InsertLineBelow
+    - A new empty line is created below the current line regardless of where the cursor
+      is on the current line.  The cursor moves to the beginning of the new line.
+
+New key bindings:
+* Ctrl+Enter bound to InsertLineAbove in Windows mode
+* Ctrl+Shift+Enter bound to InsertLineBelow in Windows mode
+
+Bug fixes:
+* Home the first line of multi-line input fixed
+* CaptureScreen captures colors colors correctly instead of guessing
+* CaptureScreen scrolls the screen to ensure the selected line is visible
+* CaptureScreen allows j/k for up/down (for the vi fans)
+* Fixed uncommon syntax coloring bug with bare words that start with a variable
+* Added sample handler for F7 emulation
+* Fixed sample handler for Set-StrictMode error
+* Improved error message when errors occur in custom handlers
+
+### Version 1.1 (shipped w/ Windows 10)
+
+Breaking change:
+* Namespace PSConsoleUtilities has been renamed to Microsoft.PowerShell
+* Default history file location changed to match Windows 10
+
+### Version 1.0.0.13
+
+New features:
+* Enter now does some extra validation before accepting the input.  If there are any parse
+  errors or a command is not found, an error message is displayed, but you can continue editing,
+  the erroneous line will not be added to history, and the error message will be cleared after
+  you make an edit.
+  You can press Enter a second time to force accepting the line if you choose.
+
+  If you don't like the new behavior for Enter, you can revert to the old behavior with:
+      Set-PSReadLineKeyHandler -Key Enter -Function AcceptLine
+
+Bug fixes:
+* Occasional exception with AcceptAndGetNext (Ctrl+O) followed by something other than Enter
+* Event handlers that register for the engine event PowerShell.OnIdle should work now.
+* ClearScreen now scrolls the screen to preserve as much output as possible
+* Fix exception on error input during rendering after certain keywords like process, begin, or end.
+* Fix exception after undo from menu completion
+* Support CancelLine (Ctrl+C) and Abort (Ctrl+G in emacs) to cancel DigitArgument
+* History recall now ignores command lines from other currently running sessions, but you can
+  still find command lines from those sessions when searching history.
+* Color any non-whitespace prompt character when there is an error, not just non-characters
+* ScrollDisplayToCursor works a little better now.
+
+New functions:
+* ValidateAndAcceptLine
+    Validate the command line (by making sure there are no parse errors, commands all exist,
+    and possibly other sorts of validation), display an error if any errors, but don't add
+    the command to history and clear the error after an edit.
+* DeleteCharOrExit
+    - emulate Ctrl+D in bash properly by exiting the process if the command line is empty
+* ScrollDisplayUpLine, ScrollDisplayDownLine
+    Scroll the screen up or down by a line instead of by the screen
+
+New key bindings:
+* Ctrl+D bound to DeleteCharOrExit in Emacs mode
+* Ctrl+N/Ctrl+P bound to NextHistory/PreviousHistory in Emacs mode
+* Ctrl+PageUp bound to ScrollDisplayUpLine
+* Ctrl+PageDown bound to ScrollDisplayDownLine
+* Alt+F7 bound to ClearHistory in Windows mode
+
+New options:
+* Set-PSReadLineOption
+      -ErrorForegroundColor
+      -ErrorBackgroundColor
+          Colors used when ValidateAndAcceptLine reports an error
+
+      -CommandValidationHandler
+          A delegate that is called from ValidateAndAcceptLine that can perform custom validation
+          and also fix the command line, e.g. to correct common typos.
+
+New cmdlet:
+* Remove-PSReadLineKeyHandler
+    This will remove a key binding for previously bound keys.
+
+Breaking change:
+* Demo mode removed
+    - Trying to bind functions EnableDemoMode or DisableDemoMode will result in an error.
+
+### Version 1.0.0.12
+
+New features:
+* Multi-line editing is now practical.  Home/End go to the start/end of the current line or
+  start/end of the input in a reasonable way.  Up/Down arrows will move across lines if the
+  input has multiple lines and you are not in the middle of recalling history.
+
+Bug fixes:
+* Color the prompt character if there is an error for any non-alphanumeric character
+* Fix an issue related to undo (which was commonly hit via Escape) and using history search
+* Fix a bug where PowerShell events are not written to the console until PSReadLine returns
+* Fixed so PowerTab now works with PSReadLine
+* Highlight from history search is cleared before accepting a line now.
+* Fixed MenuComplete so it clears the menu (which only happened on some systems)
+
+New functions:
+* NextLine
+* PreviousLine
+    - These functions are added for completeness, neither is particularly useful as the usual
+      bindings for UpArrow/DownArrow are smart enough to recall history or change lines
+      depending on the context.
+
+New key bindings:
+* F8/Shift+F8 bound to HistorySearchBackward/HistorySearchForward in Windows mode
+
+### Version 1.0.0.11
+
+Bug fixes:
+* Fixed MenuComplete to actually work
+
+### Version 1.0.0.10
+
+New features:
+* Added binding Ctrl+SpaceBar to MenuComplete in Windows and Emacs modes
+  - If you want to old behavior of Ctrl+Spacebar, bind it to PossibleCompletions
+* Added binding Alt+. (YankLastArg) to Windows mode
+* Added diagnostics when an exception occurs to help reporting bugs
+
+Bug fixes:
+* SaveHistoryPath option fixed
+* Fix ShowKeyBindings to not write blank lines
+* Fixed bug with undo
+
+### Version 1.0.0.9
+
+New features:
+* MenuComplete - like an interactive show completion
+* Automatically save history
+    - at process exit
+    - incrementally and shared across sessions
+    - don't save
+  See parameters HistorySaveStyle and HistorySavePath to Set-PSReadLineOption
+* Added sample custom binding for quickly changing directories in SamplePSReadLineProfile.ps1
+
+Bug fixes:
+* Items loaded from history work with RevertLine
+* Recalling current line after up arrow works again
+
+### Version 1.0.0.8
+
+New features:
+* SamplePSReadLineProfile.ps1 added with examples of custom key bindings
+* Word movement takes DigitArgument
+* HistoryNoDuplicates now works a little differently
+    - Duplicates are saved (it was a dubious memory optimization anyway)
+    - Recall will recall the most recently executed item instead of the first
+* When at the last word, NextWord/ForwardWord now move to the end of line instead
+  of the last character of the word.
+* HistorySearchBackward/HistorySearchForward changes behavior slightly:
+    - use emphasis like InteractiveHistorySearch
+    - cursor always moves to end like PreviousHistory/NextHistory
+* New api GetSelectionState to get the current selection (if any).
+* New functions:
+    - SelectBackwardsLine
+    - SelectLine
+    - SelectAll
+    - CopyOrCancelLine
+* New key bindings in Windows mode:
+    - Alt+0 through Alt+9 and Alt+-: DigitArgument
+    - Ctrl+R/Ctrl+S for interactive history search
+
+Bug fixes:
+* Backspace after a failed interactive history search (Ctrl+R) caused searching
+  to fail if you typed anything other than backspace.
+
+### Version 1.0.0.7
+
+New features:
+* CaptureScreen - copies selected portion of screen to clipboard in text and rtf
+* InvokePrompt - re-evaluate the prompt while preserving the current input
+* New functions to scroll the screen w/o using the mouse:
+    - ScrollScreenUp
+    - ScrollScreenDown
+    - ScrollScreenTop
+    - ScrollScreenToCursor
+* Many small bug fixes
+
+### Version 1.0.0.6
+
+New features:
+* CharacterSearch/CharacterSearchBackward
+* AcceptAndGetNext (Ctrl+O in bash)
+* Get-PSReadLineKeyHandler now returns unbound functions
+* Get-PSReadLineKeyHandler has 2 new parameters: -Bound and -Unbound
+* Set-PSReadLineKeyHandler parameter -LongDescription is now -Description
+  (not breaking because an alias was left)
+* WhatIsKey - display binding for a key
+* ShowKeyBindings - show all bound keys
+* Keyboard selection of text for cut/copy/delete.  New functions:
+  - Cut
+  - Copy
+  - KillRegion
+  - SelectBackwardChar
+  - SelectForwardChar
+  - SelectBackwardWord
+  - SelectForwardWord
+  - SelectNextWord
+  - SelectShellForwardWord
+  - SelectShellBackwardWord
+
+Breaking change:
+* The properties in the output of Get-PSReadLineKeyHandler have changed.
+  This is unlikely to break anyone though.
+
+### Version 1.0.0.5
+
+New features:
+* Delimiter support in *Word functions
+* DigitArgument (Alt-0,Alt-1,Alt-2,...,Alt-9,Alt--) to pass numeric arguments
+* YankLastArg/YankNthArg to extract arguments from previous command lines
+* History search is now case insensitive with an option to make it case sensitive
+
+Bugs fixed:
+* Shift+Backspace works like Backspace
+* Ctrl+R with long search lines no longer causes big problems
+
+Behavior change:
+* Word functions now use delimiters.  The previous behavior is available
+  via a Shell*Word function, e.g. instead of KillWord, use ShellKillWord.
+
+### Version 1.0.0.4
+
+New features:
+* Interactive history search (Ctrl+R)
+* Brace matching function added (GotoBrace)
+* Clear screen (Ctrl+L)
+
+Bugs fixed:
+* When showing possible completions, truncate at newline
+* Prompt before showing a large number of completions
+* Undo after paste works now
+* Long pause after clicking on X to close powershell is now fixed
+
+### Version 1.0.0.3
+
+Bugs fixed:
+* Removed CLR 4.5 dependency
+* Fix bug where console paste didn't display everything in some cases
+
+### Version 1.0.0.2
+
+New features:
+* Add a "demo mode" that shows keys pressed
+* Add ETW event source for demo mode, key logger, macro recorder etc.
+* Undo/redo
+* Get-PSReadLineOption cmdlet
+* Make specifying key handlers for built-ins simpler
+* Current un-entered line is saved and recalled when cycling through history
+* Support syntax coloring of member names
+
+Bugs fixed:
+* Speed up pasting from the console
+* Fix coloring of some operators
+* Fix coloring in some command arguments
+* Ctrl-C is handled a little better
+
+Breaking changes:
+* CLR 4.5 is now required.
+* SetBufferState is gone because it doesn't support Undo/Redo
+
+### Version 1.0.0.1
+
+New features:
+* History imported when module is loaded
+* Ctrl+End/Ctrl+Home bindings emulate cmd
+* Arbitrary two key chords
+* Key handlers passed the invoking key and an optional argument
+* Made Ding public for custom handlers
+
+Bugs fixed:
+* Alternate keyboards now supported
+* Ctrl-C now properly emulates cmd
+
+Breaking changes:
+* MinimumHistoryCommandLength parameter removed from Set-PSReadLineOption
+    - Can use this instead:
+        Set-PSReadLineOption -AddToHistoryHandler { $args[0].Length -gt 3 }
+
+### Version 1.0.0.0
+
+Initial release
+
+
+--- FILE: /c/Users/josep/Documents/dotfiles/modules/PSReadLine/2.4.1/License.txt ---
+Copyright (c) 2013, Jason Shirk
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met: 
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer. 
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution. 
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+--- FILE: /c/Users/josep/Documents/dotfiles/modules/PSReadLine/2.4.1/Microsoft.PowerShell.Pager.dll ---
+(Binary file, contents omitted)
+
+--- FILE: /c/Users/josep/Documents/dotfiles/modules/PSReadLine/2.4.1/Microsoft.PowerShell.PSReadLine.dll ---
+(Binary file, contents omitted)
+
+--- FILE: /c/Users/josep/Documents/dotfiles/modules/PSReadLine/2.4.1/PSReadLine.format.ps1xml ---
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>PSReadLine-KeyBindings</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.KeyHandler</TypeName>
+      </ViewSelectedBy>
+      <GroupBy>
+        <PropertyName>Group</PropertyName>
+        <CustomControl>
+          <CustomEntries>
+            <CustomEntry>
+              <CustomItem>
+                <ExpressionBinding>
+                  <ScriptBlock>
+$d = [Microsoft.PowerShell.KeyHandler]::GetGroupingDescription($_.Group)
+"{0}`n{1}" -f $d,('='*$d.Length)
+</ScriptBlock>
+                </ExpressionBinding>
+              </CustomItem>
+            </CustomEntry>
+          </CustomEntries>
+        </CustomControl>
+      </GroupBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Key</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Function</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Description</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <Wrap/>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Key</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Function</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                <PropertyName>Description</PropertyName>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+    <View>
+      <Name>PSReadLine-HistoryItem</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.PSConsoleReadLine+HistoryItem</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>CommandLine</PropertyName>
+              </ListItem>
+              <ListItem>
+                <ItemSelectionCondition><ScriptBlock>$_.StartTime.Ticks -ne 0</ScriptBlock></ItemSelectionCondition>
+                <Label>StartTime</Label>
+                <ScriptBlock>$_.StartTime.ToLocalTime()</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <ItemSelectionCondition><ScriptBlock>$_.ApproximateElapsedTime.Ticks -ne 0</ScriptBlock></ItemSelectionCondition>
+                <PropertyName>ApproximateElapsedTime</PropertyName>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+    <View>
+      <Name>PSReadLine-Options</Name>
+      <ViewSelectedBy>
+        <TypeName>Microsoft.PowerShell.PSConsoleReadLineOptions</TypeName>
+      </ViewSelectedBy>
+      <ListControl>
+        <ListEntries>
+          <ListEntry>
+            <ListItems>
+              <ListItem>
+                <PropertyName>EditMode</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>AddToHistoryHandler</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>HistoryNoDuplicates</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>HistorySavePath</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>HistorySaveStyle</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>HistorySearchCaseSensitive</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>HistorySearchCursorMovesToEnd</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>MaximumHistoryCount</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>ContinuationPrompt</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>ExtraPromptLineCount</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>PromptText</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>BellStyle</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>DingDuration</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>DingTone</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>CommandsToValidateScriptBlockArguments</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>CommandValidationHandler</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>CompletionQueryItems</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>MaximumKillRingCount</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>ShowToolTips</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>ViModeIndicator</PropertyName>
+              </ListItem>
+              <ListItem>
+                  <Label>ViModeChangeHandler</Label>
+                  <ItemSelectionCondition><ScriptBlock>$null -ne $_.ViModeChangeHandler</ScriptBlock></ItemSelectionCondition>
+                  <PropertyName>ViModeChangeHandler</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>WordDelimiters</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>AnsiEscapeTimeout</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>PredictionSource</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>PredictionViewStyle</PropertyName>
+              </ListItem>
+              <ListItem>
+                <PropertyName>TerminateOrphanedConsoleApps</PropertyName>
+              </ListItem>
+              <ListItem>
+                <Label>CommandColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.CommandColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>CommentColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.CommentColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ContinuationPromptColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.ContinuationPromptColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>DefaultTokenColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.DefaultTokenColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>EmphasisColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.EmphasisColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ErrorColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.ErrorColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>InlinePredictionColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.InlinePredictionColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>KeywordColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.KeywordColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ListPredictionColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.ListPredictionColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ListPredictionSelectedColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.ListPredictionSelectedColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ListPredictionTooltipColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.ListPredictionTooltipColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>MemberColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.MemberColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>NumberColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.NumberColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>OperatorColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.OperatorColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>ParameterColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.ParameterColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>SelectionColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.SelectionColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>StringColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.StringColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>TypeColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.TypeColor)</ScriptBlock>
+              </ListItem>
+              <ListItem>
+                <Label>VariableColor</Label>
+                <ScriptBlock>[Microsoft.PowerShell.VTColorUtils]::FormatColor($_.VariableColor)</ScriptBlock>
+              </ListItem>
+            </ListItems>
+          </ListEntry>
+        </ListEntries>
+      </ListControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>
+
+
+<!-- SIG # Begin signature block -->
+<!-- MIIoLQYJKoZIhvcNAQcCoIIoHjCCKBoCAQExDzANBglghkgBZQMEAgEFADB5Bgor -->
+<!-- BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG -->
+<!-- KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCC0TbPEFJ7PZyiX -->
+<!-- gv94P4u0zH+H7ZR/4RMRwjpttKh6JaCCDXYwggX0MIID3KADAgECAhMzAAAEBGx0 -->
+<!-- Bv9XKydyAAAAAAQEMA0GCSqGSIb3DQEBCwUAMH4xCzAJBgNVBAYTAlVTMRMwEQYD -->
+<!-- VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNy -->
+<!-- b3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01pY3Jvc29mdCBDb2RlIFNpZ25p -->
+<!-- bmcgUENBIDIwMTEwHhcNMjQwOTEyMjAxMTE0WhcNMjUwOTExMjAxMTE0WjB0MQsw -->
+<!-- CQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9u -->
+<!-- ZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMR4wHAYDVQQDExVNaWNy -->
+<!-- b3NvZnQgQ29ycG9yYXRpb24wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB -->
+<!-- AQC0KDfaY50MDqsEGdlIzDHBd6CqIMRQWW9Af1LHDDTuFjfDsvna0nEuDSYJmNyz -->
+<!-- NB10jpbg0lhvkT1AzfX2TLITSXwS8D+mBzGCWMM/wTpciWBV/pbjSazbzoKvRrNo -->
+<!-- DV/u9omOM2Eawyo5JJJdNkM2d8qzkQ0bRuRd4HarmGunSouyb9NY7egWN5E5lUc3 -->
+<!-- a2AROzAdHdYpObpCOdeAY2P5XqtJkk79aROpzw16wCjdSn8qMzCBzR7rvH2WVkvF -->
+<!-- HLIxZQET1yhPb6lRmpgBQNnzidHV2Ocxjc8wNiIDzgbDkmlx54QPfw7RwQi8p1fy -->
+<!-- 4byhBrTjv568x8NGv3gwb0RbAgMBAAGjggFzMIIBbzAfBgNVHSUEGDAWBgorBgEE -->
+<!-- AYI3TAgBBggrBgEFBQcDAzAdBgNVHQ4EFgQU8huhNbETDU+ZWllL4DNMPCijEU4w -->
+<!-- RQYDVR0RBD4wPKQ6MDgxHjAcBgNVBAsTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEW -->
+<!-- MBQGA1UEBRMNMjMwMDEyKzUwMjkyMzAfBgNVHSMEGDAWgBRIbmTlUAXTgqoXNzci -->
+<!-- tW2oynUClTBUBgNVHR8ETTBLMEmgR6BFhkNodHRwOi8vd3d3Lm1pY3Jvc29mdC5j -->
+<!-- b20vcGtpb3BzL2NybC9NaWNDb2RTaWdQQ0EyMDExXzIwMTEtMDctMDguY3JsMGEG -->
+<!-- CCsGAQUFBwEBBFUwUzBRBggrBgEFBQcwAoZFaHR0cDovL3d3dy5taWNyb3NvZnQu -->
+<!-- Y29tL3BraW9wcy9jZXJ0cy9NaWNDb2RTaWdQQ0EyMDExXzIwMTEtMDctMDguY3J0 -->
+<!-- MAwGA1UdEwEB/wQCMAAwDQYJKoZIhvcNAQELBQADggIBAIjmD9IpQVvfB1QehvpC -->
+<!-- Ge7QeTQkKQ7j3bmDMjwSqFL4ri6ae9IFTdpywn5smmtSIyKYDn3/nHtaEn0X1NBj -->
+<!-- L5oP0BjAy1sqxD+uy35B+V8wv5GrxhMDJP8l2QjLtH/UglSTIhLqyt8bUAqVfyfp -->
+<!-- h4COMRvwwjTvChtCnUXXACuCXYHWalOoc0OU2oGN+mPJIJJxaNQc1sjBsMbGIWv3 -->
+<!-- cmgSHkCEmrMv7yaidpePt6V+yPMik+eXw3IfZ5eNOiNgL1rZzgSJfTnvUqiaEQ0X -->
+<!-- dG1HbkDv9fv6CTq6m4Ty3IzLiwGSXYxRIXTxT4TYs5VxHy2uFjFXWVSL0J2ARTYL -->
+<!-- E4Oyl1wXDF1PX4bxg1yDMfKPHcE1Ijic5lx1KdK1SkaEJdto4hd++05J9Bf9TAmi -->
+<!-- u6EK6C9Oe5vRadroJCK26uCUI4zIjL/qG7mswW+qT0CW0gnR9JHkXCWNbo8ccMk1 -->
+<!-- sJatmRoSAifbgzaYbUz8+lv+IXy5GFuAmLnNbGjacB3IMGpa+lbFgih57/fIhamq -->
+<!-- 5VhxgaEmn/UjWyr+cPiAFWuTVIpfsOjbEAww75wURNM1Imp9NJKye1O24EspEHmb -->
+<!-- DmqCUcq7NqkOKIG4PVm3hDDED/WQpzJDkvu4FrIbvyTGVU01vKsg4UfcdiZ0fQ+/ -->
+<!-- V0hf8yrtq9CkB8iIuk5bBxuPMIIHejCCBWKgAwIBAgIKYQ6Q0gAAAAAAAzANBgkq -->
+<!-- hkiG9w0BAQsFADCBiDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24x -->
+<!-- EDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlv -->
+<!-- bjEyMDAGA1UEAxMpTWljcm9zb2Z0IFJvb3QgQ2VydGlmaWNhdGUgQXV0aG9yaXR5 -->
+<!-- IDIwMTEwHhcNMTEwNzA4MjA1OTA5WhcNMjYwNzA4MjEwOTA5WjB+MQswCQYDVQQG -->
+<!-- EwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwG -->
+<!-- A1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSgwJgYDVQQDEx9NaWNyb3NvZnQg -->
+<!-- Q29kZSBTaWduaW5nIFBDQSAyMDExMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIIC -->
+<!-- CgKCAgEAq/D6chAcLq3YbqqCEE00uvK2WCGfQhsqa+laUKq4BjgaBEm6f8MMHt03 -->
+<!-- a8YS2AvwOMKZBrDIOdUBFDFC04kNeWSHfpRgJGyvnkmc6Whe0t+bU7IKLMOv2akr -->
+<!-- rnoJr9eWWcpgGgXpZnboMlImEi/nqwhQz7NEt13YxC4Ddato88tt8zpcoRb0Rrrg -->
+<!-- OGSsbmQ1eKagYw8t00CT+OPeBw3VXHmlSSnnDb6gE3e+lD3v++MrWhAfTVYoonpy -->
+<!-- 4BI6t0le2O3tQ5GD2Xuye4Yb2T6xjF3oiU+EGvKhL1nkkDstrjNYxbc+/jLTswM9 -->
+<!-- sbKvkjh+0p2ALPVOVpEhNSXDOW5kf1O6nA+tGSOEy/S6A4aN91/w0FK/jJSHvMAh -->
+<!-- dCVfGCi2zCcoOCWYOUo2z3yxkq4cI6epZuxhH2rhKEmdX4jiJV3TIUs+UsS1Vz8k -->
+<!-- A/DRelsv1SPjcF0PUUZ3s/gA4bysAoJf28AVs70b1FVL5zmhD+kjSbwYuER8ReTB -->
+<!-- w3J64HLnJN+/RpnF78IcV9uDjexNSTCnq47f7Fufr/zdsGbiwZeBe+3W7UvnSSmn -->
+<!-- Eyimp31ngOaKYnhfsi+E11ecXL93KCjx7W3DKI8sj0A3T8HhhUSJxAlMxdSlQy90 -->
+<!-- lfdu+HggWCwTXWCVmj5PM4TasIgX3p5O9JawvEagbJjS4NaIjAsCAwEAAaOCAe0w -->
+<!-- ggHpMBAGCSsGAQQBgjcVAQQDAgEAMB0GA1UdDgQWBBRIbmTlUAXTgqoXNzcitW2o -->
+<!-- ynUClTAZBgkrBgEEAYI3FAIEDB4KAFMAdQBiAEMAQTALBgNVHQ8EBAMCAYYwDwYD -->
+<!-- VR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBRyLToCMZBDuRQFTuHqp8cx0SOJNDBa -->
+<!-- BgNVHR8EUzBRME+gTaBLhklodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpL2Ny -->
+<!-- bC9wcm9kdWN0cy9NaWNSb29DZXJBdXQyMDExXzIwMTFfMDNfMjIuY3JsMF4GCCsG -->
+<!-- AQUFBwEBBFIwUDBOBggrBgEFBQcwAoZCaHR0cDovL3d3dy5taWNyb3NvZnQuY29t -->
+<!-- L3BraS9jZXJ0cy9NaWNSb29DZXJBdXQyMDExXzIwMTFfMDNfMjIuY3J0MIGfBgNV -->
+<!-- HSAEgZcwgZQwgZEGCSsGAQQBgjcuAzCBgzA/BggrBgEFBQcCARYzaHR0cDovL3d3 -->
+<!-- dy5taWNyb3NvZnQuY29tL3BraW9wcy9kb2NzL3ByaW1hcnljcHMuaHRtMEAGCCsG -->
+<!-- AQUFBwICMDQeMiAdAEwAZQBnAGEAbABfAHAAbwBsAGkAYwB5AF8AcwB0AGEAdABl -->
+<!-- AG0AZQBuAHQALiAdMA0GCSqGSIb3DQEBCwUAA4ICAQBn8oalmOBUeRou09h0ZyKb -->
+<!-- C5YR4WOSmUKWfdJ5DJDBZV8uLD74w3LRbYP+vj/oCso7v0epo/Np22O/IjWll11l -->
+<!-- hJB9i0ZQVdgMknzSGksc8zxCi1LQsP1r4z4HLimb5j0bpdS1HXeUOeLpZMlEPXh6 -->
+<!-- I/MTfaaQdION9MsmAkYqwooQu6SpBQyb7Wj6aC6VoCo/KmtYSWMfCWluWpiW5IP0 -->
+<!-- wI/zRive/DvQvTXvbiWu5a8n7dDd8w6vmSiXmE0OPQvyCInWH8MyGOLwxS3OW560 -->
+<!-- STkKxgrCxq2u5bLZ2xWIUUVYODJxJxp/sfQn+N4sOiBpmLJZiWhub6e3dMNABQam -->
+<!-- ASooPoI/E01mC8CzTfXhj38cbxV9Rad25UAqZaPDXVJihsMdYzaXht/a8/jyFqGa -->
+<!-- J+HNpZfQ7l1jQeNbB5yHPgZ3BtEGsXUfFL5hYbXw3MYbBL7fQccOKO7eZS/sl/ah -->
+<!-- XJbYANahRr1Z85elCUtIEJmAH9AAKcWxm6U/RXceNcbSoqKfenoi+kiVH6v7RyOA -->
+<!-- 9Z74v2u3S5fi63V4GuzqN5l5GEv/1rMjaHXmr/r8i+sLgOppO6/8MO0ETI7f33Vt -->
+<!-- Y5E90Z1WTk+/gFcioXgRMiF670EKsT/7qMykXcGhiJtXcVZOSEXAQsmbdlsKgEhr -->
+<!-- /Xmfwb1tbWrJUnMTDXpQzTGCGg0wghoJAgEBMIGVMH4xCzAJBgNVBAYTAlVTMRMw -->
+<!-- EQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVN -->
+<!-- aWNyb3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01pY3Jvc29mdCBDb2RlIFNp -->
+<!-- Z25pbmcgUENBIDIwMTECEzMAAAQEbHQG/1crJ3IAAAAABAQwDQYJYIZIAWUDBAIB -->
+<!-- BQCgga4wGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO -->
+<!-- MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEIGr48TYWwgViNGzzlMWP0T44 -->
+<!-- gfxMG80TOd5hZz1uIELyMEIGCisGAQQBgjcCAQwxNDAyoBSAEgBNAGkAYwByAG8A -->
+<!-- cwBvAGYAdKEagBhodHRwOi8vd3d3Lm1pY3Jvc29mdC5jb20wDQYJKoZIhvcNAQEB -->
+<!-- BQAEggEAGTpqG0ftSTrgXhzOE4xoC+Tu8WvcWE9tno64F/czoelupJIT1qtwTm+i -->
+<!-- sPFs7wy8nFYBLU/NgfGUA0oWNgMcwcwVM+HkFzJHLEkds0652D+rgCi70CxPCloJ -->
+<!-- w6qSsiXD6G2CY8AW1TyHAz3EPHkHi+CdWGQXydRD1RzRQjqQf/aOJt2DC9j6HVrC -->
+<!-- o3dSHyMU0mFeGyqdTJ77JkqCJ4BRWD4f0BG47SksY/hRKLOrxwFVUA7RY6Pyl6nm -->
+<!-- TpVEuasn400YUUUns4Ou763pesV9WGTBv3I1IGSXoeWrsLdKhpo0vvvn5AcudHCp -->
+<!-- /VZ4PqtMwWSfnXw2csMacVUWnUtGSKGCF5cwgheTBgorBgEEAYI3AwMBMYIXgzCC -->
+<!-- F38GCSqGSIb3DQEHAqCCF3AwghdsAgEDMQ8wDQYJYIZIAWUDBAIBBQAwggFSBgsq -->
+<!-- hkiG9w0BCRABBKCCAUEEggE9MIIBOQIBAQYKKwYBBAGEWQoDATAxMA0GCWCGSAFl -->
+<!-- AwQCAQUABCAuqS1SBKhozVTvE/r97KCHh18HwrbnVs8pzU+UQUchGQIGaEtWbrJ1 -->
+<!-- GBMyMDI1MDYyNjEzNTEzNC4zMTFaMASAAgH0oIHRpIHOMIHLMQswCQYDVQQGEwJV -->
+<!-- UzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UE -->
+<!-- ChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSUwIwYDVQQLExxNaWNyb3NvZnQgQW1l -->
+<!-- cmljYSBPcGVyYXRpb25zMScwJQYDVQQLEx5uU2hpZWxkIFRTUyBFU046MzMwMy0w -->
+<!-- NUUwLUQ5NDcxJTAjBgNVBAMTHE1pY3Jvc29mdCBUaW1lLVN0YW1wIFNlcnZpY2Wg -->
+<!-- ghHtMIIHIDCCBQigAwIBAgITMwAAAg9XmkcUQOZG5gABAAACDzANBgkqhkiG9w0B -->
+<!-- AQsFADB8MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UE -->
+<!-- BxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSYwJAYD -->
+<!-- VQQDEx1NaWNyb3NvZnQgVGltZS1TdGFtcCBQQ0EgMjAxMDAeFw0yNTAxMzAxOTQz -->
+<!-- MDRaFw0yNjA0MjIxOTQzMDRaMIHLMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2Fz -->
+<!-- aGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENv -->
+<!-- cnBvcmF0aW9uMSUwIwYDVQQLExxNaWNyb3NvZnQgQW1lcmljYSBPcGVyYXRpb25z -->
+<!-- MScwJQYDVQQLEx5uU2hpZWxkIFRTUyBFU046MzMwMy0wNUUwLUQ5NDcxJTAjBgNV -->
+<!-- BAMTHE1pY3Jvc29mdCBUaW1lLVN0YW1wIFNlcnZpY2UwggIiMA0GCSqGSIb3DQEB -->
+<!-- AQUAA4ICDwAwggIKAoICAQCl6DTurxf66o73G0A2yKo1/nYvITBQsd50F52SQzo2 -->
+<!-- cSrt+EDEFCDlSxZzWJD7ujQ1Z1dMbMT6YhK7JUvwxQ+LkQXv2k/3v3xw8xJ2mhXu -->
+<!-- wbT+s1WOL0+9g9AOEAAM6WGjCzI/LZq3/tzHr56in/Z++o/2soGhyGhKMDwWl4J4 -->
+<!-- L1Fn8ndtoM1SBibPdqmwmPXpB9QtaP+TCOC1vAaGQOdsqXQ8AdlK6Vuk9yW9ty7S -->
+<!-- 0kRP1nXkFseM33NzBu//ubaoJHb1ceYPZ4U4EOXBHi/2g09WRL9QWItHjPGJYjuJ -->
+<!-- 0ckyrOG1ksfAZWP+Bu8PXAq4s1Ba/h/nXhXAwuxThpvaFb4T0bOjYO/h2LPRbdDM -->
+<!-- cMfS9Zbhq10hXP6ZFHR0RRJ+rr5A8ID9l0UgoUu/gNvCqHCMowz97udo7eWODA7L -->
+<!-- aVv81FHHYw3X5DSTUqJ6pwP+/0lxatxajbSGsm267zqVNsuzUoF2FzPM+YUIwiOp -->
+<!-- gQvvjYIBkB+KUwZf2vRIPWmhAEzWZAGTox/0vj4eHgxwER9fpThcsbZGSxx0nL54 -->
+<!-- Hz+L36KJyEVio+oJVvUxm75YEESaTh1RnL0Dls91sBw6mvKrO2O+NCbUtfx+cQXY -->
+<!-- S0JcWZef810BW9Bn/eIvow3Kcx0dVuqDfIWfW7imeTLAK9QAEk+oZCJzUUTvhh2h -->
+<!-- YQIDAQABo4IBSTCCAUUwHQYDVR0OBBYEFJnUMQ2OtyAhLR/MD2qtJ9lKRP9ZMB8G -->
+<!-- A1UdIwQYMBaAFJ+nFV0AXmJdg/Tl0mWnG1M1GelyMF8GA1UdHwRYMFYwVKBSoFCG -->
+<!-- Tmh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wa2lvcHMvY3JsL01pY3Jvc29mdCUy -->
+<!-- MFRpbWUtU3RhbXAlMjBQQ0ElMjAyMDEwKDEpLmNybDBsBggrBgEFBQcBAQRgMF4w -->
+<!-- XAYIKwYBBQUHMAKGUGh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wa2lvcHMvY2Vy -->
+<!-- dHMvTWljcm9zb2Z0JTIwVGltZS1TdGFtcCUyMFBDQSUyMDIwMTAoMSkuY3J0MAwG -->
+<!-- A1UdEwEB/wQCMAAwFgYDVR0lAQH/BAwwCgYIKwYBBQUHAwgwDgYDVR0PAQH/BAQD -->
+<!-- AgeAMA0GCSqGSIb3DQEBCwUAA4ICAQBTowbo1bUE7fXTy+uW9m58qGEXRBGVMEQi -->
+<!-- FEfSui1fhN7jS+kSiN0SR5Kl3AuV49xOxgHo9+GIne5Mpg5n4NS5PW8nWIWGj/8j -->
+<!-- kE3pdJZSvAZarXD4l43iMNxDhdBZqVCkAYcdFVZnxdy+25MRY6RfaGwkinjnYNFA -->
+<!-- 6DYL/1cxw6Ya4sXyV7FgPdMmxVpffnPEDFv4mcVx3jvPZod7gqiDcUHbyV1gaND3 -->
+<!-- PejyJ1MGfBYbAQxsynLX1FUsWLwKsNPRJjynwlzBT/OQbxnzkjLibi4h4dOwcN+H -->
+<!-- 4myDtUSnYq9Xf4YvFlZ+mJs5Ytx4U9JVCyW/WERtIEieTvTRgvAYj/4Mh1F2Elf8 -->
+<!-- cdILgzi9ezqYefxdsBD8Vix35yMC5LTnDUoyVVulUeeDAJY8+6YBbtXIty4phIki -->
+<!-- hiIHsyWVxW2YGG6A6UWenuwY6z9oBONvMHlqtD37ZyLn0h1kCkkp5kcIIhMtpzEc -->
+<!-- PkfqlkbDVogMoWy80xulxt64P4+1YIzkRht3zTO+jLONu1pmBt+8EUh7DVct/33t -->
+<!-- uW5NOSx56jXQ1TdOdFBpgcW8HvJii8smQ1TQP42HNIKIJY5aiMkK9M2HoxYrQy2M -->
+<!-- oHNOPySsOzr3le/4SDdX67uobGkUNerlJKzKpTR5ZU0SeNAu5oCyDb6gdtTiaN50 -->
+<!-- lCC6m44sXjCCB3EwggVZoAMCAQICEzMAAAAVxedrngKbSZkAAAAAABUwDQYJKoZI -->
+<!-- hvcNAQELBQAwgYgxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAw -->
+<!-- DgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24x -->
+<!-- MjAwBgNVBAMTKU1pY3Jvc29mdCBSb290IENlcnRpZmljYXRlIEF1dGhvcml0eSAy -->
+<!-- MDEwMB4XDTIxMDkzMDE4MjIyNVoXDTMwMDkzMDE4MzIyNVowfDELMAkGA1UEBhMC -->
+<!-- VVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNV -->
+<!-- BAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEmMCQGA1UEAxMdTWljcm9zb2Z0IFRp -->
+<!-- bWUtU3RhbXAgUENBIDIwMTAwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoIC -->
+<!-- AQDk4aZM57RyIQt5osvXJHm9DtWC0/3unAcH0qlsTnXIyjVX9gF/bErg4r25Phdg -->
+<!-- M/9cT8dm95VTcVrifkpa/rg2Z4VGIwy1jRPPdzLAEBjoYH1qUoNEt6aORmsHFPPF -->
+<!-- dvWGUNzBRMhxXFExN6AKOG6N7dcP2CZTfDlhAnrEqv1yaa8dq6z2Nr41JmTamDu6 -->
+<!-- GnszrYBbfowQHJ1S/rboYiXcag/PXfT+jlPP1uyFVk3v3byNpOORj7I5LFGc6XBp -->
+<!-- Dco2LXCOMcg1KL3jtIckw+DJj361VI/c+gVVmG1oO5pGve2krnopN6zL64NF50Zu -->
+<!-- yjLVwIYwXE8s4mKyzbnijYjklqwBSru+cakXW2dg3viSkR4dPf0gz3N9QZpGdc3E -->
+<!-- XzTdEonW/aUgfX782Z5F37ZyL9t9X4C626p+Nuw2TPYrbqgSUei/BQOj0XOmTTd0 -->
+<!-- lBw0gg/wEPK3Rxjtp+iZfD9M269ewvPV2HM9Q07BMzlMjgK8QmguEOqEUUbi0b1q -->
+<!-- GFphAXPKZ6Je1yh2AuIzGHLXpyDwwvoSCtdjbwzJNmSLW6CmgyFdXzB0kZSU2LlQ -->
+<!-- +QuJYfM2BjUYhEfb3BvR/bLUHMVr9lxSUV0S2yW6r1AFemzFER1y7435UsSFF5PA -->
+<!-- PBXbGjfHCBUYP3irRbb1Hode2o+eFnJpxq57t7c+auIurQIDAQABo4IB3TCCAdkw -->
+<!-- EgYJKwYBBAGCNxUBBAUCAwEAATAjBgkrBgEEAYI3FQIEFgQUKqdS/mTEmr6CkTxG -->
+<!-- NSnPEP8vBO4wHQYDVR0OBBYEFJ+nFV0AXmJdg/Tl0mWnG1M1GelyMFwGA1UdIARV -->
+<!-- MFMwUQYMKwYBBAGCN0yDfQEBMEEwPwYIKwYBBQUHAgEWM2h0dHA6Ly93d3cubWlj -->
+<!-- cm9zb2Z0LmNvbS9wa2lvcHMvRG9jcy9SZXBvc2l0b3J5Lmh0bTATBgNVHSUEDDAK -->
+<!-- BggrBgEFBQcDCDAZBgkrBgEEAYI3FAIEDB4KAFMAdQBiAEMAQTALBgNVHQ8EBAMC -->
+<!-- AYYwDwYDVR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBTV9lbLj+iiXGJo0T2UkFvX -->
+<!-- zpoYxDBWBgNVHR8ETzBNMEugSaBHhkVodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20v -->
+<!-- cGtpL2NybC9wcm9kdWN0cy9NaWNSb29DZXJBdXRfMjAxMC0wNi0yMy5jcmwwWgYI -->
+<!-- KwYBBQUHAQEETjBMMEoGCCsGAQUFBzAChj5odHRwOi8vd3d3Lm1pY3Jvc29mdC5j -->
+<!-- b20vcGtpL2NlcnRzL01pY1Jvb0NlckF1dF8yMDEwLTA2LTIzLmNydDANBgkqhkiG -->
+<!-- 9w0BAQsFAAOCAgEAnVV9/Cqt4SwfZwExJFvhnnJL/Klv6lwUtj5OR2R4sQaTlz0x -->
+<!-- M7U518JxNj/aZGx80HU5bbsPMeTCj/ts0aGUGCLu6WZnOlNN3Zi6th542DYunKmC -->
+<!-- VgADsAW+iehp4LoJ7nvfam++Kctu2D9IdQHZGN5tggz1bSNU5HhTdSRXud2f8449 -->
+<!-- xvNo32X2pFaq95W2KFUn0CS9QKC/GbYSEhFdPSfgQJY4rPf5KYnDvBewVIVCs/wM -->
+<!-- nosZiefwC2qBwoEZQhlSdYo2wh3DYXMuLGt7bj8sCXgU6ZGyqVvfSaN0DLzskYDS -->
+<!-- PeZKPmY7T7uG+jIa2Zb0j/aRAfbOxnT99kxybxCrdTDFNLB62FD+CljdQDzHVG2d -->
+<!-- Y3RILLFORy3BFARxv2T5JL5zbcqOCb2zAVdJVGTZc9d/HltEAY5aGZFrDZ+kKNxn -->
+<!-- GSgkujhLmm77IVRrakURR6nxt67I6IleT53S0Ex2tVdUCbFpAUR+fKFhbHP+Crvs -->
+<!-- QWY9af3LwUFJfn6Tvsv4O+S3Fb+0zj6lMVGEvL8CwYKiexcdFYmNcP7ntdAoGokL -->
+<!-- jzbaukz5m/8K6TT4JDVnK+ANuOaMmdbhIurwJ0I9JZTmdHRbatGePu1+oDEzfbzL -->
+<!-- 6Xu/OHBE0ZDxyKs6ijoIYn/ZcGNTTY3ugm2lBRDBcQZqELQdVTNYs6FwZvKhggNQ -->
+<!-- MIICOAIBATCB+aGB0aSBzjCByzELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hp -->
+<!-- bmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jw -->
+<!-- b3JhdGlvbjElMCMGA1UECxMcTWljcm9zb2Z0IEFtZXJpY2EgT3BlcmF0aW9uczEn -->
+<!-- MCUGA1UECxMeblNoaWVsZCBUU1MgRVNOOjMzMDMtMDVFMC1EOTQ3MSUwIwYDVQQD -->
+<!-- ExxNaWNyb3NvZnQgVGltZS1TdGFtcCBTZXJ2aWNloiMKAQEwBwYFKw4DAhoDFQBe -->
+<!-- tIzj2C/MkdiI03EyNsCtSOMdWqCBgzCBgKR+MHwxCzAJBgNVBAYTAlVTMRMwEQYD -->
+<!-- VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNy -->
+<!-- b3NvZnQgQ29ycG9yYXRpb24xJjAkBgNVBAMTHU1pY3Jvc29mdCBUaW1lLVN0YW1w -->
+<!-- IFBDQSAyMDEwMA0GCSqGSIb3DQEBCwUAAgUA7Aef/jAiGA8yMDI1MDYyNjEwMzEy -->
+<!-- NloYDzIwMjUwNjI3MTAzMTI2WjB3MD0GCisGAQQBhFkKBAExLzAtMAoCBQDsB5/+ -->
+<!-- AgEAMAoCAQACAggiAgH/MAcCAQACAhMxMAoCBQDsCPF+AgEAMDYGCisGAQQBhFkK -->
+<!-- BAIxKDAmMAwGCisGAQQBhFkKAwKgCjAIAgEAAgMHoSChCjAIAgEAAgMBhqAwDQYJ -->
+<!-- KoZIhvcNAQELBQADggEBAFiaTUjOXGvJChO3vGh4mLS2EyCDZhDJZ2BkJS3ovHBg -->
+<!-- q/TfI2twRWDj+iktkox7OhsEvq+VR1YHkKHxCEBWwUm9O4Wn9ki/Ubk/WbdE5A7j -->
+<!-- OOpxJvlplESAn4XigHjdLSPTI1rKp518RcfqiriXfuDcmzvZ2OZQeePIFg0oB25l -->
+<!-- FIKzhVJp2rO1bfTd7Crkqc91mJNMiEWwfwN7B9r6U+63hOu6qTxTDiyKs7yawcM5 -->
+<!-- 6MIVW93l/xMtnd8FXjsNIn13DIJsgPebt5qOnQXUwYY/x6kdNHKm7LUBJ9Zjg6iR -->
+<!-- 0L6VhB7a8KehvIiqTjNave1IK0LEwSTCPJ6ZihRL74IxggQNMIIECQIBATCBkzB8 -->
+<!-- MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVk -->
+<!-- bW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSYwJAYDVQQDEx1N -->
+<!-- aWNyb3NvZnQgVGltZS1TdGFtcCBQQ0EgMjAxMAITMwAAAg9XmkcUQOZG5gABAAAC -->
+<!-- DzANBglghkgBZQMEAgEFAKCCAUowGgYJKoZIhvcNAQkDMQ0GCyqGSIb3DQEJEAEE -->
+<!-- MC8GCSqGSIb3DQEJBDEiBCCM1ttmc+gIQfKjpBc5mpm96xmqi+CKADEO/PbHlxWM -->
+<!-- aTCB+gYLKoZIhvcNAQkQAi8xgeowgecwgeQwgb0EIN1Hd5UmKnm7FW7xP3niGsfH -->
+<!-- Jt4xR8Xu+MxgXXc0iqn4MIGYMIGApH4wfDELMAkGA1UEBhMCVVMxEzARBgNVBAgT -->
+<!-- Cldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29m -->
+<!-- dCBDb3Jwb3JhdGlvbjEmMCQGA1UEAxMdTWljcm9zb2Z0IFRpbWUtU3RhbXAgUENB -->
+<!-- IDIwMTACEzMAAAIPV5pHFEDmRuYAAQAAAg8wIgQgyK6eA0R4XjNR7MqI590tdZOq -->
+<!-- aTpBMl3sgKsNMXM9SB0wDQYJKoZIhvcNAQELBQAEggIACA1/qLDNLETU/OLka39L -->
+<!-- c7m1q9fUh36IFGHLnpQDLuD69yhgCX7LIyl9GzkqC25/9+pYiC1fJEIXJkWhPxLc -->
+<!-- aAB+QbipNRf9mF8m1zvg/V6N9AgyYDuqbuME0p49zH0HrLZnMV2B+n5Bq3vf1TBa -->
+<!-- 2x+E0F8fdaIOajIKu+kqJYydu4SBF/ah4MIeD+KhO/Fu7WsvXMf3mOd+eFMgfaF+ -->
+<!-- h1P9LL1mx0MBFyLmoMlG3bBwue9DSdVoc/DIFHSAXsAYj605aYsM47u/kGANpoEc -->
+<!-- VJkZDoQXsVvwwXZVpdT1GTMtc+nly77RWmCFjj/PBXw85t+2SRmUW6EFMp9/0rug -->
+<!-- 8t6aJj+UBwFO5rdvTsSUQof50epCg4m6plYj1Xeedw3Cr1dbaFaDBQqMTZqeMYVf -->
+<!-- wExj4GxHuX29dyiJGRnYcST/7PU55GnHBFBTVGwNKSnB8FN2Wk0FXb2ijkrFnaih -->
+<!-- 5QpEFVWaU5DtnqHwR/X+Ccm7+M401qdR5aqLSwifYZMLRMwCFL6CdJBOfIrXJOBU -->
+<!-- ntl94Wjxl9XH2s6bYcWqRSr5QUfNVpasl6rEBVSd/rMMKoUgmjFbqPi2W+LFSpeA -->
+<!-- 5pyfb3AG2H1yzzDDzN5PXHS25ieNC8zwUtpR8Ty3JKGDpSL0p/h17ZZsZyhXdFlR -->
+<!-- Kp85dl8GVIpHjGNvfn2fMcM= -->
+<!-- SIG # End signature block -->
+
+--- FILE: /c/Users/josep/Documents/dotfiles/modules/PSReadLine/2.4.1/PSReadLine.psd1 ---
+@{
+RootModule = 'PSReadLine.psm1'
+NestedModules = @("Microsoft.PowerShell.PSReadLine.dll")
+ModuleVersion = '2.4.1'
+GUID = '5714753b-2afd-4492-a5fd-01d9e2cff8b5'
+Author = 'Microsoft Corporation'
+CompanyName = 'Microsoft Corporation'
+Copyright = '(c) Microsoft Corporation. All rights reserved.'
+Description = 'Great command line editing in the PowerShell console host'
+PowerShellVersion = '5.1'
+FormatsToProcess = 'PSReadLine.format.ps1xml'
+AliasesToExport = @()
+FunctionsToExport = 'PSConsoleHostReadLine'
+CmdletsToExport = 'Get-PSReadLineKeyHandler','Set-PSReadLineKeyHandler','Remove-PSReadLineKeyHandler',
+                  'Get-PSReadLineOption','Set-PSReadLineOption'
+HelpInfoURI = 'https://aka.ms/powershell75-help'
+PrivateData = @{ PSData = @{ Prerelease = 'beta1'; ProjectUri = 'https://github.com/PowerShell/PSReadLine' } }
+}
+
+
+# SIG # Begin signature block
+# MIIoPAYJKoZIhvcNAQcCoIIoLTCCKCkCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCAPqYB2Td+jEsmo
+# c610h+MbeqaIMU0s50ZmnpnquqmBOKCCDYUwggYDMIID66ADAgECAhMzAAAEA73V
+# lV0POxitAAAAAAQDMA0GCSqGSIb3DQEBCwUAMH4xCzAJBgNVBAYTAlVTMRMwEQYD
+# VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNy
+# b3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01pY3Jvc29mdCBDb2RlIFNpZ25p
+# bmcgUENBIDIwMTEwHhcNMjQwOTEyMjAxMTEzWhcNMjUwOTExMjAxMTEzWjB0MQsw
+# CQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9u
+# ZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMR4wHAYDVQQDExVNaWNy
+# b3NvZnQgQ29ycG9yYXRpb24wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+# AQCfdGddwIOnbRYUyg03O3iz19XXZPmuhEmW/5uyEN+8mgxl+HJGeLGBR8YButGV
+# LVK38RxcVcPYyFGQXcKcxgih4w4y4zJi3GvawLYHlsNExQwz+v0jgY/aejBS2EJY
+# oUhLVE+UzRihV8ooxoftsmKLb2xb7BoFS6UAo3Zz4afnOdqI7FGoi7g4vx/0MIdi
+# kwTn5N56TdIv3mwfkZCFmrsKpN0zR8HD8WYsvH3xKkG7u/xdqmhPPqMmnI2jOFw/
+# /n2aL8W7i1Pasja8PnRXH/QaVH0M1nanL+LI9TsMb/enWfXOW65Gne5cqMN9Uofv
+# ENtdwwEmJ3bZrcI9u4LZAkujAgMBAAGjggGCMIIBfjAfBgNVHSUEGDAWBgorBgEE
+# AYI3TAgBBggrBgEFBQcDAzAdBgNVHQ4EFgQU6m4qAkpz4641iK2irF8eWsSBcBkw
+# VAYDVR0RBE0wS6RJMEcxLTArBgNVBAsTJE1pY3Jvc29mdCBJcmVsYW5kIE9wZXJh
+# dGlvbnMgTGltaXRlZDEWMBQGA1UEBRMNMjMwMDEyKzUwMjkyNjAfBgNVHSMEGDAW
+# gBRIbmTlUAXTgqoXNzcitW2oynUClTBUBgNVHR8ETTBLMEmgR6BFhkNodHRwOi8v
+# d3d3Lm1pY3Jvc29mdC5jb20vcGtpb3BzL2NybC9NaWNDb2RTaWdQQ0EyMDExXzIw
+# MTEtMDctMDguY3JsMGEGCCsGAQUFBwEBBFUwUzBRBggrBgEFBQcwAoZFaHR0cDov
+# L3d3dy5taWNyb3NvZnQuY29tL3BraW9wcy9jZXJ0cy9NaWNDb2RTaWdQQ0EyMDEx
+# XzIwMTEtMDctMDguY3J0MAwGA1UdEwEB/wQCMAAwDQYJKoZIhvcNAQELBQADggIB
+# AFFo/6E4LX51IqFuoKvUsi80QytGI5ASQ9zsPpBa0z78hutiJd6w154JkcIx/f7r
+# EBK4NhD4DIFNfRiVdI7EacEs7OAS6QHF7Nt+eFRNOTtgHb9PExRy4EI/jnMwzQJV
+# NokTxu2WgHr/fBsWs6G9AcIgvHjWNN3qRSrhsgEdqHc0bRDUf8UILAdEZOMBvKLC
+# rmf+kJPEvPldgK7hFO/L9kmcVe67BnKejDKO73Sa56AJOhM7CkeATrJFxO9GLXos
+# oKvrwBvynxAg18W+pagTAkJefzneuWSmniTurPCUE2JnvW7DalvONDOtG01sIVAB
+# +ahO2wcUPa2Zm9AiDVBWTMz9XUoKMcvngi2oqbsDLhbK+pYrRUgRpNt0y1sxZsXO
+# raGRF8lM2cWvtEkV5UL+TQM1ppv5unDHkW8JS+QnfPbB8dZVRyRmMQ4aY/tx5x5+
+# sX6semJ//FbiclSMxSI+zINu1jYerdUwuCi+P6p7SmQmClhDM+6Q+btE2FtpsU0W
+# +r6RdYFf/P+nK6j2otl9Nvr3tWLu+WXmz8MGM+18ynJ+lYbSmFWcAj7SYziAfT0s
+# IwlQRFkyC71tsIZUhBHtxPliGUu362lIO0Lpe0DOrg8lspnEWOkHnCT5JEnWCbzu
+# iVt8RX1IV07uIveNZuOBWLVCzWJjEGa+HhaEtavjy6i7MIIHejCCBWKgAwIBAgIK
+# YQ6Q0gAAAAAAAzANBgkqhkiG9w0BAQsFADCBiDELMAkGA1UEBhMCVVMxEzARBgNV
+# BAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jv
+# c29mdCBDb3Jwb3JhdGlvbjEyMDAGA1UEAxMpTWljcm9zb2Z0IFJvb3QgQ2VydGlm
+# aWNhdGUgQXV0aG9yaXR5IDIwMTEwHhcNMTEwNzA4MjA1OTA5WhcNMjYwNzA4MjEw
+# OTA5WjB+MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UE
+# BxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSgwJgYD
+# VQQDEx9NaWNyb3NvZnQgQ29kZSBTaWduaW5nIFBDQSAyMDExMIICIjANBgkqhkiG
+# 9w0BAQEFAAOCAg8AMIICCgKCAgEAq/D6chAcLq3YbqqCEE00uvK2WCGfQhsqa+la
+# UKq4BjgaBEm6f8MMHt03a8YS2AvwOMKZBrDIOdUBFDFC04kNeWSHfpRgJGyvnkmc
+# 6Whe0t+bU7IKLMOv2akrrnoJr9eWWcpgGgXpZnboMlImEi/nqwhQz7NEt13YxC4D
+# dato88tt8zpcoRb0RrrgOGSsbmQ1eKagYw8t00CT+OPeBw3VXHmlSSnnDb6gE3e+
+# lD3v++MrWhAfTVYoonpy4BI6t0le2O3tQ5GD2Xuye4Yb2T6xjF3oiU+EGvKhL1nk
+# kDstrjNYxbc+/jLTswM9sbKvkjh+0p2ALPVOVpEhNSXDOW5kf1O6nA+tGSOEy/S6
+# A4aN91/w0FK/jJSHvMAhdCVfGCi2zCcoOCWYOUo2z3yxkq4cI6epZuxhH2rhKEmd
+# X4jiJV3TIUs+UsS1Vz8kA/DRelsv1SPjcF0PUUZ3s/gA4bysAoJf28AVs70b1FVL
+# 5zmhD+kjSbwYuER8ReTBw3J64HLnJN+/RpnF78IcV9uDjexNSTCnq47f7Fufr/zd
+# sGbiwZeBe+3W7UvnSSmnEyimp31ngOaKYnhfsi+E11ecXL93KCjx7W3DKI8sj0A3
+# T8HhhUSJxAlMxdSlQy90lfdu+HggWCwTXWCVmj5PM4TasIgX3p5O9JawvEagbJjS
+# 4NaIjAsCAwEAAaOCAe0wggHpMBAGCSsGAQQBgjcVAQQDAgEAMB0GA1UdDgQWBBRI
+# bmTlUAXTgqoXNzcitW2oynUClTAZBgkrBgEEAYI3FAIEDB4KAFMAdQBiAEMAQTAL
+# BgNVHQ8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBRyLToCMZBD
+# uRQFTuHqp8cx0SOJNDBaBgNVHR8EUzBRME+gTaBLhklodHRwOi8vY3JsLm1pY3Jv
+# c29mdC5jb20vcGtpL2NybC9wcm9kdWN0cy9NaWNSb29DZXJBdXQyMDExXzIwMTFf
+# MDNfMjIuY3JsMF4GCCsGAQUFBwEBBFIwUDBOBggrBgEFBQcwAoZCaHR0cDovL3d3
+# dy5taWNyb3NvZnQuY29tL3BraS9jZXJ0cy9NaWNSb29DZXJBdXQyMDExXzIwMTFf
+# MDNfMjIuY3J0MIGfBgNVHSAEgZcwgZQwgZEGCSsGAQQBgjcuAzCBgzA/BggrBgEF
+# BQcCARYzaHR0cDovL3d3dy5taWNyb3NvZnQuY29tL3BraW9wcy9kb2NzL3ByaW1h
+# cnljcHMuaHRtMEAGCCsGAQUFBwICMDQeMiAdAEwAZQBnAGEAbABfAHAAbwBsAGkA
+# YwB5AF8AcwB0AGEAdABlAG0AZQBuAHQALiAdMA0GCSqGSIb3DQEBCwUAA4ICAQBn
+# 8oalmOBUeRou09h0ZyKbC5YR4WOSmUKWfdJ5DJDBZV8uLD74w3LRbYP+vj/oCso7
+# v0epo/Np22O/IjWll11lhJB9i0ZQVdgMknzSGksc8zxCi1LQsP1r4z4HLimb5j0b
+# pdS1HXeUOeLpZMlEPXh6I/MTfaaQdION9MsmAkYqwooQu6SpBQyb7Wj6aC6VoCo/
+# KmtYSWMfCWluWpiW5IP0wI/zRive/DvQvTXvbiWu5a8n7dDd8w6vmSiXmE0OPQvy
+# CInWH8MyGOLwxS3OW560STkKxgrCxq2u5bLZ2xWIUUVYODJxJxp/sfQn+N4sOiBp
+# mLJZiWhub6e3dMNABQamASooPoI/E01mC8CzTfXhj38cbxV9Rad25UAqZaPDXVJi
+# hsMdYzaXht/a8/jyFqGaJ+HNpZfQ7l1jQeNbB5yHPgZ3BtEGsXUfFL5hYbXw3MYb
+# BL7fQccOKO7eZS/sl/ahXJbYANahRr1Z85elCUtIEJmAH9AAKcWxm6U/RXceNcbS
+# oqKfenoi+kiVH6v7RyOA9Z74v2u3S5fi63V4GuzqN5l5GEv/1rMjaHXmr/r8i+sL
+# gOppO6/8MO0ETI7f33VtY5E90Z1WTk+/gFcioXgRMiF670EKsT/7qMykXcGhiJtX
+# cVZOSEXAQsmbdlsKgEhr/Xmfwb1tbWrJUnMTDXpQzTGCGg0wghoJAgEBMIGVMH4x
+# CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRt
+# b25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01p
+# Y3Jvc29mdCBDb2RlIFNpZ25pbmcgUENBIDIwMTECEzMAAAQDvdWVXQ87GK0AAAAA
+# BAMwDQYJYIZIAWUDBAIBBQCgga4wGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQw
+# HAYKKwYBBAGCNwIBCzEOMAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEILB3
+# GhKUJkVHieWksX6+0EQ7EjXDCjlFvpLpz7XvWg3gMEIGCisGAQQBgjcCAQwxNDAy
+# oBSAEgBNAGkAYwByAG8AcwBvAGYAdKEagBhodHRwOi8vd3d3Lm1pY3Jvc29mdC5j
+# b20wDQYJKoZIhvcNAQEBBQAEggEAMM9heX3bMAp8UcEZ2JXLfqixz7bgPU7YW/Hk
+# OYDG+yyaTz13UedtCq5tw8ThgItMVCJ0EZNJn9rqENMVpVwyfPOGT3qVS6+kXf7j
+# y9T3q0F53PqnwQT4/40UfP7fwPr5guCWF9Squ01Wk9qHZwr9zIw12/xPaM64PAS8
+# /ECQ0UZZzUZE25dWMm4bGLbrVOjmTxjcf2TA03qk5pTxC6/prVNEcf68jhw2oaGW
+# iLd4mYd5cXuWHKuZpnKjyt3rbhaKN2xPQ05TcSRUt1ZleinpzKpVx7Ey46XdNDpF
+# 1R/oEF8+ZsLUYTlo0fBMU7GmiTNRTMkRpWM5ADIa1No1tuNGPqGCF5cwgheTBgor
+# BgEEAYI3AwMBMYIXgzCCF38GCSqGSIb3DQEHAqCCF3AwghdsAgEDMQ8wDQYJYIZI
+# AWUDBAIBBQAwggFSBgsqhkiG9w0BCRABBKCCAUEEggE9MIIBOQIBAQYKKwYBBAGE
+# WQoDATAxMA0GCWCGSAFlAwQCAQUABCBkfx6FOgYT2HzfQrDXDwt+ypDJikxDqfwG
+# EWiWs+e8xgIGaEsQO3lsGBMyMDI1MDYyNjEzNTEzMi4zNDVaMASAAgH0oIHRpIHO
+# MIHLMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMH
+# UmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSUwIwYDVQQL
+# ExxNaWNyb3NvZnQgQW1lcmljYSBPcGVyYXRpb25zMScwJQYDVQQLEx5uU2hpZWxk
+# IFRTUyBFU046N0YwMC0wNUUwLUQ5NDcxJTAjBgNVBAMTHE1pY3Jvc29mdCBUaW1l
+# LVN0YW1wIFNlcnZpY2WgghHtMIIHIDCCBQigAwIBAgITMwAAAgbXvFE4mCPsLAAB
+# AAACBjANBgkqhkiG9w0BAQsFADB8MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2Fz
+# aGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENv
+# cnBvcmF0aW9uMSYwJAYDVQQDEx1NaWNyb3NvZnQgVGltZS1TdGFtcCBQQ0EgMjAx
+# MDAeFw0yNTAxMzAxOTQyNTBaFw0yNjA0MjIxOTQyNTBaMIHLMQswCQYDVQQGEwJV
+# UzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UE
+# ChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSUwIwYDVQQLExxNaWNyb3NvZnQgQW1l
+# cmljYSBPcGVyYXRpb25zMScwJQYDVQQLEx5uU2hpZWxkIFRTUyBFU046N0YwMC0w
+# NUUwLUQ5NDcxJTAjBgNVBAMTHE1pY3Jvc29mdCBUaW1lLVN0YW1wIFNlcnZpY2Uw
+# ggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDpRIWbIM3Rlr397cjHaYx8
+# 5l7I+ZVWGMCBCM911BpU6+IGWCqksqgqefZFEjKzNVDYC9YcgITAz276NGgvECm4
+# ZfNv/FPwcaSDz7xbDbsOoxbwQoHUNRro+x5ubZhT6WJeU97F06+vDjAw/Yt1vWOg
+# RTqmP/dNr9oqIbE5oCLYdH3wI/noYmsJVc7966n+B7UAGAWU2se3Lz+xdxnNsNX4
+# CR6zIMVJTSezP/2STNcxJTu9k2sl7/vzOhxJhCQ38rdaEoqhGHrXrmVkEhSv+S00
+# DMJc1OIXxqfbwPjMqEVp7K3kmczCkbum1BOIJ2wuDAbKuJelpteNZj/S58NSQw6k
+# hfuJAluqHK3igkS/Oux49qTP+rU+PQeNuD+GtrCopFucRmanQvxISGNoxnBq3UeD
+# Tqphm6aI7GMHtFD6DOjJlllH1gVWXPTyivf+4tN8TmO6yIgB4uP00bH9jn/dyyxS
+# jxPQ2nGvZtgtqnvq3h3TRjRnkc+e1XB1uatDa1zUcS7r3iodTpyATe2hgkVX3m4D
+# hRzI6A4SJ6fbJM9isLH8AGKcymisKzYupAeFSTJ10JEFa6MjHQYYohoCF77R0CCw
+# MNjvE4XfLHu+qKPY8GQfsZdigQ9clUAiydFmVt61hytoxZP7LmXbzjD0VecyzZoL
+# 4Equ1XszBsulAr5Ld2KwcwIDAQABo4IBSTCCAUUwHQYDVR0OBBYEFO0wsLKdDGpT
+# 97cx3Iymyo/SBm4SMB8GA1UdIwQYMBaAFJ+nFV0AXmJdg/Tl0mWnG1M1GelyMF8G
+# A1UdHwRYMFYwVKBSoFCGTmh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wa2lvcHMv
+# Y3JsL01pY3Jvc29mdCUyMFRpbWUtU3RhbXAlMjBQQ0ElMjAyMDEwKDEpLmNybDBs
+# BggrBgEFBQcBAQRgMF4wXAYIKwYBBQUHMAKGUGh0dHA6Ly93d3cubWljcm9zb2Z0
+# LmNvbS9wa2lvcHMvY2VydHMvTWljcm9zb2Z0JTIwVGltZS1TdGFtcCUyMFBDQSUy
+# MDIwMTAoMSkuY3J0MAwGA1UdEwEB/wQCMAAwFgYDVR0lAQH/BAwwCgYIKwYBBQUH
+# AwgwDgYDVR0PAQH/BAQDAgeAMA0GCSqGSIb3DQEBCwUAA4ICAQB23GZOfe9ThTUv
+# D29i4t6lDpxJhpVRMme+UbyZhBFCZhoGTtjDdphAArU2Q61WYg3YVcl2RdJm5PUb
+# Z2bA77zk+qtLxC+3dNxVsTcdtxPDSSWgwBHxTj6pCmoDNXolAYsWpvHQFCHDqEfA
+# iBxX1dmaXbiTP1d0XffvgR6dshUcqaH/mFfjDZAxLU1s6HcVgCvBQJlJ7xEG5jFK
+# dtqapKWcbUHwTVqXQGbIlHVClNJ3yqW6Z3UJH/CFcYiLV/e68urTmGtiZxGSYb4S
+# BSPArTrTYeHOlQIj/7loVWmfWX2y4AGV/D+MzyZMyvFw4VyL0Vgq96EzQKyteiVe
+# BaVEjxQKo3AcPULRF4Uzz98P2tCM5XbFZ3Qoj9PLg3rgFXr0oJEhfh2tqUrhTJd1
+# 3+i4/fek9zWicoshlwXgFu002ZWBVzASEFuqED48qyulZ/2jGJBcta+Fdk2loP2K
+# 3oSj4PQQe1MzzVZO52AXO42MHlhm3SHo3/RhQ+I1A0Ny+9uAehkQH6LrxkrVNvZG
+# 4f0PAKMbqUcXG7xznKJ0x0HYr5ayWGbHKZRcObU+/34ZpL9NrXOedVDXmSd2ylKS
+# l/vvi1QwNJqXJl/+gJkQEetqmHAUFQkFtemi8MUXQG2w/RDHXXwWAjE+qIDZLQ/k
+# 4z2Z216tWaR6RDKHGkweCoDtQtzkHTCCB3EwggVZoAMCAQICEzMAAAAVxedrngKb
+# SZkAAAAAABUwDQYJKoZIhvcNAQELBQAwgYgxCzAJBgNVBAYTAlVTMRMwEQYDVQQI
+# EwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3Nv
+# ZnQgQ29ycG9yYXRpb24xMjAwBgNVBAMTKU1pY3Jvc29mdCBSb290IENlcnRpZmlj
+# YXRlIEF1dGhvcml0eSAyMDEwMB4XDTIxMDkzMDE4MjIyNVoXDTMwMDkzMDE4MzIy
+# NVowfDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcT
+# B1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEmMCQGA1UE
+# AxMdTWljcm9zb2Z0IFRpbWUtU3RhbXAgUENBIDIwMTAwggIiMA0GCSqGSIb3DQEB
+# AQUAA4ICDwAwggIKAoICAQDk4aZM57RyIQt5osvXJHm9DtWC0/3unAcH0qlsTnXI
+# yjVX9gF/bErg4r25PhdgM/9cT8dm95VTcVrifkpa/rg2Z4VGIwy1jRPPdzLAEBjo
+# YH1qUoNEt6aORmsHFPPFdvWGUNzBRMhxXFExN6AKOG6N7dcP2CZTfDlhAnrEqv1y
+# aa8dq6z2Nr41JmTamDu6GnszrYBbfowQHJ1S/rboYiXcag/PXfT+jlPP1uyFVk3v
+# 3byNpOORj7I5LFGc6XBpDco2LXCOMcg1KL3jtIckw+DJj361VI/c+gVVmG1oO5pG
+# ve2krnopN6zL64NF50ZuyjLVwIYwXE8s4mKyzbnijYjklqwBSru+cakXW2dg3viS
+# kR4dPf0gz3N9QZpGdc3EXzTdEonW/aUgfX782Z5F37ZyL9t9X4C626p+Nuw2TPYr
+# bqgSUei/BQOj0XOmTTd0lBw0gg/wEPK3Rxjtp+iZfD9M269ewvPV2HM9Q07BMzlM
+# jgK8QmguEOqEUUbi0b1qGFphAXPKZ6Je1yh2AuIzGHLXpyDwwvoSCtdjbwzJNmSL
+# W6CmgyFdXzB0kZSU2LlQ+QuJYfM2BjUYhEfb3BvR/bLUHMVr9lxSUV0S2yW6r1AF
+# emzFER1y7435UsSFF5PAPBXbGjfHCBUYP3irRbb1Hode2o+eFnJpxq57t7c+auIu
+# rQIDAQABo4IB3TCCAdkwEgYJKwYBBAGCNxUBBAUCAwEAATAjBgkrBgEEAYI3FQIE
+# FgQUKqdS/mTEmr6CkTxGNSnPEP8vBO4wHQYDVR0OBBYEFJ+nFV0AXmJdg/Tl0mWn
+# G1M1GelyMFwGA1UdIARVMFMwUQYMKwYBBAGCN0yDfQEBMEEwPwYIKwYBBQUHAgEW
+# M2h0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wa2lvcHMvRG9jcy9SZXBvc2l0b3J5
+# Lmh0bTATBgNVHSUEDDAKBggrBgEFBQcDCDAZBgkrBgEEAYI3FAIEDB4KAFMAdQBi
+# AEMAQTALBgNVHQ8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBTV
+# 9lbLj+iiXGJo0T2UkFvXzpoYxDBWBgNVHR8ETzBNMEugSaBHhkVodHRwOi8vY3Js
+# Lm1pY3Jvc29mdC5jb20vcGtpL2NybC9wcm9kdWN0cy9NaWNSb29DZXJBdXRfMjAx
+# MC0wNi0yMy5jcmwwWgYIKwYBBQUHAQEETjBMMEoGCCsGAQUFBzAChj5odHRwOi8v
+# d3d3Lm1pY3Jvc29mdC5jb20vcGtpL2NlcnRzL01pY1Jvb0NlckF1dF8yMDEwLTA2
+# LTIzLmNydDANBgkqhkiG9w0BAQsFAAOCAgEAnVV9/Cqt4SwfZwExJFvhnnJL/Klv
+# 6lwUtj5OR2R4sQaTlz0xM7U518JxNj/aZGx80HU5bbsPMeTCj/ts0aGUGCLu6WZn
+# OlNN3Zi6th542DYunKmCVgADsAW+iehp4LoJ7nvfam++Kctu2D9IdQHZGN5tggz1
+# bSNU5HhTdSRXud2f8449xvNo32X2pFaq95W2KFUn0CS9QKC/GbYSEhFdPSfgQJY4
+# rPf5KYnDvBewVIVCs/wMnosZiefwC2qBwoEZQhlSdYo2wh3DYXMuLGt7bj8sCXgU
+# 6ZGyqVvfSaN0DLzskYDSPeZKPmY7T7uG+jIa2Zb0j/aRAfbOxnT99kxybxCrdTDF
+# NLB62FD+CljdQDzHVG2dY3RILLFORy3BFARxv2T5JL5zbcqOCb2zAVdJVGTZc9d/
+# HltEAY5aGZFrDZ+kKNxnGSgkujhLmm77IVRrakURR6nxt67I6IleT53S0Ex2tVdU
+# CbFpAUR+fKFhbHP+CrvsQWY9af3LwUFJfn6Tvsv4O+S3Fb+0zj6lMVGEvL8CwYKi
+# excdFYmNcP7ntdAoGokLjzbaukz5m/8K6TT4JDVnK+ANuOaMmdbhIurwJ0I9JZTm
+# dHRbatGePu1+oDEzfbzL6Xu/OHBE0ZDxyKs6ijoIYn/ZcGNTTY3ugm2lBRDBcQZq
+# ELQdVTNYs6FwZvKhggNQMIICOAIBATCB+aGB0aSBzjCByzELMAkGA1UEBhMCVVMx
+# EzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoT
+# FU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjElMCMGA1UECxMcTWljcm9zb2Z0IEFtZXJp
+# Y2EgT3BlcmF0aW9uczEnMCUGA1UECxMeblNoaWVsZCBUU1MgRVNOOjdGMDAtMDVF
+# MC1EOTQ3MSUwIwYDVQQDExxNaWNyb3NvZnQgVGltZS1TdGFtcCBTZXJ2aWNloiMK
+# AQEwBwYFKw4DAhoDFQAEa0f118XHM/VNdqKBs4QXxNnN96CBgzCBgKR+MHwxCzAJ
+# BgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25k
+# MR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24xJjAkBgNVBAMTHU1pY3Jv
+# c29mdCBUaW1lLVN0YW1wIFBDQSAyMDEwMA0GCSqGSIb3DQEBCwUAAgUA7AdZwjAi
+# GA8yMDI1MDYyNjA1MzE0NloYDzIwMjUwNjI3MDUzMTQ2WjB3MD0GCisGAQQBhFkK
+# BAExLzAtMAoCBQDsB1nCAgEAMAoCAQACAhznAgH/MAcCAQACAhM3MAoCBQDsCKtC
+# AgEAMDYGCisGAQQBhFkKBAIxKDAmMAwGCisGAQQBhFkKAwKgCjAIAgEAAgMHoSCh
+# CjAIAgEAAgMBhqAwDQYJKoZIhvcNAQELBQADggEBADuRwm4hzLTbXWhP8oos2mV2
+# v1IzEXoS+smVxU14lEpKrDKBFSMIuL8BTsC7YmVBUxjmo/A3WIPIapqdLiCob+eS
+# UaxaVdAndlFSogED91HxKu3Hhg1mY8PEwc+pQsYFcd3aZQc5FWTgP6v3/Gxj5byg
+# +MG1KAS2MCYGuvtNO0A0mHAZOQg5sM9I8OJzTEKa6i2kdzHHlzHTUbHAI1b/0J3D
+# uzRnGaoLOx2qqIqFXVZsp7xFRGFGoqWB1fOP3iXvsyUJWKExhzSnFXnW+2n2hLfc
+# zqmmxrQISnB/RJo9sETTkFJnB0uL8vBsVEJl++mKlruqJMSisDF+kA3zEwGVIz4x
+# ggQNMIIECQIBATCBkzB8MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3Rv
+# bjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0
+# aW9uMSYwJAYDVQQDEx1NaWNyb3NvZnQgVGltZS1TdGFtcCBQQ0EgMjAxMAITMwAA
+# AgbXvFE4mCPsLAABAAACBjANBglghkgBZQMEAgEFAKCCAUowGgYJKoZIhvcNAQkD
+# MQ0GCyqGSIb3DQEJEAEEMC8GCSqGSIb3DQEJBDEiBCAmc01VJlGaK7GXad+k8bjt
+# zBBk4hA+TH/XKybSILWMWzCB+gYLKoZIhvcNAQkQAi8xgeowgecwgeQwgb0EIODo
+# 9ZSIkZ6dVtKT+E/uZx2WAy7KiXM5R1JIOhNJf0vSMIGYMIGApH4wfDELMAkGA1UE
+# BhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAc
+# BgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEmMCQGA1UEAxMdTWljcm9zb2Z0
+# IFRpbWUtU3RhbXAgUENBIDIwMTACEzMAAAIG17xROJgj7CwAAQAAAgYwIgQgiMb8
+# wzbrYtRROCWFHlLSkXQQAFgWZBBbVTk3F52Mm+EwDQYJKoZIhvcNAQELBQAEggIA
+# J6roH5b0qt+uS1Ss4guGi5Le7veGwUMGkRJFa4WOAxy6Q3YQfnqbMuts2cRz7Z/a
+# XBP7Q5KfA9Yiy06MqlqmZa5cha6Zr09nilegOh4pzVvWM+ksDo3+VNURfUMr/yju
+# iNuZaDPEZi7QzcML5CES4WRlF0V9pRc5p5zRYO9aR/0jAkStDD9SLaHjZROmVB9A
+# oP9Tb/Q2lmY59KvmfE6J5sdg/Nu4U/l8mWZ7MbWPlKoARBDB3ErEGQrvuixpvP9a
+# AYIxVWgiGRiII91Afa0ejS279lSMjp3UDDX5mEjgKu6NJ78an/roqcsQNFhIUnS7
+# x8aWqUCaS0ZvR5UWXVlAM/0WNM6Bnd3ZOKtOeb4ahwx+Vyjz/WJ56/6eEUzajuHM
+# AMdyQVbzqU6qirxzjbO2QAd3wk3auRtKJDh/DsiF//2oLBjpI7L/vfY2BA5tNbfM
+# S1fKVy4nrM3ecgzbdjR8s8Ytp4ReI/S9OGlrtA4xieFE828m7ck8Jvl8UnsZvFii
+# Gh7jN85YArd4MbrPIT3HLKae66YrC1sQPZBGInji4fwAfuI+GjzmMlPR7LNFPa6V
+# A3RPFEZfE63LpE10rhZcOWPKrBETudVt9pq/NgMkNvjxyZIxEYNeKq6VlwU+hLP2
+# 0CccSnFsSnOXwTXejAeNMx++1/zDqFWXxjcU5mUG83Y=
+# SIG # End signature block
+
+--- FILE: /c/Users/josep/Documents/dotfiles/modules/PSReadLine/2.4.1/PSReadLine.psm1 ---
+function PSConsoleHostReadLine
+{
+    [System.Diagnostics.DebuggerHidden()]
+    param()
+
+    ## Get the execution status of the last accepted user input.
+    ## This needs to be done as the first thing because any script run will flush $?.
+    $lastRunStatus = $?
+    Microsoft.PowerShell.Core\Set-StrictMode -Off
+    [Microsoft.PowerShell.PSConsoleReadLine]::ReadLine($host.Runspace, $ExecutionContext, $lastRunStatus)
+}
+
+
+# SIG # Begin signature block
+# MIIoKgYJKoZIhvcNAQcCoIIoGzCCKBcCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCOq8uG0Uyp0Vok
+# HIN3IrKfRkVvdLzDGC8ThJiUqX4y5qCCDXYwggX0MIID3KADAgECAhMzAAAEBGx0
+# Bv9XKydyAAAAAAQEMA0GCSqGSIb3DQEBCwUAMH4xCzAJBgNVBAYTAlVTMRMwEQYD
+# VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNy
+# b3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01pY3Jvc29mdCBDb2RlIFNpZ25p
+# bmcgUENBIDIwMTEwHhcNMjQwOTEyMjAxMTE0WhcNMjUwOTExMjAxMTE0WjB0MQsw
+# CQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9u
+# ZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMR4wHAYDVQQDExVNaWNy
+# b3NvZnQgQ29ycG9yYXRpb24wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+# AQC0KDfaY50MDqsEGdlIzDHBd6CqIMRQWW9Af1LHDDTuFjfDsvna0nEuDSYJmNyz
+# NB10jpbg0lhvkT1AzfX2TLITSXwS8D+mBzGCWMM/wTpciWBV/pbjSazbzoKvRrNo
+# DV/u9omOM2Eawyo5JJJdNkM2d8qzkQ0bRuRd4HarmGunSouyb9NY7egWN5E5lUc3
+# a2AROzAdHdYpObpCOdeAY2P5XqtJkk79aROpzw16wCjdSn8qMzCBzR7rvH2WVkvF
+# HLIxZQET1yhPb6lRmpgBQNnzidHV2Ocxjc8wNiIDzgbDkmlx54QPfw7RwQi8p1fy
+# 4byhBrTjv568x8NGv3gwb0RbAgMBAAGjggFzMIIBbzAfBgNVHSUEGDAWBgorBgEE
+# AYI3TAgBBggrBgEFBQcDAzAdBgNVHQ4EFgQU8huhNbETDU+ZWllL4DNMPCijEU4w
+# RQYDVR0RBD4wPKQ6MDgxHjAcBgNVBAsTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEW
+# MBQGA1UEBRMNMjMwMDEyKzUwMjkyMzAfBgNVHSMEGDAWgBRIbmTlUAXTgqoXNzci
+# tW2oynUClTBUBgNVHR8ETTBLMEmgR6BFhkNodHRwOi8vd3d3Lm1pY3Jvc29mdC5j
+# b20vcGtpb3BzL2NybC9NaWNDb2RTaWdQQ0EyMDExXzIwMTEtMDctMDguY3JsMGEG
+# CCsGAQUFBwEBBFUwUzBRBggrBgEFBQcwAoZFaHR0cDovL3d3dy5taWNyb3NvZnQu
+# Y29tL3BraW9wcy9jZXJ0cy9NaWNDb2RTaWdQQ0EyMDExXzIwMTEtMDctMDguY3J0
+# MAwGA1UdEwEB/wQCMAAwDQYJKoZIhvcNAQELBQADggIBAIjmD9IpQVvfB1QehvpC
+# Ge7QeTQkKQ7j3bmDMjwSqFL4ri6ae9IFTdpywn5smmtSIyKYDn3/nHtaEn0X1NBj
+# L5oP0BjAy1sqxD+uy35B+V8wv5GrxhMDJP8l2QjLtH/UglSTIhLqyt8bUAqVfyfp
+# h4COMRvwwjTvChtCnUXXACuCXYHWalOoc0OU2oGN+mPJIJJxaNQc1sjBsMbGIWv3
+# cmgSHkCEmrMv7yaidpePt6V+yPMik+eXw3IfZ5eNOiNgL1rZzgSJfTnvUqiaEQ0X
+# dG1HbkDv9fv6CTq6m4Ty3IzLiwGSXYxRIXTxT4TYs5VxHy2uFjFXWVSL0J2ARTYL
+# E4Oyl1wXDF1PX4bxg1yDMfKPHcE1Ijic5lx1KdK1SkaEJdto4hd++05J9Bf9TAmi
+# u6EK6C9Oe5vRadroJCK26uCUI4zIjL/qG7mswW+qT0CW0gnR9JHkXCWNbo8ccMk1
+# sJatmRoSAifbgzaYbUz8+lv+IXy5GFuAmLnNbGjacB3IMGpa+lbFgih57/fIhamq
+# 5VhxgaEmn/UjWyr+cPiAFWuTVIpfsOjbEAww75wURNM1Imp9NJKye1O24EspEHmb
+# DmqCUcq7NqkOKIG4PVm3hDDED/WQpzJDkvu4FrIbvyTGVU01vKsg4UfcdiZ0fQ+/
+# V0hf8yrtq9CkB8iIuk5bBxuPMIIHejCCBWKgAwIBAgIKYQ6Q0gAAAAAAAzANBgkq
+# hkiG9w0BAQsFADCBiDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24x
+# EDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlv
+# bjEyMDAGA1UEAxMpTWljcm9zb2Z0IFJvb3QgQ2VydGlmaWNhdGUgQXV0aG9yaXR5
+# IDIwMTEwHhcNMTEwNzA4MjA1OTA5WhcNMjYwNzA4MjEwOTA5WjB+MQswCQYDVQQG
+# EwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwG
+# A1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSgwJgYDVQQDEx9NaWNyb3NvZnQg
+# Q29kZSBTaWduaW5nIFBDQSAyMDExMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIIC
+# CgKCAgEAq/D6chAcLq3YbqqCEE00uvK2WCGfQhsqa+laUKq4BjgaBEm6f8MMHt03
+# a8YS2AvwOMKZBrDIOdUBFDFC04kNeWSHfpRgJGyvnkmc6Whe0t+bU7IKLMOv2akr
+# rnoJr9eWWcpgGgXpZnboMlImEi/nqwhQz7NEt13YxC4Ddato88tt8zpcoRb0Rrrg
+# OGSsbmQ1eKagYw8t00CT+OPeBw3VXHmlSSnnDb6gE3e+lD3v++MrWhAfTVYoonpy
+# 4BI6t0le2O3tQ5GD2Xuye4Yb2T6xjF3oiU+EGvKhL1nkkDstrjNYxbc+/jLTswM9
+# sbKvkjh+0p2ALPVOVpEhNSXDOW5kf1O6nA+tGSOEy/S6A4aN91/w0FK/jJSHvMAh
+# dCVfGCi2zCcoOCWYOUo2z3yxkq4cI6epZuxhH2rhKEmdX4jiJV3TIUs+UsS1Vz8k
+# A/DRelsv1SPjcF0PUUZ3s/gA4bysAoJf28AVs70b1FVL5zmhD+kjSbwYuER8ReTB
+# w3J64HLnJN+/RpnF78IcV9uDjexNSTCnq47f7Fufr/zdsGbiwZeBe+3W7UvnSSmn
+# Eyimp31ngOaKYnhfsi+E11ecXL93KCjx7W3DKI8sj0A3T8HhhUSJxAlMxdSlQy90
+# lfdu+HggWCwTXWCVmj5PM4TasIgX3p5O9JawvEagbJjS4NaIjAsCAwEAAaOCAe0w
+# ggHpMBAGCSsGAQQBgjcVAQQDAgEAMB0GA1UdDgQWBBRIbmTlUAXTgqoXNzcitW2o
+# ynUClTAZBgkrBgEEAYI3FAIEDB4KAFMAdQBiAEMAQTALBgNVHQ8EBAMCAYYwDwYD
+# VR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBRyLToCMZBDuRQFTuHqp8cx0SOJNDBa
+# BgNVHR8EUzBRME+gTaBLhklodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpL2Ny
+# bC9wcm9kdWN0cy9NaWNSb29DZXJBdXQyMDExXzIwMTFfMDNfMjIuY3JsMF4GCCsG
+# AQUFBwEBBFIwUDBOBggrBgEFBQcwAoZCaHR0cDovL3d3dy5taWNyb3NvZnQuY29t
+# L3BraS9jZXJ0cy9NaWNSb29DZXJBdXQyMDExXzIwMTFfMDNfMjIuY3J0MIGfBgNV
+# HSAEgZcwgZQwgZEGCSsGAQQBgjcuAzCBgzA/BggrBgEFBQcCARYzaHR0cDovL3d3
+# dy5taWNyb3NvZnQuY29tL3BraW9wcy9kb2NzL3ByaW1hcnljcHMuaHRtMEAGCCsG
+# AQUFBwICMDQeMiAdAEwAZQBnAGEAbABfAHAAbwBsAGkAYwB5AF8AcwB0AGEAdABl
+# AG0AZQBuAHQALiAdMA0GCSqGSIb3DQEBCwUAA4ICAQBn8oalmOBUeRou09h0ZyKb
+# C5YR4WOSmUKWfdJ5DJDBZV8uLD74w3LRbYP+vj/oCso7v0epo/Np22O/IjWll11l
+# hJB9i0ZQVdgMknzSGksc8zxCi1LQsP1r4z4HLimb5j0bpdS1HXeUOeLpZMlEPXh6
+# I/MTfaaQdION9MsmAkYqwooQu6SpBQyb7Wj6aC6VoCo/KmtYSWMfCWluWpiW5IP0
+# wI/zRive/DvQvTXvbiWu5a8n7dDd8w6vmSiXmE0OPQvyCInWH8MyGOLwxS3OW560
+# STkKxgrCxq2u5bLZ2xWIUUVYODJxJxp/sfQn+N4sOiBpmLJZiWhub6e3dMNABQam
+# ASooPoI/E01mC8CzTfXhj38cbxV9Rad25UAqZaPDXVJihsMdYzaXht/a8/jyFqGa
+# J+HNpZfQ7l1jQeNbB5yHPgZ3BtEGsXUfFL5hYbXw3MYbBL7fQccOKO7eZS/sl/ah
+# XJbYANahRr1Z85elCUtIEJmAH9AAKcWxm6U/RXceNcbSoqKfenoi+kiVH6v7RyOA
+# 9Z74v2u3S5fi63V4GuzqN5l5GEv/1rMjaHXmr/r8i+sLgOppO6/8MO0ETI7f33Vt
+# Y5E90Z1WTk+/gFcioXgRMiF670EKsT/7qMykXcGhiJtXcVZOSEXAQsmbdlsKgEhr
+# /Xmfwb1tbWrJUnMTDXpQzTGCGgowghoGAgEBMIGVMH4xCzAJBgNVBAYTAlVTMRMw
+# EQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVN
+# aWNyb3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01pY3Jvc29mdCBDb2RlIFNp
+# Z25pbmcgUENBIDIwMTECEzMAAAQEbHQG/1crJ3IAAAAABAQwDQYJYIZIAWUDBAIB
+# BQCgga4wGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO
+# MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEIOSdA5BMt2RMcjzywY8AowJ5
+# 5oQcEDpeUNV6duwPX3j2MEIGCisGAQQBgjcCAQwxNDAyoBSAEgBNAGkAYwByAG8A
+# cwBvAGYAdKEagBhodHRwOi8vd3d3Lm1pY3Jvc29mdC5jb20wDQYJKoZIhvcNAQEB
+# BQAEggEAPNwiTFy8S0xSQLpQS96LgwyVCI5iSvzxSVLgptQ0k9D25FqInF/NBX1b
+# 58q6pJOAeHGhdL2B4jQx8rLAJaJb0GkVUvk/Q9DwTRQMMhvHoTNkXVDHl5DCT8DE
+# n406bXs5VkH91VMsP5LRxA2RYMWt3T0VJn2s/iuDvaZ/CcTahyOlGQKIATKvjUwW
+# wUhBu+E5OKIc3dgIbWpM+KNq2VQoIMNEoMKOevL1W5ZykLZjQ/BgJWdpXSlxYsMB
+# SyCpf5woZPbfN8FYlUvN4Nbd0AjZzQ5/3/cojvpb593DSAbkqC+8JE8ZblQ3u9A4
+# 47VRg865m/Fwl/7dughaVfHS9pQl9qGCF5QwgheQBgorBgEEAYI3AwMBMYIXgDCC
+# F3wGCSqGSIb3DQEHAqCCF20wghdpAgEDMQ8wDQYJYIZIAWUDBAIBBQAwggFSBgsq
+# hkiG9w0BCRABBKCCAUEEggE9MIIBOQIBAQYKKwYBBAGEWQoDATAxMA0GCWCGSAFl
+# AwQCAQUABCBWLcdSOCcR7oAAwmkQvXnSWDtadbReANKCZ93Z3QNhowIGaErJMzPt
+# GBMyMDI1MDYyNjEzNTEyNy42NzVaMASAAgH0oIHRpIHOMIHLMQswCQYDVQQGEwJV
+# UzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UE
+# ChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSUwIwYDVQQLExxNaWNyb3NvZnQgQW1l
+# cmljYSBPcGVyYXRpb25zMScwJQYDVQQLEx5uU2hpZWxkIFRTUyBFU046QTkzNS0w
+# M0UwLUQ5NDcxJTAjBgNVBAMTHE1pY3Jvc29mdCBUaW1lLVN0YW1wIFNlcnZpY2Wg
+# ghHqMIIHIDCCBQigAwIBAgITMwAAAgy5ZOM1nOz0rgABAAACDDANBgkqhkiG9w0B
+# AQsFADB8MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UE
+# BxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSYwJAYD
+# VQQDEx1NaWNyb3NvZnQgVGltZS1TdGFtcCBQQ0EgMjAxMDAeFw0yNTAxMzAxOTQz
+# MDBaFw0yNjA0MjIxOTQzMDBaMIHLMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2Fz
+# aGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENv
+# cnBvcmF0aW9uMSUwIwYDVQQLExxNaWNyb3NvZnQgQW1lcmljYSBPcGVyYXRpb25z
+# MScwJQYDVQQLEx5uU2hpZWxkIFRTUyBFU046QTkzNS0wM0UwLUQ5NDcxJTAjBgNV
+# BAMTHE1pY3Jvc29mdCBUaW1lLVN0YW1wIFNlcnZpY2UwggIiMA0GCSqGSIb3DQEB
+# AQUAA4ICDwAwggIKAoICAQDKAVYmPeRtga/U6jzqyqLD0MAool23gcBN58+Z/Xsk
+# YwNJsZ+O+wVyQYl8dPTK1/BC2xAic1m+JvckqjVaQ32KmURsEZotirQY4PKVW+eX
+# wRt3r6szgLuic6qoHlbXox/l0HJtgURkzDXWMkKmGSL7z8/crqcvmYqv8t/slAF4
+# J+mpzb9tMFVmjwKXONVdRwg9Q3WaPZBC7Wvoi7PRIN2jgjSBnHYyAZSlstKNrpYb
+# 6+Gu6oSFkQzGpR65+QNDdkP4ufOf4PbOg3fb4uGPjI8EPKlpwMwai1kQyX+fgcgC
+# oV9J+o8MYYCZUet3kzhhwRzqh6LMeDjaXLP701SXXiXc2ZHzuDHbS/sZtJ3627cV
+# pClXEIUvg2xpr0rPlItHwtjo1PwMCpXYqnYKvX8aJ8nawT9W8FUuuyZPG1852+q4
+# jkVleKL7x+7el8ETehbdkwdhAXyXimaEzWetNNSmG/KfHAp9czwsL1vKr4Rgn+pI
+# IkZHuomdf5e481K+xIWhLCPdpuV87EqGOK/jbhOnZEqwdvA0AlMaLfsmCemZmupe
+# jaYuEk05/6cCUxgF4zCnkJeYdMAP+9Z4kVh7tzRFsw/lZSl2D7EhIA6Knj6RffH2
+# k7YtSGSv86CShzfiXaz9y6sTu8SGqF6ObL/eu/DkivyVoCfUXWLjiSJsrS63D0EH
+# HQIDAQABo4IBSTCCAUUwHQYDVR0OBBYEFHUORSH/sB/rQ/beD0l5VxQ706GIMB8G
+# A1UdIwQYMBaAFJ+nFV0AXmJdg/Tl0mWnG1M1GelyMF8GA1UdHwRYMFYwVKBSoFCG
+# Tmh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wa2lvcHMvY3JsL01pY3Jvc29mdCUy
+# MFRpbWUtU3RhbXAlMjBQQ0ElMjAyMDEwKDEpLmNybDBsBggrBgEFBQcBAQRgMF4w
+# XAYIKwYBBQUHMAKGUGh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wa2lvcHMvY2Vy
+# dHMvTWljcm9zb2Z0JTIwVGltZS1TdGFtcCUyMFBDQSUyMDIwMTAoMSkuY3J0MAwG
+# A1UdEwEB/wQCMAAwFgYDVR0lAQH/BAwwCgYIKwYBBQUHAwgwDgYDVR0PAQH/BAQD
+# AgeAMA0GCSqGSIb3DQEBCwUAA4ICAQDZMPr4gVmwwf4GMB5ZfHSr34uhug6yzu4H
+# UT+JWMZqz9uhLZBoX5CPjdKJzwAVvYoNuLmS0+9lA5S74rvKqd/u9vp88VGk6U7g
+# MceatdqpKlbVRdn2ZfrMcpI4zOc6BtuYrzJV4cEs1YmX95uiAxaED34w02BnfuPZ
+# XA0edsDBbd4ixFU8X/1J0DfIUk1YFYPOrmwmI2k16u6TcKO0YpRlwTdCq9vO0eEI
+# ER1SLmQNBzX9h2ccCvtgekOaBoIQ3ZRai8Ds1f+wcKCPzD4qDX3xNgvLFiKoA6ZS
+# G9S/yOrGaiSGIeDy5N9VQuqTNjryuAzjvf5W8AQp31hV1GbUDOkbUdd+zkJWKX4F
+# mzeeN52EEbykoWcJ5V9M4DPGN5xpFqXy9aO0+dR0UUYWuqeLhDyRnVeZcTEu0xgm
+# o+pQHauFVASsVORMp8TF8dpesd+tqkkQ8VNvI20oOfnTfL+7ZgUMf7qNV0ll0Wo5
+# nlr1CJva1bfk2Hc5BY1M9sd3blBkezyvJPn4j0bfOOrCYTwYsNsjiRl/WW18NOpi
+# wqciwFlUNqtWCRMzC9r84YaUMQ82Bywk48d4uBon5ZA8pXXS7jwJTjJj5USeRl9v
+# jT98PDZyCFO2eFSOFdDdf6WBo/WZUA2hGZ0q+J7j140fbXCfOUIm0j23HaAV0ckD
+# S/nmC/oF1jCCB3EwggVZoAMCAQICEzMAAAAVxedrngKbSZkAAAAAABUwDQYJKoZI
+# hvcNAQELBQAwgYgxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAw
+# DgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24x
+# MjAwBgNVBAMTKU1pY3Jvc29mdCBSb290IENlcnRpZmljYXRlIEF1dGhvcml0eSAy
+# MDEwMB4XDTIxMDkzMDE4MjIyNVoXDTMwMDkzMDE4MzIyNVowfDELMAkGA1UEBhMC
+# VVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNV
+# BAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEmMCQGA1UEAxMdTWljcm9zb2Z0IFRp
+# bWUtU3RhbXAgUENBIDIwMTAwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoIC
+# AQDk4aZM57RyIQt5osvXJHm9DtWC0/3unAcH0qlsTnXIyjVX9gF/bErg4r25Phdg
+# M/9cT8dm95VTcVrifkpa/rg2Z4VGIwy1jRPPdzLAEBjoYH1qUoNEt6aORmsHFPPF
+# dvWGUNzBRMhxXFExN6AKOG6N7dcP2CZTfDlhAnrEqv1yaa8dq6z2Nr41JmTamDu6
+# GnszrYBbfowQHJ1S/rboYiXcag/PXfT+jlPP1uyFVk3v3byNpOORj7I5LFGc6XBp
+# Dco2LXCOMcg1KL3jtIckw+DJj361VI/c+gVVmG1oO5pGve2krnopN6zL64NF50Zu
+# yjLVwIYwXE8s4mKyzbnijYjklqwBSru+cakXW2dg3viSkR4dPf0gz3N9QZpGdc3E
+# XzTdEonW/aUgfX782Z5F37ZyL9t9X4C626p+Nuw2TPYrbqgSUei/BQOj0XOmTTd0
+# lBw0gg/wEPK3Rxjtp+iZfD9M269ewvPV2HM9Q07BMzlMjgK8QmguEOqEUUbi0b1q
+# GFphAXPKZ6Je1yh2AuIzGHLXpyDwwvoSCtdjbwzJNmSLW6CmgyFdXzB0kZSU2LlQ
+# +QuJYfM2BjUYhEfb3BvR/bLUHMVr9lxSUV0S2yW6r1AFemzFER1y7435UsSFF5PA
+# PBXbGjfHCBUYP3irRbb1Hode2o+eFnJpxq57t7c+auIurQIDAQABo4IB3TCCAdkw
+# EgYJKwYBBAGCNxUBBAUCAwEAATAjBgkrBgEEAYI3FQIEFgQUKqdS/mTEmr6CkTxG
+# NSnPEP8vBO4wHQYDVR0OBBYEFJ+nFV0AXmJdg/Tl0mWnG1M1GelyMFwGA1UdIARV
+# MFMwUQYMKwYBBAGCN0yDfQEBMEEwPwYIKwYBBQUHAgEWM2h0dHA6Ly93d3cubWlj
+# cm9zb2Z0LmNvbS9wa2lvcHMvRG9jcy9SZXBvc2l0b3J5Lmh0bTATBgNVHSUEDDAK
+# BggrBgEFBQcDCDAZBgkrBgEEAYI3FAIEDB4KAFMAdQBiAEMAQTALBgNVHQ8EBAMC
+# AYYwDwYDVR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBTV9lbLj+iiXGJo0T2UkFvX
+# zpoYxDBWBgNVHR8ETzBNMEugSaBHhkVodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20v
+# cGtpL2NybC9wcm9kdWN0cy9NaWNSb29DZXJBdXRfMjAxMC0wNi0yMy5jcmwwWgYI
+# KwYBBQUHAQEETjBMMEoGCCsGAQUFBzAChj5odHRwOi8vd3d3Lm1pY3Jvc29mdC5j
+# b20vcGtpL2NlcnRzL01pY1Jvb0NlckF1dF8yMDEwLTA2LTIzLmNydDANBgkqhkiG
+# 9w0BAQsFAAOCAgEAnVV9/Cqt4SwfZwExJFvhnnJL/Klv6lwUtj5OR2R4sQaTlz0x
+# M7U518JxNj/aZGx80HU5bbsPMeTCj/ts0aGUGCLu6WZnOlNN3Zi6th542DYunKmC
+# VgADsAW+iehp4LoJ7nvfam++Kctu2D9IdQHZGN5tggz1bSNU5HhTdSRXud2f8449
+# xvNo32X2pFaq95W2KFUn0CS9QKC/GbYSEhFdPSfgQJY4rPf5KYnDvBewVIVCs/wM
+# nosZiefwC2qBwoEZQhlSdYo2wh3DYXMuLGt7bj8sCXgU6ZGyqVvfSaN0DLzskYDS
+# PeZKPmY7T7uG+jIa2Zb0j/aRAfbOxnT99kxybxCrdTDFNLB62FD+CljdQDzHVG2d
+# Y3RILLFORy3BFARxv2T5JL5zbcqOCb2zAVdJVGTZc9d/HltEAY5aGZFrDZ+kKNxn
+# GSgkujhLmm77IVRrakURR6nxt67I6IleT53S0Ex2tVdUCbFpAUR+fKFhbHP+Crvs
+# QWY9af3LwUFJfn6Tvsv4O+S3Fb+0zj6lMVGEvL8CwYKiexcdFYmNcP7ntdAoGokL
+# jzbaukz5m/8K6TT4JDVnK+ANuOaMmdbhIurwJ0I9JZTmdHRbatGePu1+oDEzfbzL
+# 6Xu/OHBE0ZDxyKs6ijoIYn/ZcGNTTY3ugm2lBRDBcQZqELQdVTNYs6FwZvKhggNN
+# MIICNQIBATCB+aGB0aSBzjCByzELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hp
+# bmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jw
+# b3JhdGlvbjElMCMGA1UECxMcTWljcm9zb2Z0IEFtZXJpY2EgT3BlcmF0aW9uczEn
+# MCUGA1UECxMeblNoaWVsZCBUU1MgRVNOOkE5MzUtMDNFMC1EOTQ3MSUwIwYDVQQD
+# ExxNaWNyb3NvZnQgVGltZS1TdGFtcCBTZXJ2aWNloiMKAQEwBwYFKw4DAhoDFQDv
+# u8hkhEMt5Z8Ldefls7z1LVU8pqCBgzCBgKR+MHwxCzAJBgNVBAYTAlVTMRMwEQYD
+# VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNy
+# b3NvZnQgQ29ycG9yYXRpb24xJjAkBgNVBAMTHU1pY3Jvc29mdCBUaW1lLVN0YW1w
+# IFBDQSAyMDEwMA0GCSqGSIb3DQEBCwUAAgUA7Ae7bzAiGA8yMDI1MDYyNjEyMjgz
+# MVoYDzIwMjUwNjI3MTIyODMxWjB0MDoGCisGAQQBhFkKBAExLDAqMAoCBQDsB7tv
+# AgEAMAcCAQACAgy1MAcCAQACAhNpMAoCBQDsCQzvAgEAMDYGCisGAQQBhFkKBAIx
+# KDAmMAwGCisGAQQBhFkKAwKgCjAIAgEAAgMHoSChCjAIAgEAAgMBhqAwDQYJKoZI
+# hvcNAQELBQADggEBAFDqU7zeLBqCMwwCYtcXal/McbAMWkg8j0QbjtHlvx5Q1i8o
+# aR3lt1WAXB0jatJUwXmjgG9TeiRBO+Lm2Yd3XpK8fVwDL9dI1n1eneMa2wML6YZr
+# gq81DQtfuMTPxL/fWJJKNIC8SbJqFHpd/g1BE0YxhlG/34J7/ivkV4MqvcTXCwca
+# 3PQMQ1URRsaH4iToK7ID6sfGcRmiqTn2N/QJhYrMLX9RBU/PX3ebX49tIRqtcTPq
+# Ajrzz2Ca3k8aKs1Rwkcc8++yJgi14Lq993XiCrNX29lAqon3z7EVJ/wLF87DjqVX
+# 7MhpEU1rcnl3xQdIYKCDcZRmkXCBYHScR08v3isxggQNMIIECQIBATCBkzB8MQsw
+# CQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9u
+# ZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSYwJAYDVQQDEx1NaWNy
+# b3NvZnQgVGltZS1TdGFtcCBQQ0EgMjAxMAITMwAAAgy5ZOM1nOz0rgABAAACDDAN
+# BglghkgBZQMEAgEFAKCCAUowGgYJKoZIhvcNAQkDMQ0GCyqGSIb3DQEJEAEEMC8G
+# CSqGSIb3DQEJBDEiBCCBWftkGnBDrvC7jlpCH1mO1OdgVT6x6UGtS4YQL5CqoTCB
+# +gYLKoZIhvcNAQkQAi8xgeowgecwgeQwgb0EINUo17cFMZN46MI5NfIAg9Ux5cO5
+# xM9inre5riuOZ8ItMIGYMIGApH4wfDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldh
+# c2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBD
+# b3Jwb3JhdGlvbjEmMCQGA1UEAxMdTWljcm9zb2Z0IFRpbWUtU3RhbXAgUENBIDIw
+# MTACEzMAAAIMuWTjNZzs9K4AAQAAAgwwIgQgGyXa1pVWbmkKQoBX3WRyYSSDH/2o
+# kAoEUca67zxH9KUwDQYJKoZIhvcNAQELBQAEggIAfLUgXV3eHnUKMRAGhJk+kOGR
+# t4Om1OPFPrXHfUFyR4RN9WbJpch7LSfa6EjL6EcQKayBexdgTIV6CHNY2NUTNtk9
+# GrWDguIZp8JckWVLvbLl5nK7eUkn+WFbaIZgsKRL8/l/mlHfVVhmSfI+vDuERRFg
+# hp7hcH5/XCgKPqrSmbqP7fdASmA3rptr0QCurTKqy29/ofI8Nn//W8q0G8M7Auu6
+# GR97gycCEL91e68fZoDlF8VA15JZfo4SwuOrzsPLkhl0P52v5G9qgyV6nuK9/gpN
+# tP1v410Z+Jm1rDRH9Zt+Ek0z6zmKH0Pedls1H5VY8lDX8suUX85x+HdUkx2vjwXs
+# k6XSZcOZitCqJzGMytwVvpWk8nEK//n0ohg17ieVb2gn9KtS1EAy6ikgDUE731dt
+# VEKkuL8bS0t+AnsKK/zQiRoDVmERAfhJgbMbTwrFB8UllwCe/WSeQ5l9p9u0chq+
+# lY17yFwcf00TVZaSf/OlSfmewYWo/133O9DxgrsTbYRTFJhdynk0uIluiaU4xCKd
+# a0kR/uSh4kylWCPqtSB+24p+4/hKMIbd6xUVCDDG5u+S1XKUAIgtlGFhc7V8wRjv
+# LzEMX6TK2p0RKLwZjYW5rIRmiWWfAIKgl7d0hLLslNfLhMnl4mh8tUsqQK4vei+w
+# 6TCevOBTB/5N9D1w/gs=
+# SIG # End signature block
+
+--- FILE: /c/Users/josep/Documents/dotfiles/modules/PSReadLine/2.4.1/SamplePSReadLineProfile.ps1 ---
+using namespace System.Management.Automation
+using namespace System.Management.Automation.Language
+
+# This is an example profile for PSReadLine.
+#
+# This is roughly what I use so there is some emphasis on emacs bindings,
+# but most of these bindings make sense in Windows mode as well.
+
+Import-Module PSReadLine
+
+Set-PSReadLineOption -EditMode Emacs
+
+# Searching for commands with up/down arrow is really handy.  The
+# option "moves to end" is useful if you want the cursor at the end
+# of the line while cycling through history like it does w/o searching,
+# without that option, the cursor will remain at the position it was
+# when you used up arrow, which can be useful if you forget the exact
+# string you started the search on.
+Set-PSReadLineOption -HistorySearchCursorMovesToEnd
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+# This key handler shows the entire or filtered history using Out-GridView. The
+# typed text is used as the substring pattern for filtering. A selected command
+# is inserted to the command line without invoking. Multiple command selection
+# is supported, e.g. selected by Ctrl + Click.
+# As another example, the module 'F7History' does something similar but uses the
+# console GUI instead of Out-GridView. Details about this module can be found at
+# PowerShell Gallery: https://www.powershellgallery.com/packages/F7History.
+Set-PSReadLineKeyHandler -Key F7 `
+                         -BriefDescription History `
+                         -LongDescription 'Show command history' `
+                         -ScriptBlock {
+    $pattern = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$pattern, [ref]$null)
+    if ($pattern)
+    {
+        $pattern = [regex]::Escape($pattern)
+    }
+
+    $history = [System.Collections.ArrayList]@(
+        $last = ''
+        $lines = ''
+        foreach ($line in [System.IO.File]::ReadLines((Get-PSReadLineOption).HistorySavePath))
+        {
+            if ($line.EndsWith('`'))
+            {
+                $line = $line.Substring(0, $line.Length - 1)
+                $lines = if ($lines)
+                {
+                    "$lines`n$line"
+                }
+                else
+                {
+                    $line
+                }
+                continue
+            }
+
+            if ($lines)
+            {
+                $line = "$lines`n$line"
+                $lines = ''
+            }
+
+            if (($line -cne $last) -and (!$pattern -or ($line -match $pattern)))
+            {
+                $last = $line
+                $line
+            }
+        }
+    )
+    $history.Reverse()
+
+    $command = $history | Out-GridView -Title History -PassThru
+    if ($command)
+    {
+        [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert(($command -join "`n"))
+    }
+}
+
+# This is an example of a macro that you might use to execute a command.
+# This will add the command to history.
+Set-PSReadLineKeyHandler -Key Ctrl+b `
+                         -BriefDescription BuildCurrentDirectory `
+                         -LongDescription "Build the current directory" `
+                         -ScriptBlock {
+    [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("msbuild")
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+}
+
+# In Emacs mode - Tab acts like in bash, but the Windows style completion
+# is still useful sometimes, so bind some keys so we can do both
+Set-PSReadLineKeyHandler -Key Ctrl+q -Function TabCompleteNext
+Set-PSReadLineKeyHandler -Key Ctrl+Q -Function TabCompletePrevious
+
+# Clipboard interaction is bound by default in Windows mode, but not Emacs mode.
+Set-PSReadLineKeyHandler -Key Ctrl+C -Function Copy
+Set-PSReadLineKeyHandler -Key Ctrl+v -Function Paste
+
+# CaptureScreen is good for blog posts or email showing a transaction
+# of what you did when asking for help or demonstrating a technique.
+Set-PSReadLineKeyHandler -Chord 'Ctrl+d,Ctrl+c' -Function CaptureScreen
+
+# The built-in word movement uses character delimiters, but token based word
+# movement is also very useful - these are the bindings you'd use if you
+# prefer the token based movements bound to the normal emacs word movement
+# key bindings.
+Set-PSReadLineKeyHandler -Key Alt+d -Function ShellKillWord
+Set-PSReadLineKeyHandler -Key Alt+Backspace -Function ShellBackwardKillWord
+Set-PSReadLineKeyHandler -Key Alt+b -Function ShellBackwardWord
+Set-PSReadLineKeyHandler -Key Alt+f -Function ShellForwardWord
+Set-PSReadLineKeyHandler -Key Alt+B -Function SelectShellBackwardWord
+Set-PSReadLineKeyHandler -Key Alt+F -Function SelectShellForwardWord
+
+#region Smart Insert/Delete
+
+# The next four key handlers are designed to make entering matched quotes
+# parens, and braces a nicer experience.  I'd like to include functions
+# in the module that do this, but this implementation still isn't as smart
+# as ReSharper, so I'm just providing it as a sample.
+
+Set-PSReadLineKeyHandler -Key '"',"'" `
+                         -BriefDescription SmartInsertQuote `
+                         -LongDescription "Insert paired quotes if not already on a quote" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $quote = $key.KeyChar
+
+    $selectionStart = $null
+    $selectionLength = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+
+    # If text is selected, just quote it without any smarts
+    if ($selectionStart -ne -1)
+    {
+        [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, $quote + $line.SubString($selectionStart, $selectionLength) + $quote)
+        [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
+        return
+    }
+
+    $ast = $null
+    $tokens = $null
+    $parseErrors = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$parseErrors, [ref]$null)
+
+    function FindToken
+    {
+        param($tokens, $cursor)
+
+        foreach ($token in $tokens)
+        {
+            if ($cursor -lt $token.Extent.StartOffset) { continue }
+            if ($cursor -lt $token.Extent.EndOffset) {
+                $result = $token
+                $token = $token -as [StringExpandableToken]
+                if ($token) {
+                    $nested = FindToken $token.NestedTokens $cursor
+                    if ($nested) { $result = $nested }
+                }
+
+                return $result
+            }
+        }
+        return $null
+    }
+
+    $token = FindToken $tokens $cursor
+
+    # If we're on or inside a **quoted** string token (so not generic), we need to be smarter
+    if ($token -is [StringToken] -and $token.Kind -ne [TokenKind]::Generic) {
+        # If we're at the start of the string, assume we're inserting a new string
+        if ($token.Extent.StartOffset -eq $cursor) {
+            [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$quote$quote ")
+            [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor + 1)
+            return
+        }
+
+        # If we're at the end of the string, move over the closing quote if present.
+        if ($token.Extent.EndOffset -eq ($cursor + 1) -and $line[$cursor] -eq $quote) {
+            [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor + 1)
+            return
+        }
+    }
+
+    if ($null -eq $token -or
+        $token.Kind -eq [TokenKind]::RParen -or $token.Kind -eq [TokenKind]::RCurly -or $token.Kind -eq [TokenKind]::RBracket) {
+        if ($line[0..$cursor].Where{$_ -eq $quote}.Count % 2 -eq 1) {
+            # Odd number of quotes before the cursor, insert a single quote
+            [Microsoft.PowerShell.PSConsoleReadLine]::Insert($quote)
+        }
+        else {
+            # Insert matching quotes, move cursor to be in between the quotes
+            [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$quote$quote")
+            [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor + 1)
+        }
+        return
+    }
+
+    # If cursor is at the start of a token, enclose it in quotes.
+    if ($token.Extent.StartOffset -eq $cursor) {
+        if ($token.Kind -eq [TokenKind]::Generic -or $token.Kind -eq [TokenKind]::Identifier -or 
+            $token.Kind -eq [TokenKind]::Variable -or $token.TokenFlags.hasFlag([TokenFlags]::Keyword)) {
+            $end = $token.Extent.EndOffset
+            $len = $end - $cursor
+            [Microsoft.PowerShell.PSConsoleReadLine]::Replace($cursor, $len, $quote + $line.SubString($cursor, $len) + $quote)
+            [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($end + 2)
+            return
+        }
+    }
+
+    # We failed to be smart, so just insert a single quote
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert($quote)
+}
+
+Set-PSReadLineKeyHandler -Key '(','{','[' `
+                         -BriefDescription InsertPairedBraces `
+                         -LongDescription "Insert matching braces" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $closeChar = switch ($key.KeyChar)
+    {
+        <#case#> '(' { [char]')'; break }
+        <#case#> '{' { [char]'}'; break }
+        <#case#> '[' { [char]']'; break }
+    }
+
+    $selectionStart = $null
+    $selectionLength = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    
+    if ($selectionStart -ne -1)
+    {
+      # Text is selected, wrap it in brackets
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, $key.KeyChar + $line.SubString($selectionStart, $selectionLength) + $closeChar)
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
+    } else {
+      # No text is selected, insert a pair
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$($key.KeyChar)$closeChar")
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor + 1)
+    }
+}
+
+Set-PSReadLineKeyHandler -Key ')',']','}' `
+                         -BriefDescription SmartCloseBraces `
+                         -LongDescription "Insert closing brace or skip" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+
+    if ($line[$cursor] -eq $key.KeyChar)
+    {
+        [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor + 1)
+    }
+    else
+    {
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$($key.KeyChar)")
+    }
+}
+
+Set-PSReadLineKeyHandler -Key Backspace `
+                         -BriefDescription SmartBackspace `
+                         -LongDescription "Delete previous character or matching quotes/parens/braces" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+
+    if ($cursor -gt 0)
+    {
+        $toMatch = $null
+        if ($cursor -lt $line.Length)
+        {
+            switch ($line[$cursor])
+            {
+                <#case#> '"' { $toMatch = '"'; break }
+                <#case#> "'" { $toMatch = "'"; break }
+                <#case#> ')' { $toMatch = '('; break }
+                <#case#> ']' { $toMatch = '['; break }
+                <#case#> '}' { $toMatch = '{'; break }
+            }
+        }
+
+        if ($toMatch -ne $null -and $line[$cursor-1] -eq $toMatch)
+        {
+            [Microsoft.PowerShell.PSConsoleReadLine]::Delete($cursor - 1, 2)
+        }
+        else
+        {
+            [Microsoft.PowerShell.PSConsoleReadLine]::BackwardDeleteChar($key, $arg)
+        }
+    }
+}
+
+#endregion Smart Insert/Delete
+
+# Sometimes you enter a command but realize you forgot to do something else first.
+# This binding will let you save that command in the history so you can recall it,
+# but it doesn't actually execute.  It also clears the line with RevertLine so the
+# undo stack is reset - though redo will still reconstruct the command line.
+Set-PSReadLineKeyHandler -Key Alt+w `
+                         -BriefDescription SaveInHistory `
+                         -LongDescription "Save current line in history but do not execute" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
+    [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
+}
+
+# Insert text from the clipboard as a here string
+Set-PSReadLineKeyHandler -Key Ctrl+V `
+                         -BriefDescription PasteAsHereString `
+                         -LongDescription "Paste the clipboard text as a here string" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    Add-Type -Assembly PresentationCore
+    if ([System.Windows.Clipboard]::ContainsText())
+    {
+        # Get clipboard text - remove trailing spaces, convert \r\n to \n, and remove the final \n.
+        $text = ([System.Windows.Clipboard]::GetText() -replace "\p{Zs}*`r?`n","`n").TrimEnd()
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert("@'`n$text`n'@")
+    }
+    else
+    {
+        [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
+    }
+}
+
+# Sometimes you want to get a property of invoke a member on what you've entered so far
+# but you need parens to do that.  This binding will help by putting parens around the current selection,
+# or if nothing is selected, the whole line.
+Set-PSReadLineKeyHandler -Key 'Alt+(' `
+                         -BriefDescription ParenthesizeSelection `
+                         -LongDescription "Put parenthesis around the selection or entire line and move the cursor to after the closing parenthesis" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $selectionStart = $null
+    $selectionLength = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    if ($selectionStart -ne -1)
+    {
+        [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, '(' + $line.SubString($selectionStart, $selectionLength) + ')')
+        [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
+    }
+    else
+    {
+        [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
+        [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
+    }
+}
+
+# Each time you press Alt+', this key handler will change the token
+# under or before the cursor.  It will cycle through single quotes, double quotes, or
+# no quotes each time it is invoked.
+Set-PSReadLineKeyHandler -Key "Alt+'" `
+                         -BriefDescription ToggleQuoteArgument `
+                         -LongDescription "Toggle quotes on the argument under the cursor" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $ast = $null
+    $tokens = $null
+    $errors = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+
+    $tokenToChange = $null
+    foreach ($token in $tokens)
+    {
+        $extent = $token.Extent
+        if ($extent.StartOffset -le $cursor -and $extent.EndOffset -ge $cursor)
+        {
+            $tokenToChange = $token
+
+            # If the cursor is at the end (it's really 1 past the end) of the previous token,
+            # we only want to change the previous token if there is no token under the cursor
+            if ($extent.EndOffset -eq $cursor -and $foreach.MoveNext())
+            {
+                $nextToken = $foreach.Current
+                if ($nextToken.Extent.StartOffset -eq $cursor)
+                {
+                    $tokenToChange = $nextToken
+                }
+            }
+            break
+        }
+    }
+
+    if ($tokenToChange -ne $null)
+    {
+        $extent = $tokenToChange.Extent
+        $tokenText = $extent.Text
+        if ($tokenText[0] -eq '"' -and $tokenText[-1] -eq '"')
+        {
+            # Switch to no quotes
+            $replacement = $tokenText.Substring(1, $tokenText.Length - 2)
+        }
+        elseif ($tokenText[0] -eq "'" -and $tokenText[-1] -eq "'")
+        {
+            # Switch to double quotes
+            $replacement = '"' + $tokenText.Substring(1, $tokenText.Length - 2) + '"'
+        }
+        else
+        {
+            # Add single quotes
+            $replacement = "'" + $tokenText + "'"
+        }
+
+        [Microsoft.PowerShell.PSConsoleReadLine]::Replace(
+            $extent.StartOffset,
+            $tokenText.Length,
+            $replacement)
+    }
+}
+
+# This example will replace any aliases on the command line with the resolved commands.
+Set-PSReadLineKeyHandler -Key "Alt+%" `
+                         -BriefDescription ExpandAliases `
+                         -LongDescription "Replace all aliases with the full command" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $ast = $null
+    $tokens = $null
+    $errors = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+
+    $startAdjustment = 0
+    foreach ($token in $tokens)
+    {
+        if ($token.TokenFlags -band [TokenFlags]::CommandName)
+        {
+            $alias = $ExecutionContext.InvokeCommand.GetCommand($token.Extent.Text, 'Alias')
+            if ($alias -ne $null)
+            {
+                $resolvedCommand = $alias.ResolvedCommandName
+                if ($resolvedCommand -ne $null)
+                {
+                    $extent = $token.Extent
+                    $length = $extent.EndOffset - $extent.StartOffset
+                    [Microsoft.PowerShell.PSConsoleReadLine]::Replace(
+                        $extent.StartOffset + $startAdjustment,
+                        $length,
+                        $resolvedCommand)
+
+                    # Our copy of the tokens won't have been updated, so we need to
+                    # adjust by the difference in length
+                    $startAdjustment += ($resolvedCommand.Length - $length)
+                }
+            }
+        }
+    }
+}
+
+# F1 for help on the command line - naturally
+Set-PSReadLineKeyHandler -Key F1 `
+                         -BriefDescription CommandHelp `
+                         -LongDescription "Open the help window for the current command" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $ast = $null
+    $tokens = $null
+    $errors = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+
+    $commandAst = $ast.FindAll( {
+        $node = $args[0]
+        $node -is [CommandAst] -and
+            $node.Extent.StartOffset -le $cursor -and
+            $node.Extent.EndOffset -ge $cursor
+        }, $true) | Select-Object -Last 1
+
+    if ($commandAst -ne $null)
+    {
+        $commandName = $commandAst.GetCommandName()
+        if ($commandName -ne $null)
+        {
+            $command = $ExecutionContext.InvokeCommand.GetCommand($commandName, 'All')
+            if ($command -is [AliasInfo])
+            {
+                $commandName = $command.ResolvedCommandName
+            }
+
+            if ($commandName -ne $null)
+            {
+                Get-Help $commandName -ShowWindow
+            }
+        }
+    }
+}
+
+
+#
+# Ctrl+Shift+j then type a key to mark the current directory.
+# Ctrj+j then the same key will change back to that directory without
+# needing to type cd and won't change the command line.
+
+#
+$global:PSReadLineMarks = @{}
+
+Set-PSReadLineKeyHandler -Key Ctrl+J `
+                         -BriefDescription MarkDirectory `
+                         -LongDescription "Mark the current directory" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $key = [Console]::ReadKey($true)
+    $global:PSReadLineMarks[$key.KeyChar] = $pwd
+}
+
+Set-PSReadLineKeyHandler -Key Ctrl+j `
+                         -BriefDescription JumpDirectory `
+                         -LongDescription "Goto the marked directory" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $key = [Console]::ReadKey()
+    $dir = $global:PSReadLineMarks[$key.KeyChar]
+    if ($dir)
+    {
+        cd $dir
+        [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
+    }
+}
+
+Set-PSReadLineKeyHandler -Key Alt+j `
+                         -BriefDescription ShowDirectoryMarks `
+                         -LongDescription "Show the currently marked directories" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $global:PSReadLineMarks.GetEnumerator() | % {
+        [PSCustomObject]@{Key = $_.Key; Dir = $_.Value} } |
+        Format-Table -AutoSize | Out-Host
+
+    [Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
+}
+
+# Auto correct 'git cmt' to 'git commit'
+Set-PSReadLineOption -CommandValidationHandler {
+    param([CommandAst]$CommandAst)
+
+    switch ($CommandAst.GetCommandName())
+    {
+        'git' {
+            $gitCmd = $CommandAst.CommandElements[1].Extent
+            switch ($gitCmd.Text)
+            {
+                'cmt' {
+                    [Microsoft.PowerShell.PSConsoleReadLine]::Replace(
+                        $gitCmd.StartOffset, $gitCmd.EndOffset - $gitCmd.StartOffset, 'commit')
+                }
+            }
+        }
+    }
+}
+
+# `ForwardChar` accepts the entire suggestion text when the cursor is at the end of the line.
+# This custom binding makes `RightArrow` behave similarly - accepting the next word instead of the entire suggestion text.
+Set-PSReadLineKeyHandler -Key RightArrow `
+                         -BriefDescription ForwardCharAndAcceptNextSuggestionWord `
+                         -LongDescription "Move cursor one character to the right in the current editing line and accept the next word in suggestion when it's at the end of current editing line" `
+                         -ScriptBlock {
+    param($key, $arg)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+
+    if ($cursor -lt $line.Length) {
+        [Microsoft.PowerShell.PSConsoleReadLine]::ForwardChar($key, $arg)
+    } else {
+        [Microsoft.PowerShell.PSConsoleReadLine]::AcceptNextSuggestionWord($key, $arg)
+    }
+}
+
+# Cycle through arguments on current line and select the text. This makes it easier to quickly change the argument if re-running a previously run command from the history
+# or if using a psreadline predictor. You can also use a digit argument to specify which argument you want to select, i.e. Alt+1, Alt+a selects the first argument
+# on the command line.
+Set-PSReadLineKeyHandler -Key Alt+a `
+                         -BriefDescription SelectCommandArguments `
+                         -LongDescription "Set current selection to next command argument in the command line. Use of digit argument selects argument by position" `
+                         -ScriptBlock {
+    param($key, $arg)
+  
+    $ast = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$null, [ref]$null, [ref]$cursor)
+  
+    $asts = $ast.FindAll( {
+        $args[0] -is [System.Management.Automation.Language.ExpressionAst] -and
+        $args[0].Parent -is [System.Management.Automation.Language.CommandAst] -and
+        $args[0].Extent.StartOffset -ne $args[0].Parent.Extent.StartOffset
+      }, $true)
+  
+    if ($asts.Count -eq 0) {
+        [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
+        return
+    }
+    
+    $nextAst = $null
+
+    if ($null -ne $arg) {
+        $nextAst = $asts[$arg - 1]
+    }
+    else {
+        foreach ($ast in $asts) {
+            if ($ast.Extent.StartOffset -ge $cursor) {
+                $nextAst = $ast
+                break
+            }
+        } 
+        
+        if ($null -eq $nextAst) {
+            $nextAst = $asts[0]
+        }
+    }
+
+    $startOffsetAdjustment = 0
+    $endOffsetAdjustment = 0
+
+    if ($nextAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -and
+        $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord) {
+            $startOffsetAdjustment = 1
+            $endOffsetAdjustment = 2
+    }
+  
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($nextAst.Extent.StartOffset + $startOffsetAdjustment)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetMark($null, $null)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
+}
+
+# Allow you to type a Unicode code point, then pressing `Alt+x` to transform it into a Unicode char.
+Set-PSReadLineKeyHandler -Chord 'Alt+x' `
+                         -BriefDescription ToUnicodeChar `
+                         -LongDescription "Transform Unicode code point into a UTF-16 encoded string" `
+                         -ScriptBlock {
+    $buffer = $null
+    $cursor = 0
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref] $buffer, [ref] $cursor)
+    if ($cursor -lt 4) {
+        return
+    }
+
+    $number = 0
+    $isNumber = [int]::TryParse(
+        $buffer.Substring($cursor - 4, 4),
+        [System.Globalization.NumberStyles]::AllowHexSpecifier,
+        $null,
+        [ref] $number)
+
+    if (-not $isNumber) {
+        return
+    }
+
+    try {
+        $unicode = [char]::ConvertFromUtf32($number)
+    } catch {
+        return
+    }
+
+    [Microsoft.PowerShell.PSConsoleReadLine]::Delete($cursor - 4, 4)
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert($unicode)
+}
+
+
+# SIG # Begin signature block
+# MIIoKgYJKoZIhvcNAQcCoIIoGzCCKBcCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCA/mLdabV+7XZgm
+# mrYn8AAdqkXN6TLai6zJSbrzk1wHn6CCDXYwggX0MIID3KADAgECAhMzAAAEBGx0
+# Bv9XKydyAAAAAAQEMA0GCSqGSIb3DQEBCwUAMH4xCzAJBgNVBAYTAlVTMRMwEQYD
+# VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNy
+# b3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01pY3Jvc29mdCBDb2RlIFNpZ25p
+# bmcgUENBIDIwMTEwHhcNMjQwOTEyMjAxMTE0WhcNMjUwOTExMjAxMTE0WjB0MQsw
+# CQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9u
+# ZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMR4wHAYDVQQDExVNaWNy
+# b3NvZnQgQ29ycG9yYXRpb24wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+# AQC0KDfaY50MDqsEGdlIzDHBd6CqIMRQWW9Af1LHDDTuFjfDsvna0nEuDSYJmNyz
+# NB10jpbg0lhvkT1AzfX2TLITSXwS8D+mBzGCWMM/wTpciWBV/pbjSazbzoKvRrNo
+# DV/u9omOM2Eawyo5JJJdNkM2d8qzkQ0bRuRd4HarmGunSouyb9NY7egWN5E5lUc3
+# a2AROzAdHdYpObpCOdeAY2P5XqtJkk79aROpzw16wCjdSn8qMzCBzR7rvH2WVkvF
+# HLIxZQET1yhPb6lRmpgBQNnzidHV2Ocxjc8wNiIDzgbDkmlx54QPfw7RwQi8p1fy
+# 4byhBrTjv568x8NGv3gwb0RbAgMBAAGjggFzMIIBbzAfBgNVHSUEGDAWBgorBgEE
+# AYI3TAgBBggrBgEFBQcDAzAdBgNVHQ4EFgQU8huhNbETDU+ZWllL4DNMPCijEU4w
+# RQYDVR0RBD4wPKQ6MDgxHjAcBgNVBAsTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEW
+# MBQGA1UEBRMNMjMwMDEyKzUwMjkyMzAfBgNVHSMEGDAWgBRIbmTlUAXTgqoXNzci
+# tW2oynUClTBUBgNVHR8ETTBLMEmgR6BFhkNodHRwOi8vd3d3Lm1pY3Jvc29mdC5j
+# b20vcGtpb3BzL2NybC9NaWNDb2RTaWdQQ0EyMDExXzIwMTEtMDctMDguY3JsMGEG
+# CCsGAQUFBwEBBFUwUzBRBggrBgEFBQcwAoZFaHR0cDovL3d3dy5taWNyb3NvZnQu
+# Y29tL3BraW9wcy9jZXJ0cy9NaWNDb2RTaWdQQ0EyMDExXzIwMTEtMDctMDguY3J0
+# MAwGA1UdEwEB/wQCMAAwDQYJKoZIhvcNAQELBQADggIBAIjmD9IpQVvfB1QehvpC
+# Ge7QeTQkKQ7j3bmDMjwSqFL4ri6ae9IFTdpywn5smmtSIyKYDn3/nHtaEn0X1NBj
+# L5oP0BjAy1sqxD+uy35B+V8wv5GrxhMDJP8l2QjLtH/UglSTIhLqyt8bUAqVfyfp
+# h4COMRvwwjTvChtCnUXXACuCXYHWalOoc0OU2oGN+mPJIJJxaNQc1sjBsMbGIWv3
+# cmgSHkCEmrMv7yaidpePt6V+yPMik+eXw3IfZ5eNOiNgL1rZzgSJfTnvUqiaEQ0X
+# dG1HbkDv9fv6CTq6m4Ty3IzLiwGSXYxRIXTxT4TYs5VxHy2uFjFXWVSL0J2ARTYL
+# E4Oyl1wXDF1PX4bxg1yDMfKPHcE1Ijic5lx1KdK1SkaEJdto4hd++05J9Bf9TAmi
+# u6EK6C9Oe5vRadroJCK26uCUI4zIjL/qG7mswW+qT0CW0gnR9JHkXCWNbo8ccMk1
+# sJatmRoSAifbgzaYbUz8+lv+IXy5GFuAmLnNbGjacB3IMGpa+lbFgih57/fIhamq
+# 5VhxgaEmn/UjWyr+cPiAFWuTVIpfsOjbEAww75wURNM1Imp9NJKye1O24EspEHmb
+# DmqCUcq7NqkOKIG4PVm3hDDED/WQpzJDkvu4FrIbvyTGVU01vKsg4UfcdiZ0fQ+/
+# V0hf8yrtq9CkB8iIuk5bBxuPMIIHejCCBWKgAwIBAgIKYQ6Q0gAAAAAAAzANBgkq
+# hkiG9w0BAQsFADCBiDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24x
+# EDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlv
+# bjEyMDAGA1UEAxMpTWljcm9zb2Z0IFJvb3QgQ2VydGlmaWNhdGUgQXV0aG9yaXR5
+# IDIwMTEwHhcNMTEwNzA4MjA1OTA5WhcNMjYwNzA4MjEwOTA5WjB+MQswCQYDVQQG
+# EwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwG
+# A1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSgwJgYDVQQDEx9NaWNyb3NvZnQg
+# Q29kZSBTaWduaW5nIFBDQSAyMDExMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIIC
+# CgKCAgEAq/D6chAcLq3YbqqCEE00uvK2WCGfQhsqa+laUKq4BjgaBEm6f8MMHt03
+# a8YS2AvwOMKZBrDIOdUBFDFC04kNeWSHfpRgJGyvnkmc6Whe0t+bU7IKLMOv2akr
+# rnoJr9eWWcpgGgXpZnboMlImEi/nqwhQz7NEt13YxC4Ddato88tt8zpcoRb0Rrrg
+# OGSsbmQ1eKagYw8t00CT+OPeBw3VXHmlSSnnDb6gE3e+lD3v++MrWhAfTVYoonpy
+# 4BI6t0le2O3tQ5GD2Xuye4Yb2T6xjF3oiU+EGvKhL1nkkDstrjNYxbc+/jLTswM9
+# sbKvkjh+0p2ALPVOVpEhNSXDOW5kf1O6nA+tGSOEy/S6A4aN91/w0FK/jJSHvMAh
+# dCVfGCi2zCcoOCWYOUo2z3yxkq4cI6epZuxhH2rhKEmdX4jiJV3TIUs+UsS1Vz8k
+# A/DRelsv1SPjcF0PUUZ3s/gA4bysAoJf28AVs70b1FVL5zmhD+kjSbwYuER8ReTB
+# w3J64HLnJN+/RpnF78IcV9uDjexNSTCnq47f7Fufr/zdsGbiwZeBe+3W7UvnSSmn
+# Eyimp31ngOaKYnhfsi+E11ecXL93KCjx7W3DKI8sj0A3T8HhhUSJxAlMxdSlQy90
+# lfdu+HggWCwTXWCVmj5PM4TasIgX3p5O9JawvEagbJjS4NaIjAsCAwEAAaOCAe0w
+# ggHpMBAGCSsGAQQBgjcVAQQDAgEAMB0GA1UdDgQWBBRIbmTlUAXTgqoXNzcitW2o
+# ynUClTAZBgkrBgEEAYI3FAIEDB4KAFMAdQBiAEMAQTALBgNVHQ8EBAMCAYYwDwYD
+# VR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBRyLToCMZBDuRQFTuHqp8cx0SOJNDBa
+# BgNVHR8EUzBRME+gTaBLhklodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20vcGtpL2Ny
+# bC9wcm9kdWN0cy9NaWNSb29DZXJBdXQyMDExXzIwMTFfMDNfMjIuY3JsMF4GCCsG
+# AQUFBwEBBFIwUDBOBggrBgEFBQcwAoZCaHR0cDovL3d3dy5taWNyb3NvZnQuY29t
+# L3BraS9jZXJ0cy9NaWNSb29DZXJBdXQyMDExXzIwMTFfMDNfMjIuY3J0MIGfBgNV
+# HSAEgZcwgZQwgZEGCSsGAQQBgjcuAzCBgzA/BggrBgEFBQcCARYzaHR0cDovL3d3
+# dy5taWNyb3NvZnQuY29tL3BraW9wcy9kb2NzL3ByaW1hcnljcHMuaHRtMEAGCCsG
+# AQUFBwICMDQeMiAdAEwAZQBnAGEAbABfAHAAbwBsAGkAYwB5AF8AcwB0AGEAdABl
+# AG0AZQBuAHQALiAdMA0GCSqGSIb3DQEBCwUAA4ICAQBn8oalmOBUeRou09h0ZyKb
+# C5YR4WOSmUKWfdJ5DJDBZV8uLD74w3LRbYP+vj/oCso7v0epo/Np22O/IjWll11l
+# hJB9i0ZQVdgMknzSGksc8zxCi1LQsP1r4z4HLimb5j0bpdS1HXeUOeLpZMlEPXh6
+# I/MTfaaQdION9MsmAkYqwooQu6SpBQyb7Wj6aC6VoCo/KmtYSWMfCWluWpiW5IP0
+# wI/zRive/DvQvTXvbiWu5a8n7dDd8w6vmSiXmE0OPQvyCInWH8MyGOLwxS3OW560
+# STkKxgrCxq2u5bLZ2xWIUUVYODJxJxp/sfQn+N4sOiBpmLJZiWhub6e3dMNABQam
+# ASooPoI/E01mC8CzTfXhj38cbxV9Rad25UAqZaPDXVJihsMdYzaXht/a8/jyFqGa
+# J+HNpZfQ7l1jQeNbB5yHPgZ3BtEGsXUfFL5hYbXw3MYbBL7fQccOKO7eZS/sl/ah
+# XJbYANahRr1Z85elCUtIEJmAH9AAKcWxm6U/RXceNcbSoqKfenoi+kiVH6v7RyOA
+# 9Z74v2u3S5fi63V4GuzqN5l5GEv/1rMjaHXmr/r8i+sLgOppO6/8MO0ETI7f33Vt
+# Y5E90Z1WTk+/gFcioXgRMiF670EKsT/7qMykXcGhiJtXcVZOSEXAQsmbdlsKgEhr
+# /Xmfwb1tbWrJUnMTDXpQzTGCGgowghoGAgEBMIGVMH4xCzAJBgNVBAYTAlVTMRMw
+# EQYDVQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVN
+# aWNyb3NvZnQgQ29ycG9yYXRpb24xKDAmBgNVBAMTH01pY3Jvc29mdCBDb2RlIFNp
+# Z25pbmcgUENBIDIwMTECEzMAAAQEbHQG/1crJ3IAAAAABAQwDQYJYIZIAWUDBAIB
+# BQCgga4wGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO
+# MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEICazxFrPsF4exXFcFtywFigB
+# B4oxmjwvi7XZnlwWiQh8MEIGCisGAQQBgjcCAQwxNDAyoBSAEgBNAGkAYwByAG8A
+# cwBvAGYAdKEagBhodHRwOi8vd3d3Lm1pY3Jvc29mdC5jb20wDQYJKoZIhvcNAQEB
+# BQAEggEAJhciPr50ZFJDAZdPp1dPIGveqhLhlzZLPBlyt3by9le2IPy31GFBLo6d
+# o5u3K5d9k56S5/NuybL42NBfEHElMfw8bQVSfyzBeRyuYVa63c+XreK7vh3l/BIb
+# gckUpSsldsK1DvXBH/YOk0qgw6AE68cF9jrqoH9qMa8CMLorwB17DrJKpbFoJB+F
+# RIWenbAc0RhjHUQic75KXIRDFnsl0ZDhbZ/7xsJO18WM28kbUudfKPwTnVylvG1G
+# vBvSrFC3rMqjWTAJ4Fd30L8VjRoqjkLztNhSAsrecPckQmtOeKNXxQIf1NvwiKUr
+# eAN3O5KkwY5fIzhG1xyEDOdo4UnBOaGCF5QwgheQBgorBgEEAYI3AwMBMYIXgDCC
+# F3wGCSqGSIb3DQEHAqCCF20wghdpAgEDMQ8wDQYJYIZIAWUDBAIBBQAwggFSBgsq
+# hkiG9w0BCRABBKCCAUEEggE9MIIBOQIBAQYKKwYBBAGEWQoDATAxMA0GCWCGSAFl
+# AwQCAQUABCDJjPcYPvinAgM23qUaQ0zCX/oH/HSIdlxLINFJDFLYggIGaErJMzQ3
+# GBMyMDI1MDYyNjEzNTEyOS41ODhaMASAAgH0oIHRpIHOMIHLMQswCQYDVQQGEwJV
+# UzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UE
+# ChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSUwIwYDVQQLExxNaWNyb3NvZnQgQW1l
+# cmljYSBPcGVyYXRpb25zMScwJQYDVQQLEx5uU2hpZWxkIFRTUyBFU046QTkzNS0w
+# M0UwLUQ5NDcxJTAjBgNVBAMTHE1pY3Jvc29mdCBUaW1lLVN0YW1wIFNlcnZpY2Wg
+# ghHqMIIHIDCCBQigAwIBAgITMwAAAgy5ZOM1nOz0rgABAAACDDANBgkqhkiG9w0B
+# AQsFADB8MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UE
+# BxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSYwJAYD
+# VQQDEx1NaWNyb3NvZnQgVGltZS1TdGFtcCBQQ0EgMjAxMDAeFw0yNTAxMzAxOTQz
+# MDBaFw0yNjA0MjIxOTQzMDBaMIHLMQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2Fz
+# aGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENv
+# cnBvcmF0aW9uMSUwIwYDVQQLExxNaWNyb3NvZnQgQW1lcmljYSBPcGVyYXRpb25z
+# MScwJQYDVQQLEx5uU2hpZWxkIFRTUyBFU046QTkzNS0wM0UwLUQ5NDcxJTAjBgNV
+# BAMTHE1pY3Jvc29mdCBUaW1lLVN0YW1wIFNlcnZpY2UwggIiMA0GCSqGSIb3DQEB
+# AQUAA4ICDwAwggIKAoICAQDKAVYmPeRtga/U6jzqyqLD0MAool23gcBN58+Z/Xsk
+# YwNJsZ+O+wVyQYl8dPTK1/BC2xAic1m+JvckqjVaQ32KmURsEZotirQY4PKVW+eX
+# wRt3r6szgLuic6qoHlbXox/l0HJtgURkzDXWMkKmGSL7z8/crqcvmYqv8t/slAF4
+# J+mpzb9tMFVmjwKXONVdRwg9Q3WaPZBC7Wvoi7PRIN2jgjSBnHYyAZSlstKNrpYb
+# 6+Gu6oSFkQzGpR65+QNDdkP4ufOf4PbOg3fb4uGPjI8EPKlpwMwai1kQyX+fgcgC
+# oV9J+o8MYYCZUet3kzhhwRzqh6LMeDjaXLP701SXXiXc2ZHzuDHbS/sZtJ3627cV
+# pClXEIUvg2xpr0rPlItHwtjo1PwMCpXYqnYKvX8aJ8nawT9W8FUuuyZPG1852+q4
+# jkVleKL7x+7el8ETehbdkwdhAXyXimaEzWetNNSmG/KfHAp9czwsL1vKr4Rgn+pI
+# IkZHuomdf5e481K+xIWhLCPdpuV87EqGOK/jbhOnZEqwdvA0AlMaLfsmCemZmupe
+# jaYuEk05/6cCUxgF4zCnkJeYdMAP+9Z4kVh7tzRFsw/lZSl2D7EhIA6Knj6RffH2
+# k7YtSGSv86CShzfiXaz9y6sTu8SGqF6ObL/eu/DkivyVoCfUXWLjiSJsrS63D0EH
+# HQIDAQABo4IBSTCCAUUwHQYDVR0OBBYEFHUORSH/sB/rQ/beD0l5VxQ706GIMB8G
+# A1UdIwQYMBaAFJ+nFV0AXmJdg/Tl0mWnG1M1GelyMF8GA1UdHwRYMFYwVKBSoFCG
+# Tmh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wa2lvcHMvY3JsL01pY3Jvc29mdCUy
+# MFRpbWUtU3RhbXAlMjBQQ0ElMjAyMDEwKDEpLmNybDBsBggrBgEFBQcBAQRgMF4w
+# XAYIKwYBBQUHMAKGUGh0dHA6Ly93d3cubWljcm9zb2Z0LmNvbS9wa2lvcHMvY2Vy
+# dHMvTWljcm9zb2Z0JTIwVGltZS1TdGFtcCUyMFBDQSUyMDIwMTAoMSkuY3J0MAwG
+# A1UdEwEB/wQCMAAwFgYDVR0lAQH/BAwwCgYIKwYBBQUHAwgwDgYDVR0PAQH/BAQD
+# AgeAMA0GCSqGSIb3DQEBCwUAA4ICAQDZMPr4gVmwwf4GMB5ZfHSr34uhug6yzu4H
+# UT+JWMZqz9uhLZBoX5CPjdKJzwAVvYoNuLmS0+9lA5S74rvKqd/u9vp88VGk6U7g
+# MceatdqpKlbVRdn2ZfrMcpI4zOc6BtuYrzJV4cEs1YmX95uiAxaED34w02BnfuPZ
+# XA0edsDBbd4ixFU8X/1J0DfIUk1YFYPOrmwmI2k16u6TcKO0YpRlwTdCq9vO0eEI
+# ER1SLmQNBzX9h2ccCvtgekOaBoIQ3ZRai8Ds1f+wcKCPzD4qDX3xNgvLFiKoA6ZS
+# G9S/yOrGaiSGIeDy5N9VQuqTNjryuAzjvf5W8AQp31hV1GbUDOkbUdd+zkJWKX4F
+# mzeeN52EEbykoWcJ5V9M4DPGN5xpFqXy9aO0+dR0UUYWuqeLhDyRnVeZcTEu0xgm
+# o+pQHauFVASsVORMp8TF8dpesd+tqkkQ8VNvI20oOfnTfL+7ZgUMf7qNV0ll0Wo5
+# nlr1CJva1bfk2Hc5BY1M9sd3blBkezyvJPn4j0bfOOrCYTwYsNsjiRl/WW18NOpi
+# wqciwFlUNqtWCRMzC9r84YaUMQ82Bywk48d4uBon5ZA8pXXS7jwJTjJj5USeRl9v
+# jT98PDZyCFO2eFSOFdDdf6WBo/WZUA2hGZ0q+J7j140fbXCfOUIm0j23HaAV0ckD
+# S/nmC/oF1jCCB3EwggVZoAMCAQICEzMAAAAVxedrngKbSZkAAAAAABUwDQYJKoZI
+# hvcNAQELBQAwgYgxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpXYXNoaW5ndG9uMRAw
+# DgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNyb3NvZnQgQ29ycG9yYXRpb24x
+# MjAwBgNVBAMTKU1pY3Jvc29mdCBSb290IENlcnRpZmljYXRlIEF1dGhvcml0eSAy
+# MDEwMB4XDTIxMDkzMDE4MjIyNVoXDTMwMDkzMDE4MzIyNVowfDELMAkGA1UEBhMC
+# VVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNV
+# BAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjEmMCQGA1UEAxMdTWljcm9zb2Z0IFRp
+# bWUtU3RhbXAgUENBIDIwMTAwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoIC
+# AQDk4aZM57RyIQt5osvXJHm9DtWC0/3unAcH0qlsTnXIyjVX9gF/bErg4r25Phdg
+# M/9cT8dm95VTcVrifkpa/rg2Z4VGIwy1jRPPdzLAEBjoYH1qUoNEt6aORmsHFPPF
+# dvWGUNzBRMhxXFExN6AKOG6N7dcP2CZTfDlhAnrEqv1yaa8dq6z2Nr41JmTamDu6
+# GnszrYBbfowQHJ1S/rboYiXcag/PXfT+jlPP1uyFVk3v3byNpOORj7I5LFGc6XBp
+# Dco2LXCOMcg1KL3jtIckw+DJj361VI/c+gVVmG1oO5pGve2krnopN6zL64NF50Zu
+# yjLVwIYwXE8s4mKyzbnijYjklqwBSru+cakXW2dg3viSkR4dPf0gz3N9QZpGdc3E
+# XzTdEonW/aUgfX782Z5F37ZyL9t9X4C626p+Nuw2TPYrbqgSUei/BQOj0XOmTTd0
+# lBw0gg/wEPK3Rxjtp+iZfD9M269ewvPV2HM9Q07BMzlMjgK8QmguEOqEUUbi0b1q
+# GFphAXPKZ6Je1yh2AuIzGHLXpyDwwvoSCtdjbwzJNmSLW6CmgyFdXzB0kZSU2LlQ
+# +QuJYfM2BjUYhEfb3BvR/bLUHMVr9lxSUV0S2yW6r1AFemzFER1y7435UsSFF5PA
+# PBXbGjfHCBUYP3irRbb1Hode2o+eFnJpxq57t7c+auIurQIDAQABo4IB3TCCAdkw
+# EgYJKwYBBAGCNxUBBAUCAwEAATAjBgkrBgEEAYI3FQIEFgQUKqdS/mTEmr6CkTxG
+# NSnPEP8vBO4wHQYDVR0OBBYEFJ+nFV0AXmJdg/Tl0mWnG1M1GelyMFwGA1UdIARV
+# MFMwUQYMKwYBBAGCN0yDfQEBMEEwPwYIKwYBBQUHAgEWM2h0dHA6Ly93d3cubWlj
+# cm9zb2Z0LmNvbS9wa2lvcHMvRG9jcy9SZXBvc2l0b3J5Lmh0bTATBgNVHSUEDDAK
+# BggrBgEFBQcDCDAZBgkrBgEEAYI3FAIEDB4KAFMAdQBiAEMAQTALBgNVHQ8EBAMC
+# AYYwDwYDVR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBTV9lbLj+iiXGJo0T2UkFvX
+# zpoYxDBWBgNVHR8ETzBNMEugSaBHhkVodHRwOi8vY3JsLm1pY3Jvc29mdC5jb20v
+# cGtpL2NybC9wcm9kdWN0cy9NaWNSb29DZXJBdXRfMjAxMC0wNi0yMy5jcmwwWgYI
+# KwYBBQUHAQEETjBMMEoGCCsGAQUFBzAChj5odHRwOi8vd3d3Lm1pY3Jvc29mdC5j
+# b20vcGtpL2NlcnRzL01pY1Jvb0NlckF1dF8yMDEwLTA2LTIzLmNydDANBgkqhkiG
+# 9w0BAQsFAAOCAgEAnVV9/Cqt4SwfZwExJFvhnnJL/Klv6lwUtj5OR2R4sQaTlz0x
+# M7U518JxNj/aZGx80HU5bbsPMeTCj/ts0aGUGCLu6WZnOlNN3Zi6th542DYunKmC
+# VgADsAW+iehp4LoJ7nvfam++Kctu2D9IdQHZGN5tggz1bSNU5HhTdSRXud2f8449
+# xvNo32X2pFaq95W2KFUn0CS9QKC/GbYSEhFdPSfgQJY4rPf5KYnDvBewVIVCs/wM
+# nosZiefwC2qBwoEZQhlSdYo2wh3DYXMuLGt7bj8sCXgU6ZGyqVvfSaN0DLzskYDS
+# PeZKPmY7T7uG+jIa2Zb0j/aRAfbOxnT99kxybxCrdTDFNLB62FD+CljdQDzHVG2d
+# Y3RILLFORy3BFARxv2T5JL5zbcqOCb2zAVdJVGTZc9d/HltEAY5aGZFrDZ+kKNxn
+# GSgkujhLmm77IVRrakURR6nxt67I6IleT53S0Ex2tVdUCbFpAUR+fKFhbHP+Crvs
+# QWY9af3LwUFJfn6Tvsv4O+S3Fb+0zj6lMVGEvL8CwYKiexcdFYmNcP7ntdAoGokL
+# jzbaukz5m/8K6TT4JDVnK+ANuOaMmdbhIurwJ0I9JZTmdHRbatGePu1+oDEzfbzL
+# 6Xu/OHBE0ZDxyKs6ijoIYn/ZcGNTTY3ugm2lBRDBcQZqELQdVTNYs6FwZvKhggNN
+# MIICNQIBATCB+aGB0aSBzjCByzELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hp
+# bmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jw
+# b3JhdGlvbjElMCMGA1UECxMcTWljcm9zb2Z0IEFtZXJpY2EgT3BlcmF0aW9uczEn
+# MCUGA1UECxMeblNoaWVsZCBUU1MgRVNOOkE5MzUtMDNFMC1EOTQ3MSUwIwYDVQQD
+# ExxNaWNyb3NvZnQgVGltZS1TdGFtcCBTZXJ2aWNloiMKAQEwBwYFKw4DAhoDFQDv
+# u8hkhEMt5Z8Ldefls7z1LVU8pqCBgzCBgKR+MHwxCzAJBgNVBAYTAlVTMRMwEQYD
+# VQQIEwpXYXNoaW5ndG9uMRAwDgYDVQQHEwdSZWRtb25kMR4wHAYDVQQKExVNaWNy
+# b3NvZnQgQ29ycG9yYXRpb24xJjAkBgNVBAMTHU1pY3Jvc29mdCBUaW1lLVN0YW1w
+# IFBDQSAyMDEwMA0GCSqGSIb3DQEBCwUAAgUA7Ae7bzAiGA8yMDI1MDYyNjEyMjgz
+# MVoYDzIwMjUwNjI3MTIyODMxWjB0MDoGCisGAQQBhFkKBAExLDAqMAoCBQDsB7tv
+# AgEAMAcCAQACAgy1MAcCAQACAhNpMAoCBQDsCQzvAgEAMDYGCisGAQQBhFkKBAIx
+# KDAmMAwGCisGAQQBhFkKAwKgCjAIAgEAAgMHoSChCjAIAgEAAgMBhqAwDQYJKoZI
+# hvcNAQELBQADggEBAFDqU7zeLBqCMwwCYtcXal/McbAMWkg8j0QbjtHlvx5Q1i8o
+# aR3lt1WAXB0jatJUwXmjgG9TeiRBO+Lm2Yd3XpK8fVwDL9dI1n1eneMa2wML6YZr
+# gq81DQtfuMTPxL/fWJJKNIC8SbJqFHpd/g1BE0YxhlG/34J7/ivkV4MqvcTXCwca
+# 3PQMQ1URRsaH4iToK7ID6sfGcRmiqTn2N/QJhYrMLX9RBU/PX3ebX49tIRqtcTPq
+# Ajrzz2Ca3k8aKs1Rwkcc8++yJgi14Lq993XiCrNX29lAqon3z7EVJ/wLF87DjqVX
+# 7MhpEU1rcnl3xQdIYKCDcZRmkXCBYHScR08v3isxggQNMIIECQIBATCBkzB8MQsw
+# CQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9u
+# ZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSYwJAYDVQQDEx1NaWNy
+# b3NvZnQgVGltZS1TdGFtcCBQQ0EgMjAxMAITMwAAAgy5ZOM1nOz0rgABAAACDDAN
+# BglghkgBZQMEAgEFAKCCAUowGgYJKoZIhvcNAQkDMQ0GCyqGSIb3DQEJEAEEMC8G
+# CSqGSIb3DQEJBDEiBCARXJ879U92P8y3nLNMpEGD9H01cbk8midl0B0aZlCH+TCB
+# +gYLKoZIhvcNAQkQAi8xgeowgecwgeQwgb0EINUo17cFMZN46MI5NfIAg9Ux5cO5
+# xM9inre5riuOZ8ItMIGYMIGApH4wfDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldh
+# c2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBD
+# b3Jwb3JhdGlvbjEmMCQGA1UEAxMdTWljcm9zb2Z0IFRpbWUtU3RhbXAgUENBIDIw
+# MTACEzMAAAIMuWTjNZzs9K4AAQAAAgwwIgQgGyXa1pVWbmkKQoBX3WRyYSSDH/2o
+# kAoEUca67zxH9KUwDQYJKoZIhvcNAQELBQAEggIAcDwcA4JEocsVhP+jUtJVfgbt
+# BhQx8CorsxzLt6JWrQtlyez0a9QM8LkIckMM9wSRp3p8CUgc/dK/+kiboRhS7Kki
+# FsGG7hIz+MlylagecCi6CPvEl6+1mbHzcxVnfNNJbfTsgAloV8gK0+wwpj4BnTCJ
+# KgCD8dGA7LhsmreeZcGaz+DlQ5DhSFJyKJhVBKpf5pc+f8qQkTFka1CjJxuV1E4h
+# r08xkSAHu1nZuSRD0XhTwr7qAxHWKZCbYNk0cYrUhCWjQV2e5LOkr45JDDMwtJor
+# Ef+61rnqqgsY1eqR0seN00R2H4Vrg9t3yKpzEKuvvHEfXgdcTlYav7inx+yx04Gl
+# 0rC95SquvfAhLwRbO/xxKtAKrI5UUZRoreb76/m9n2OLNf78mNnv/+kZKIvPlw43
+# 8J3wmdXkt+Qbp9LvgmnUBwUDxNTwJmUbLroJVMk3s9KYbvL1+DfbPGTfdltfpD0Z
+# anEhXxNyzn7zzqys/XQDHRidHtmx6VF4LDA0cwEq/hpo3orit17lPAIuCagR/yUN
+# 53H0w/W9qExlSL3RMFiMXRmnh4/GiDjYodxy+JXvlnAo1vnEIraa0Xkr/RtJac5I
+# lQO/tOL3tgLPnnWJHWOIkCW7DPJkXucmJhRficVuKi/O2V5hihMlvKdh91dYf+sY
+# 4h80gzk5ksiJMEjOvg0=
+# SIG # End signature block
+
+--- FILE: /c/Users/josep/Documents/dotfiles/posh-themes/jandedobbeleer.omp.json ---
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b0",
+          "template": " {{ .UserName }} ",
+          "foreground": "#ffffff",
+          "background": "#c386f1",
+          "type": "session",
+          "style": "diamond"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "folder_separator_icon": " \ue0b1 ",
+            "home_icon": "~",
+            "style": "folder"
+          },
+          "template": " \uea83  {{ .Path }} ",
+          "foreground": "#ffffff",
+          "powerline_symbol": "\ue0b0",
+          "background": "#ff479c",
+          "type": "path",
+          "style": "powerline"
+        },
+        {
+          "properties": {
+            "cache_duration": "none",
+            "fetch_status": true
+          },
+          "template": " {{ .HEAD }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }} ",
+          "foreground": "#193549",
+          "powerline_symbol": "\ue0b0",
+          "background": "#fffb38",
+          "type": "git",
+          "style": "powerline"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "right",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "{{ .FormattedMs }} ",
+          "foreground": "#906cff",
+          "type": "executiontime",
+          "style": "plain"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "properties": {
+            "cache_duration": "none"
+          },
+          "template": "\u2570\u2500 ",
+          "foreground": "#21c7c7",
+          "type": "text",
+          "style": "plain"
+        }
+      ],
+      "newline": true
+    }
+  ],
+  "version": 3,
+  "final_space": true
+}
+
+--- FILE: /c/Users/josep/Documents/dotfiles/posh-themes/jandedobbeleer.omp.json.bak ---
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "background": "#c386f1",
+          "foreground": "#ffffff",
+          "leading_diamond": "\ue0b6",
+          "style": "diamond",
+          "template": " {{ .UserName }} ",
+          "trailing_diamond": "\ue0b0",
+          "type": "session"
+        },
+        {
+          "background": "#ff479c",
+          "foreground": "#ffffff",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "folder_separator_icon": " \ue0b1 ",
+            "home_icon": "~",
+            "style": "folder"
+          },
+          "style": "powerline",
+          "template": " \uea83  {{ .Path }} ",
+          "type": "path"
+        },
+        {
+          "background": "#fffb38",
+          "foreground": "#193549",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "fetch_status": true
+          },
+          "style": "powerline",
+          "template": " {{ .HEAD }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }} ",
+          "type": "git"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "foreground": "#906cff",
+          "style": "plain",
+          "template": "{{ .FormattedMs }} ",
+          "type": "executiontime"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "#21c7c7",
+          "style": "plain",
+          "template": "\u2570\u2500 ",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "final_space": true,
+  "version": 2
+}
+
+--- FILE: /c/Users/josep/Documents/dotfiles/powershell/Microsoft.PowerShell_profile.ps1 ---
+# === Joseph PowerShell Profile (PSReadLine pin + OMP + fastfetch) ===
+
+# 1) Load bootstrap from repo (pins PSReadLine 2.4.1)
+$repoBootstrap = Join-Path $HOME "Documents\dotfiles\powershell\profile.bootstrap.ps1"
+if (Test-Path $repoBootstrap) { . $repoBootstrap }
+
+# 2) Fastfetch (optional)
+if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
+    try { fastfetch } catch {}
+}
+
+# 3) Oh My Posh prompt
+# Find oh-my-posh. If missing on PATH, try the common winget path quietly.
+$omp = (Get-Command oh-my-posh -ErrorAction SilentlyContinue).Source
+if (-not $omp) {
+    $wingetLinks = Join-Path $env:LOCALAPPDATA 'Programs\oh-my-posh\bin'
+    if (Test-Path $wingetLinks -and (($env:Path -split ';') -notcontains $wingetLinks)) {
+        $env:Path = $env:Path + ';' + $wingetLinks
+        $omp = (Get-Command oh-my-posh -ErrorAction SilentlyContinue).Source
+    }
+}
+
+# Theme from dotfiles if available; otherwise default oh-my-posh init
+$themePath = Join-Path $HOME 'Documents\dotfiles\posh-themes\jandedobbeleer.omp.json'
+if ($omp) {
+    if (Test-Path $themePath) {
+        oh-my-posh init pwsh --config $themePath | Invoke-Expression
+    } else {
+        oh-my-posh init pwsh | Invoke-Expression
+    }
+}
+
+# 4) Git helpers
+function gs { git status }
+function gl { git --no-pager log --oneline -n 20 }
+function gd { git --no-pager diff }
+
+# 5) Quick Git path note
+$git = (Get-Command git -ErrorAction SilentlyContinue).Source
+if ($git) { Write-Host "Git: $git" -ForegroundColor DarkGray }
+
+# END profile
+
+--- FILE: /c/Users/josep/Documents/dotfiles/powershell/profile.bootstrap.ps1 ---
+# --- Bootstrap: Force vendored PSReadLine 2.4.1 before anything else ---
+try {
+    $DotfilesDir  = Join-Path $HOME "Documents\dotfiles"
+    $VendoredPsd1 = Join-Path $DotfilesDir "modules\PSReadLine\2.4.1\PSReadLine.psd1"
+
+    if (Test-Path -LiteralPath $VendoredPsd1) {
+        $loaded = Get-Module PSReadLine
+        if ($loaded) { Remove-Module PSReadLine -Force -ErrorAction SilentlyContinue }
+
+        Import-Module -Name $VendoredPsd1 -Force -ErrorAction Stop
+        Write-Host "PSReadLine loaded (vendored 2.4.1)" -ForegroundColor Green
+    }
+}
+catch {
+    Write-Warning ("Bootstrap could not load vendored PSReadLine: {0}" -f $_.Exception.Message)
+}
+
+--- FILE: /c/Users/josep/Documents/dotfiles/README.md ---
+# ... (content of the new README.md) ...
+
+--- FILE: /c/Users/josep/Documents/dotfiles/SYNC-GUIDE.md ---
+# 🔄 Cross-Platform Shell Sync Guide
+
+## **Current Status Overview**
+
+### ✅ **PowerShell (Windows)**
+- **Status**: Fully optimized and working (Version 2025.1)
+- **Features**: Oh My Posh, PSReadLine, Terminal-Icons, robust aliases
+
+### 🔄 **Debian System** 
+- **Status**: Needs dotfiles bootstrap
+- **Action Required**: Clone dotfiles and run bootstrap script
+
+### 🔄 **NixOS Systems**
+- **Status**: Home Manager configs updated, needs rebuild
+- **Action Required**: Rebuild NixOS configuration
+
+---
+
+## **🚀 Quick Sync Commands**
+
+### **For Debian System:**
+
+```bash
+cd ~ && git clone https://github.com/emeraldocean123/dotfiles.git ~/dotfiles
+cd ~/dotfiles && chmod +x bootstrap.sh && ./bootstrap.sh
+source ~/.bashrc && ll  # Test
+```
+
+### **For NixOS Systems:**
+
+```bash
+sudo nixos-rebuild switch --flake .#$(hostname)
+source ~/.bashrc && ll  # Test
+```
+
+---
+
+## **🔗 Unified Aliases (All Systems)**
+
+| Alias | Description |
+|-------|-------------|
+| `ll` | Detailed listing with hidden files |
+| `la` | Same as ll |
+| `gs` | Git status |
+| `ga` | Git add |
+| `gc` | Git commit |
+| `gp` | Git push |
+| `gl` | Last 10 git commits |
+| `gd` | Git diff |
+| `..` | Go up one directory |
+
+**Result**: Identical shell experience across Windows PowerShell, Debian, and NixOS! 🎯
+
+
+################################################################################
+### SECTION 4: ACTIVE USER ENVIRONMENT
+################################################################################
+
+--- 4.1: Home Directory Listing ---
+total 10511
+drwxr-xr-x 1 josep 197609       0 Aug  8 08:56 %userprofile%
+drwxr-xr-x 1 josep 197609       0 Aug  9 09:36 .
+drwxr-xr-x 1 josep 197609       0 Aug  2 18:03 ..
+-rwxr-xr-x 1 josep 197609     706 Jul 29 19:01 .bash_aliases
+-rw-r--r-- 1 josep 197609      46 Jul 31 18:31 .bash_history
+-rw-r--r-- 1 josep 197609      71 Aug  7 21:50 .bash_profile
+-rw-r--r-- 1 josep 197609    1682 Aug  9 08:59 .bashrc
+-rw-r--r-- 1 josep 197609     198 Aug  7 18:14 .cdHistory
+drwxr-xr-x 1 josep 197609       0 Aug  7 16:12 .config
+-rw-r--r-- 1 josep 197609     160 Aug  8 20:00 .gitconfig
+-rw-r--r-- 1 josep 197609      20 Aug  7 20:07 .lesshst
+drwxr-xr-x 1 josep 197609       0 Aug  7 03:54 .Mylio_Catalog
+drwxr-xr-x 1 josep 197609       0 Aug  9 00:40 .ssh
+-rw-r--r-- 1 josep 197609    2865 Aug  8 15:45 .viminfo
+drwxr-xr-x 1 josep 197609       0 Aug  7 17:53 .vscode
+-rw-r--r-- 1 josep 197609     250 Aug  7 21:30 .zshrc
+drwxr-xr-x 1 josep 197609       0 Jul 31 10:48 ansel
+drwxr-xr-x 1 josep 197609       0 Jul 30 19:01 AppData
+lrwxrwxrwx 1 josep 197609      30 Jul 30 19:01 Application Data -> /c/Users/josep/AppData/Roaming
+drwxr-xr-x 1 josep 197609       0 Jul 30 19:04 Contacts
+lrwxrwxrwx 1 josep 197609      58 Jul 30 19:01 Cookies -> /c/Users/josep/AppData/Local/Microsoft/Windows/INetCookies
+drwxr-xr-x 1 josep 197609       0 Aug  3 20:23 Desktop
+drwxr-xr-x 1 josep 197609       0 Aug  8 16:58 Documents
+drwxr-xr-x 1 josep 197609       0 Aug  9 08:59 dotfiles-backup-20250809-085938
+drwxr-xr-x 1 josep 197609       0 Aug  8 20:25 Downloads
+drwxr-xr-x 1 josep 197609       0 Jul 30 19:04 Favorites
+drwxr-xr-x 0 josep 197609       0 Aug  7 15:54 Google Drive Streaming
+drwxr-xr-x 1 josep 197609       0 Jul 30 19:04 Links
+lrwxrwxrwx 1 josep 197609      28 Jul 30 19:01 Local Settings -> /c/Users/josep/AppData/Local
+drwxr-xr-x 1 josep 197609       0 Jul 30 19:04 Music
+lrwxrwxrwx 1 josep 197609      24 Jul 30 19:01 My Documents -> /c/Users/josep/Documents
+drwxr-xr-x 1 josep 197609       0 Aug  3 13:29 Mylio
+lrwxrwxrwx 1 josep 197609      66 Jul 30 19:01 NetHood -> /c/Users/josep/AppData/Roaming/Microsoft/Windows/Network Shortcuts
+-rw-r--r-- 1 josep 197609 6029312 Aug  7 03:52 NTUSER.DAT
+-rw-r--r-- 1 josep 197609 1650688 Jul 30 19:01 ntuser.dat.LOG1
+-rw-r--r-- 1 josep 197609 1547264 Jul 30 19:01 ntuser.dat.LOG2
+-rw-r--r-- 1 josep 197609   65536 Jul 30 19:01 NTUSER.DAT{c678c265-6dea-11f0-8523-a822e2914eab}.TM.blf
+-rw-r--r-- 1 josep 197609  524288 Jul 30 19:01 NTUSER.DAT{c678c265-6dea-11f0-8523-a822e2914eab}.TMContainer00000000000000000001.regtrans-ms
+-rw-r--r-- 1 josep 197609  524288 Jul 30 19:01 NTUSER.DAT{c678c265-6dea-11f0-8523-a822e2914eab}.TMContainer00000000000000000002.regtrans-ms
+-rw-r--r-- 1 josep 197609      20 Jul 30 19:01 ntuser.ini
+drwxr-xr-x 1 josep 197609       0 Aug  8 08:56 OneDrive
+drwxr-xr-x 1 josep 197609       0 Aug  3 16:01 Pictures
+lrwxrwxrwx 1 josep 197609      66 Jul 30 19:01 PrintHood -> /c/Users/josep/AppData/Roaming/Microsoft/Windows/Printer Shortcuts
+lrwxrwxrwx 1 josep 197609      55 Jul 30 19:01 Recent -> /c/Users/josep/AppData/Roaming/Microsoft/Windows/Recent
+drwxr-xr-x 1 josep 197609       0 Jul 31 22:09 Saved Games
+drwxr-xr-x 1 josep 197609       0 Jul 30 19:40 Searches
+lrwxrwxrwx 1 josep 197609      55 Jul 30 19:01 SendTo -> /c/Users/josep/AppData/Roaming/Microsoft/Windows/SendTo
+-rwxr-xr-x 1 josep 197609    2961 Aug  9 09:36 snapshot.sh
+lrwxrwxrwx 1 josep 197609      59 Jul 30 19:01 Start Menu -> /c/Users/josep/AppData/Roaming/Microsoft/Windows/Start Menu
+lrwxrwxrwx 1 josep 197609      58 Jul 30 19:01 Templates -> /c/Users/josep/AppData/Roaming/Microsoft/Windows/Templates
+drwxr-xr-x 1 josep 197609       0 Aug  2 13:29 Videos
+-rw-r--r-- 1 josep 197609  180733 Aug  9 09:36 windows_snapshot.txt
+
+--- 4.2: Sorted Environment Variables ---
+__FASTFETCH_SHOWN=1
+_=/usr/bin/env
+ACLOCAL_PATH=/mingw64/share/aclocal:/usr/share/aclocal
+ALLUSERSPROFILE=C:\ProgramData
+APPDATA=C:\Users\josep\AppData\Roaming
+CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+COMMONPROGRAMFILES=C:\Program Files\Common Files
+CommonProgramW6432=C:\Program Files\Common Files
+COMPUTERNAME=ALIENWARE-18-AR
+COMSPEC=C:\Windows\system32\cmd.exe
+CONDA_PROMPT_MODIFIER=false
+CONFIG_SITE=/etc/config.site
+DISPLAY=needs-to-be-defined
+DOTFILES=C:\Users\josep\Documents\dotfiles
+DriverData=C:\Windows\System32\Drivers\DriverData
+EXEPATH=C:\Program Files\Git\bin
+HOME=/c/Users/josep
+HOMEDRIVE=C:
+HOMEPATH=\Users\josep
+HOSTNAME=alienware-18-area51-aa18250-windows
+INFOPATH=/mingw64/local/info:/mingw64/share/info:/usr/local/info:/usr/share/info:/usr/info:/share/info
+LANG=en_US.UTF-8
+LEVEL_ZERO_V1_SDK_PATH=C:\Program Files\LevelZeroSDK\1.21.10\
+LOCALAPPDATA=C:\Users\josep\AppData\Local
+LOGONSERVER=\\ALIENWARE-18-AR
+MANPATH=/mingw64/local/man:/mingw64/share/man:/usr/local/man:/usr/share/man:/usr/man:/share/man
+MINGW_CHOST=x86_64-w64-mingw32
+MINGW_PACKAGE_PREFIX=mingw-w64-x86_64
+MINGW_PREFIX=/mingw64
+MSYSTEM_CARCH=x86_64
+MSYSTEM_CHOST=x86_64-w64-mingw32
+MSYSTEM_PREFIX=/mingw64
+MSYSTEM=MINGW64
+NUMBER_OF_PROCESSORS=24
+OneDrive=C:\Users\josep\OneDrive
+ORIGINAL_PATH=/mingw64/bin:/usr/bin:/c/Users/josep/bin:/c/Program Files (x86)/oh-my-posh/bin:/c/Windows/system32:/c/Windows:/c/Windows/System32/Wbem:/c/Windows/System32/WindowsPowerShell/v1.0:/c/Windows/System32/OpenSSH:/c/Program Files/dotnet:/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/cmd:/c/Users/josep/AppData/Local/Programs/oh-my-posh/bin:/c/Users/josep/AppData/Local/Microsoft/WindowsApps:/c/Users/josep/AppData/Local/Microsoft/WinGet/Packages/WsSolInfor.CrystalDiskInfo_Microsoft.Winget.Source_8wekyb3d8bbwe:/c/Users/josep/AppData/Local/Microsoft/WinGet/Links:/c/Users/josep/Documents/PowerShell/Scripts:/c/Users/josep/AppData/Local/Programs/Microsoft VS Code/bin
+ORIGINAL_TEMP=/tmp
+ORIGINAL_TMP=/tmp
+OS=Windows_NT
+OSTYPE=msys
+PATH=/c/Users/josep/bin:/mingw64/bin:/usr/local/bin:/usr/bin:/bin:/mingw64/bin:/usr/bin:/c/Users/josep/bin:/c/Program Files (x86)/oh-my-posh/bin:/c/Windows/system32:/c/Windows:/c/Windows/System32/Wbem:/c/Windows/System32/WindowsPowerShell/v1.0:/c/Windows/System32/OpenSSH:/c/Program Files/dotnet:/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/cmd:/c/Users/josep/AppData/Local/Programs/oh-my-posh/bin:/c/Users/josep/AppData/Local/Microsoft/WindowsApps:/c/Users/josep/AppData/Local/Microsoft/WinGet/Packages/WsSolInfor.CrystalDiskInfo_Microsoft.Winget.Source_8wekyb3d8bbwe:/c/Users/josep/AppData/Local/Microsoft/WinGet/Links:/c/Users/josep/Documents/PowerShell/Scripts:/c/Users/josep/AppData/Local/Programs/Microsoft VS Code/bin:/usr/bin/vendor_perl:/usr/bin/core_perl
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+PKG_CONFIG_PATH=/mingw64/lib/pkgconfig:/mingw64/share/pkgconfig
+PKG_CONFIG_SYSTEM_INCLUDE_PATH=/mingw64/include
+PKG_CONFIG_SYSTEM_LIBRARY_PATH=/mingw64/lib
+PLINK_PROTOCOL=ssh
+POSH_INSTALLER=winget
+POSH_SESSION_ID=04911c26-7a70-4b53-ac42-c6f216d97a91
+POSH_SHELL_VERSION=5.2.37(1)-release
+POSH_SHELL=bash
+POSH_THEME=C:\Users\josep\Documents\dotfiles\posh-themes\jandedobbeleer.omp.json
+POSH_THEMES_PATH=C:\Users\josep\AppData\Local\Programs\oh-my-posh\themes\
+POWERLINE_COMMAND=oh-my-posh
+PROCESSOR_ARCHITECTURE=AMD64
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 198 Stepping 2, GenuineIntel
+PROCESSOR_LEVEL=6
+PROCESSOR_REVISION=c602
+ProgramData=C:\ProgramData
+ProgramFiles(x86)=C:\Program Files (x86)
+PROGRAMFILES=C:\Program Files
+ProgramW6432=C:\Program Files
+PSModulePath=C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules
+PUBLIC=C:\Users\Public
+PWD=/c/Users/josep
+PYENV_VIRTUALENV_DISABLE_PROMPT=1
+SESSIONNAME=Console
+SHELL=/usr/bin/bash
+SHLVL=2
+SSH_ASKPASS=/mingw64/bin/git-askpass.exe
+SYSTEMDRIVE=C:
+SYSTEMROOT=C:\Windows
+TEMP=/tmp
+TERM=xterm-256color
+TMP=/tmp
+TMPDIR=/tmp
+USERDOMAIN_ROAMINGPROFILE=ALIENWARE-18-AR
+USERDOMAIN=ALIENWARE-18-AR
+USERNAME=josep
+USERPROFILE=C:\Users\josep
+VIRTUAL_ENV_DISABLE_PROMPT=1
+WINDIR=C:\Windows
+WSLENV=WT_SESSION:WT_PROFILE_ID:
+WT_PROFILE_ID={2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}
+WT_SESSION=5ba2d136-e721-4905-82d1-ab2d34b01658
+ZES_ENABLE_SYSMAN=1
+
+--- 4.3: Active Shell Aliases ---
+
+--- 4.4: Nix & Home Manager Status ---
+--- Home Manager: Command not found (this is normal on non-NixOS systems). ---
+
+### End of Snapshot ###
