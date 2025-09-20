@@ -1,9 +1,9 @@
 # Complete Network Device Inventory
 
 ## Network Map Summary
-- **Total Devices**: 46 devices
-- **Static IP Range**: 192.168.1.1 - 192.168.1.106
-- **DHCP Range**: 192.168.1.107 - 192.168.1.254
+- **Total Devices**: 49 devices
+- **Static IP Range**: 192.168.1.1 - 192.168.1.109
+- **DHCP Range**: 192.168.1.110 - 192.168.1.254
 - **Router/Gateway**: OPNsense at 192.168.1.1
 
 ## Static IP Assignments (192.168.1.1 - 192.168.1.106)
@@ -39,7 +39,7 @@
 | 192.168.1.56 | pve-syncthing-lxc | bc:24:11:d3:bb:a8 | Syncthing Container (Note: Listed as umbrel-vm) |
 | 192.168.1.60 | pve-umbrel-vm | bc:24:11:d3:bb:a8 | Umbrel VM |
 
-### Workstations & Laptops (192.168.1.100-106)
+### Workstations & Laptops (192.168.1.100-109)
 | IP | Device | MAC Address | Description |
 |----|--------|-------------|-------------|
 | 192.168.1.100 | dell-inspiron-3847 | f8:bc:12:95:dd:10 | Dell Inspiron 3847 Desktop |
@@ -49,13 +49,16 @@
 | 192.168.1.104 | hp-dv9500-pavilion-wifi | 84:14:4d:d8:c0:1b | HP Pavilion (WiFi) |
 | 192.168.1.105 | msi-ge75-raider-9sf-eth | 00:d8:61:08:48:3d | MSI Raider (Ethernet) |
 | 192.168.1.106 | msi-ge75-raider-9sf-wifi | 5c:b4:7e:25:c7:bd | MSI Raider (WiFi) |
+| 192.168.1.107 | alienware-18-area51-eth | e8:cf:83:ee:6b:4a | Alienware 18 Area-51 (Ethernet) |
+| 192.168.1.108 | alienware-18-area51-wifi | 80:c0:1e:5d:e2:51 | Alienware 18 Area-51 (WiFi) |
+| 192.168.1.109 | caldigit-ts5plus-eth | 64:4b:f0:60:09:40 | CalDigit TS5Plus (Thunderbolt Dock) |
 
 ## DHCP Devices (192.168.1.107+)
 
 ### Smart Home Devices
 | Current IP | Device | MAC Address | Description |
 |------------|--------|-------------|-------------|
-| 192.168.1.107 | google-nest-thermostat | 18:b4:30:08:2c:7b | Nest Thermostat |
+| 192.168.1.107 | alienware-18-area51-eth | e8:cf:83:ee:6b:4a | Alienware 18 Area-51 (Ethernet) |
 | 192.168.1.222 | irobot-roomba-vacuum | 50:14:79:4c:b8:16 | Roomba Vacuum |
 
 ### Apple Devices
@@ -84,7 +87,7 @@
 ### Other Devices
 | Current IP | Device | MAC Address | Description |
 |------------|--------|-------------|-------------|
-| 192.168.1.197 | alienware-18-area51 | 64:4b:f0:60:09:40 | Alienware 18 (This machine) |
+| 192.168.1.107 | google-nest-thermostat | 18:b4:30:08:2c:7b | Nest Thermostat |
 | 192.168.1.208 | amazon | ec:0d:e4:34:87:37 | Amazon Device |
 | 192.168.1.217 | amazon-fire-tv-4k | ec:8a:c4:84:e8:61 | Fire TV 4K |
 | - | zte-libero-5g | f6:38:02:28:7c:ff | ZTE Libero 5G II (offline) |
@@ -100,13 +103,14 @@
 | - | unknown | 22:e3:b8:3c:80:ca | Unknown device (offline) |
 
 ## Network Statistics
-- **Static IP Devices**: 29 devices
+- **Static IP Devices**: 32 devices
 - **Currently Active DHCP**: 17 devices
-- **Total Configured**: 46 devices
+- **Total Configured**: 49 devices
 - **SSH Accessible**: 14 devices (OPNsense, Proxmox, LXCs, NAS, Laptops)
 
 ## Notes
-- All devices 192.168.1.1-106 have static DHCP reservations in OPNsense
-- DHCP pool starts at 192.168.1.107
+- All devices 192.168.1.1-109 have static DHCP reservations in OPNsense
+- DHCP pool starts at 192.168.1.110
+- Alienware workstation and CalDigit dock added to static range
 - Linksys MX4200 routers form a mesh network (5 nodes)
 - Multiple network interfaces on some devices (HP and MSI laptops have both ethernet and WiFi IPs)

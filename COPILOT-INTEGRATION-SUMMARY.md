@@ -81,7 +81,7 @@ Ensure these VS Code settings are enabled:
 3. **`.github/prompts/cleanup-powershell.prompt.md`** - Automated cleanup prompt
 4. **`.github/prompts/bootstrap-dotfiles.prompt.md`** - Guided bootstrap prompt
 5. **`powershell/Verify-Profile.ps1`** - PowerShell profile verification helper
-6. **`scripts/check-theme.ps1`** and **`scripts/check-theme.sh`** - Theme JSON validation helpers
+6. **`~/Documents/dev/shared/scripts/validation/check-theme.ps1`** and **`~/Documents/dev/shared/scripts/validation/check-theme.ps1`** - Theme JSON validation helpers
 7. Repository files updated to reflect guardrails: `CONTRIBUTING.md`, `README.md`
 
 **Note**: This documentation was moved from dotfiles to the centralized docs folder at `C:\Users\josep\Documents\docs\`
@@ -109,3 +109,4 @@ The integration has been tested and verified to:
 ## Future Maintenance
 
 This Copilot integration will ensure consistent PowerShell environment cleanup and maintenance across all future AI-assisted sessions in this workspace.
+

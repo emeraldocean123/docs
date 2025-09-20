@@ -53,10 +53,10 @@ nixos-config/scripts/test-all-ssh.ps1
 nixos-config/scripts/ssh-quick-test.ps1
 ```
 
-**After:** Generalized utilities in dotfiles
+**After:** Generalized utilities in shared/scripts
 ```
-dotfiles/scripts/ssh/test-ssh-connectivity.ps1  # All testing functionality
-dotfiles/scripts/ssh/connect-host.ps1           # All connection functionality
+shared/scripts/ssh/test-ssh-connectivity.ps1  # All testing functionality
+shared/scripts/ssh/connect-host.ps1           # All connection functionality
 ```
 
 #### 2.3 Verification Script Consolidation
@@ -64,13 +64,13 @@ dotfiles/scripts/ssh/connect-host.ps1           # All connection functionality
 **Before:** Multiple verification scripts
 ```
 dotfiles/powershell/Verify-Profile.ps1
-dotfiles/scripts/verify-dotfiles.ps1
-dotfiles/scripts/verify-dotfiles.sh
+shared/scripts/validation/validate-environment.ps1
+shared/scripts/validation/validate-environment.ps1
 ```
 
 **After:** Single comprehensive validator
 ```
-dotfiles/scripts/validate-environment.ps1
+shared/scripts/validation/validate-environment.ps1
 ```
 
 ### Phase 3: Implementation
@@ -122,8 +122,8 @@ rm Documents/PowerShell/Microsoft.PowerShell_profile.ps1
 
 # Remove old verification scripts
 rm Documents/dev/dotfiles/powershell/Verify-Profile.ps1
-rm Documents/dev/dotfiles/scripts/verify-dotfiles.ps1
-rm Documents/dev/dotfiles/scripts/verify-dotfiles.sh
+rm Documents/dev/shared/scripts/validation/validate-environment.ps1
+rm Documents/dev/shared/scripts/validation/validate-environment.ps1
 
 # Remove individual SSH scripts
 rm Documents/dev/nixos-config/scripts/connect-nixos.ps1
@@ -140,8 +140,8 @@ rm Documents/dev/nixos-config/scripts/test-all-ssh.ps1
 
 ### After  
 - After bootstrap, run validation:
-  - PowerShell: `scripts/validate-environment.ps1 -PowerShell`
-  - Everything: `scripts/validate-environment.ps1 -All`
+  - PowerShell: `shared/scripts/validation/validate-environment.ps1 -PowerShell`
+  - Everything: `shared/scripts/validation/validate-environment.ps1 -All`
 ```
 
 **Add cross-references between repos:**
@@ -149,8 +149,8 @@ rm Documents/dev/nixos-config/scripts/test-all-ssh.ps1
 ## Cross-Platform Utilities
 
 SSH and connectivity utilities have been moved to the [dotfiles repository](https://github.com/emeraldocean123/dotfiles):
-- **Test SSH connectivity**: `~/Documents/dev/dotfiles/scripts/ssh/test-ssh-connectivity.ps1 -All`
-- **Connect to hosts**: `~/Documents/dev/dotfiles/scripts/ssh/connect-host.ps1 hp`
+- **Test SSH connectivity**: `~/Documents/dev/shared/scripts/ssh/test-ssh-connectivity.ps1 -All`
+- **Connect to hosts**: `~/Documents/dev/shared/scripts/ssh/connect-host.ps1 hp`
 ```
 
 ### Phase 4: Documentation
@@ -224,12 +224,12 @@ Connect to infrastructure hosts using aliases.
 ### Basic Validation
 ```powershell
 # Test environment validator
-scripts/validate-environment.ps1 -PowerShell
-scripts/validate-environment.ps1 -All
+shared/scripts/validation/validate-environment.ps1 -PowerShell
+shared/scripts/validation/validate-environment.ps1 -All
 
 # Test SSH utilities
-scripts/ssh/test-ssh-connectivity.ps1 -Target "git@github.com"
-scripts/ssh/connect-host.ps1 hp -Info
+shared/scripts/ssh/test-ssh-connectivity.ps1 -Target "git@github.com"
+shared/scripts/ssh/connect-host.ps1 hp -Info
 ```
 
 ### Regression Testing
@@ -256,8 +256,8 @@ feat: Consolidate SSH utilities into dotfiles
 ## [Date] - Script Consolidation
 
 ### Added
-- `dotfiles/scripts/validate-environment.ps1` - Unified validation
-- `dotfiles/scripts/ssh/` - Consolidated SSH utilities
+- `shared/scripts/validation/validate-environment.ps1` - Unified validation
+- `shared/scripts/ssh/` - Consolidated SSH utilities
 
 ### Removed
 - 11 redundant scripts across repositories
@@ -296,3 +296,5 @@ If consolidation causes issues:
 *Files removed: 11*
 *New utilities created: 4*
 *Reduction: ~40%*
+
+

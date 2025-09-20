@@ -19,8 +19,14 @@
 ### NixOS Laptops
 | Host | IP | User | Shortcut | Description |
 |------|-----|------|----------|-------------|
-| HP dv9500 Pavilion | 192.168.1.104 | joseph | `ssh hp` | NixOS with LXQt desktop |
-| MSI GE75 Raider | 192.168.1.106 | joseph | `ssh msi` | NixOS with KDE Plasma 6 |
+| HP dv9500 Pavilion | 192.168.1.103/104 | joseph | `ssh hp` | NixOS with LXQt desktop (Eth/WiFi) |
+| MSI GE75 Raider | 192.168.1.105/106 | joseph | `ssh msi` | NixOS with KDE Plasma 6 (Eth/WiFi) |
+
+### Windows Workstations
+| Host | IP | User | Description |
+|------|-----|------|-------------|
+| Alienware 18 Area-51 | 192.168.1.107/108 | joseph | Windows 11 workstation (Eth/WiFi) |
+| CalDigit TS5Plus | 192.168.1.109 | - | Thunderbolt dock ethernet adapter |
 
 ### Proxmox Infrastructure
 | Host | IP | User | Shortcut | Description |

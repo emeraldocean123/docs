@@ -62,3 +62,7 @@ Documentation updates also follow Conventional Commits for consistency.
 - Commit Template: this repo is configured with a commit message template to guide messages.
 - Hooks: shared `pre-commit` and `commit-msg` hooks run automatically (configured via global `core.hooksPath`).
 - Bypass (rare): set `GITHOOKS_BYPASS=1` to skip checks once.
+## Shared Resources
+
+All script references now point to the centralized helpers in `~/Documents/dev/shared`. Update that repository first to ensure the validation and SSH utilities referenced throughout this documentation are available.
+
